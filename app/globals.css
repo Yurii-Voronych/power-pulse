@@ -9,3 +9,61 @@
 
   --breakpoint-2xl: 1440px;
 }
+@layer components {
+  .btn-outline {
+    @apply inline-flex
+      items-center
+      justify-center
+      gap-2
+      w-[130px]
+      h-[42px]
+      px-[40px]
+      py-3
+      rounded-[12px]
+      border
+      border-white/30
+      bg-transparent
+      text-white
+      text-[16px]
+      font-medium
+      transition
+      duration-200;
+  }
+
+  .btn-primary {
+    @apply inline-flex
+      items-center
+      justify-center
+      gap-2
+      w-[130px]
+      h-[42px]
+      px-[40px]
+      py-3
+      rounded-[12px]
+      bg-orange
+      text-white
+      text-[16px]
+      font-medium
+      transition
+      duration-200;
+  }
+
+  @media (min-width: 768px) {
+    .btn-outline,
+    .btn-primary {
+      @apply w-[190px]
+        h-[56px]
+        px-[60px]
+        py-4
+        text-[20px];
+    }
+  }
+
+  .btn-outline:hover {
+    @apply bg-beige/10;
+  }
+
+  .btn-primary:hover {
+    @apply opacity-90;
+  }
+}
