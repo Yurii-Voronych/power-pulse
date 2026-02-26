@@ -15,11 +15,11 @@
       items-center
       justify-center
       gap-2
-      w-[130px]
-      h-[42px]
-      px-[40px]
+      w-34
+      h-10.5
+      /* px-10 */
       py-3
-      rounded-[12px]
+      rounded-xl
       border
       border-white/30
       bg-transparent
@@ -35,11 +35,11 @@
       items-center
       justify-center
       gap-2
-      w-[130px]
-      h-[42px]
-      px-[40px]
+      w-34
+      h-10.5
+      /* px-[40px] */
       py-3
-      rounded-[12px]
+      rounded-xl
       bg-orange
       text-white
       text-[16px]
