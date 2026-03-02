@@ -23,10 +23,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.className} bg-black text-white min-h-screen`}>
-        <div className="w-full max-w-360 mx-auto ">
-          <Header />
-          {children}
-        </div>
+        <Header />
+        {children}
       </body>
     </html>
   );
