@@ -44,6 +44,7 @@
       text-white
       text-[16px]
       font-medium
+      leading-[1.1]
       transition
       duration-200;
   }
@@ -65,5 +66,26 @@
 
   .btn-primary:hover {
     @apply opacity-90;
+  }
+
+  .form-input {
+    @apply w-[335px]
+      h-[46px]
+      rounded-xl
+      border
+      border-[#EFEDE8]/30
+      px-[14px]
+      py-[14px]
+      bg-transparent
+      outline-none
+      font-normal
+      text-sm
+      leading-[1.28571]
+      text-[#EFEDE8]/60;
+  }
+  .form-input::placeholder {
+    @apply text-[#EFEDE8]/60
+     text-sm
+      leading-[1.28571];
   }
 }
