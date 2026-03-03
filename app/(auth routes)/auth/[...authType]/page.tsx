@@ -34,8 +34,11 @@ export default async function JourneyPage({ params }: JourneyPageProps) {
     >
       <Container className="relative ">
         {authType[0] === "login" ? <LoginForm /> : <RegistrationForm />}
-        <Video className="ml-25.25 mb-17.5 2xl:absolute left-175 top-35" />
-        <Calories className="ml-auto" />
+        <Video className="ml-25.25 mb-17.5 md:ml-74.75 md:mb-14 2xl:mb-0 2xl:ml-0 2xl:absolute left-175 top-35" />
+        <Calories
+          className="ml-auto 2xl:absolute 2xl:left-267 2xl:top-90
+        "
+        />
       </Container>
     </section>
   );

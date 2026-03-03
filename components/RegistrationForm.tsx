@@ -46,8 +46,10 @@ const RegistrationForm = () => {
   };
   return (
     <>
-      <h1 className="text-2xl leading-[1.66] font-bold mb-3.5">Sign Up</h1>
-      <p className="text-[14px] leading- [1.29] text-white/30 mb-7">
+      <h1 className="text-2xl md:text-[32px] leading-[1.66] md:leading-[1.38] font-bold mb-3.5">
+        Sign Up
+      </h1>
+      <p className="text-[14px] md:text-[16px] leading- [1.29] md:leading-normal  text-white/30 mb-7 md:mb-8 md:w-[496px]">
         Thank you for your interest in our platform. To complete the
         registration process, please provide us with the following information.
       </p>
@@ -95,7 +97,7 @@ const RegistrationForm = () => {
                 id="password"
                 name="password"
                 type="password"
-                className="form-input mb-7"
+                className="form-input mb-7 md:mb-16"
                 placeholder="Password"
               />
               <ErrorMessage name="password">
@@ -113,7 +115,7 @@ const RegistrationForm = () => {
           </Form>
         )}
       </Formik>
-      <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal mb-15.25">
+      <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal mb-15.25 md:mb-[39px] 2xl:mb-0">
         Already have account?
       </p>
       <Link

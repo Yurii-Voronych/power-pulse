@@ -83,6 +83,14 @@
       leading-[1.28571]
       text-[#EFEDE8]/60;
   }
+  @media (min-width: 768px) {
+    .form-input {
+      @apply w-[364px]
+        h-[52px]
+         text-[16px]
+      leading-normal;
+    }
+  }
   .form-input::placeholder {
     @apply text-[#EFEDE8]/60
      text-sm

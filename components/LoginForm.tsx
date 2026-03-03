@@ -41,8 +41,10 @@ const LoginForm = () => {
   };
   return (
     <>
-      <h1 className="text-2xl leading-[1.66] font-bold mb-3.5">Sign in</h1>
-      <p className="text-[14px] leading- [1.29] text-white/30 mb-7">
+      <h1 className="text-2xl md:text-[32px] leading-[1.66] md:leading-[1.38] font-bold mb-3.5">
+        Sign in
+      </h1>
+      <p className="text-[14px] md:text-[16px] leading-[1.29] md:leading-normal text-white/30 mb-7">
         Welcome! Please enter your credentials to login to the platform:
       </p>
       <Formik
@@ -92,11 +94,11 @@ const LoginForm = () => {
           </Form>
         )}
       </Formik>
-      <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal mb-36.25">
+      <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal mb-36.25 md:mb-[39px]">
         Don’t have an account?
       </p>
       <Link
-        href={"/auth/login"}
+        href={"/auth/register"}
         className="text-[12px] text-white leading-normal underline "
       >
         Sign Up
