@@ -94,7 +94,7 @@ const LoginForm = () => {
           </Form>
         )}
       </Formik>
-      <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal mb-36.25 md:mb-[39px]">
+      <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal mb-36.25 md:mb-9.75">
         Don’t have an account?
       </p>
       <Link

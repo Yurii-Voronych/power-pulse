@@ -52,9 +52,9 @@
   @media (min-width: 768px) {
     .btn-outline,
     .btn-primary {
-      @apply w-[190px]
-        h-[56px]
-        px-[60px]
+      @apply w-47.5
+        h-14
+        px-15
         py-4
         text-[20px];
     }
@@ -69,13 +69,13 @@
   }
 
   .form-input {
-    @apply w-[335px]
-      h-[46px]
+    @apply w-83.75
+      h-11.5
       rounded-xl
       border
       border-[#EFEDE8]/30
-      px-[14px]
-      py-[14px]
+      px-3.5
+      py-3.5
       bg-transparent
       outline-none
       font-normal
@@ -85,8 +85,8 @@
   }
   @media (min-width: 768px) {
     .form-input {
-      @apply w-[364px]
-        h-[52px]
+      @apply w-91
+        h-13
          text-[16px]
       leading-normal;
     }
