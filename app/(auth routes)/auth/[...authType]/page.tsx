@@ -22,7 +22,7 @@ export default async function JourneyPage({ params }: JourneyPageProps) {
     max-w-360 mx-auto
     min-h-screen
     pt-31.75 md:pt-47.25 2xl:pt-47.25
-    bg-[url('/womanPonytail_mobile.jpg')]
+   bg-[linear-gradient(135deg,rgba(4,4,4,1)_21%,rgba(4,4,4,0)_100%),url('/womanPonytail_mobile.jpg')]
     md:bg-[url('/womanPonytail_tablet.jpg')]
      2xl:bg-[url('/womanPonytail_desk.jpg')]
     bg-no-repeat
@@ -34,8 +34,8 @@ export default async function JourneyPage({ params }: JourneyPageProps) {
     >
       <Container className="relative ">
         {authType[0] === "login" ? <LoginForm /> : <RegistrationForm />}
-        <Video className="2xl:absolute left-175 top-35" />
-        <Calories className="" />
+        <Video className="ml-25.25 mb-17.5 2xl:absolute left-175 top-35" />
+        <Calories className="ml-auto" />
       </Container>
     </section>
   );

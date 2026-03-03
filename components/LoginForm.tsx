@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import Link from "next/link";
 
 import { AxiosError } from "axios";
+import { ErrorIcon } from "./icons/ErrorIcon";
 
 interface LoginValues {
   email: string;
@@ -15,10 +16,10 @@ interface LoginValues {
 const initialValues: LoginValues = { email: "", password: "" };
 
 const Schema = Yup.object().shape({
-  email: Yup.string().email("Некоректний email").required("Обов'язкове поле"),
+  email: Yup.string().email("Incorrect email").required("Required field"),
   password: Yup.string()
-    .min(8, "Мінімум 8 символів")
-    .required("Обов'язкове поле"),
+    .min(8, "Minimal length 8 symbols")
+    .required("Required field"),
 });
 
 const LoginForm = () => {
@@ -32,15 +33,18 @@ const LoginForm = () => {
       router.push("/");
     } catch (error) {
       if ((error as AxiosError).status === 401) {
-        alert("Логін або пароль не вірний");
+        alert("Invalid credentials");
       } else {
-        alert("Щось пішло не так, спробйте пізніше");
+        alert("Something went wrong try again later");
       }
     }
   };
   return (
-    <div>
-      <h1 className="">Вхід</h1>
+    <>
+      <h1 className="text-2xl leading-[1.66] font-bold mb-3.5">Sign in</h1>
+      <p className="text-[14px] leading- [1.29] text-white/30 mb-7">
+        Welcome! Please enter your credentials to login to the platform:
+      </p>
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
@@ -48,49 +52,56 @@ const LoginForm = () => {
       >
         {({ isValid, dirty }) => (
           <Form className="">
-            <div className="">
-              <label htmlFor="email" className="">
-                Пошта
-              </label>
+            <div className="relative">
               <Field
                 id="email"
                 name="email"
                 type="text"
-                className=""
-                placeholder="Пошта"
+                className="form-input mb-4.5"
+                placeholder="Email"
               />
               <ErrorMessage name="email">
-                {(msg) => <span className="">{msg}</span>}
+                {(msg) => (
+                  <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                    <ErrorIcon /> {msg}
+                  </span>
+                )}
               </ErrorMessage>
             </div>
 
-            <div className="">
-              <label htmlFor="password" className="">
-                Пароль
-              </label>
+            <div className="relative">
               <Field
                 id="password"
                 name="password"
                 type="password"
-                className=""
-                placeholder="Пароль"
+                className="form-input mb-7"
+                placeholder="Password"
               />
               <ErrorMessage name="password">
-                {(msg) => <span className="">{msg}</span>}
+                {(msg) => (
+                  <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1 justify-center">
+                    <ErrorIcon /> {msg}
+                  </span>
+                )}
               </ErrorMessage>
             </div>
 
-            <button type="submit" disabled={!isValid || !dirty} className="">
-              Увійти
+            <button type="submit" className="btn-primary mb-3">
+              Sign-In
             </button>
-            <p className=""> Немає аккаунту?</p>
-            <Link href={"/auth/register"} className="">
-              Зареєструватися
-            </Link>
           </Form>
         )}
       </Formik>
-    </div>
+      <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal mb-36.25">
+        Don’t have an account?
+      </p>
+      <Link
+        href={"/auth/login"}
+        className="text-[12px] text-white leading-normal underline "
+      >
+        Sign Up
+      </Link>
+    </>
   );
 };
 
