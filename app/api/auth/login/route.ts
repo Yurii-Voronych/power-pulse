@@ -1,0 +1,80 @@
+import { connectDB } from "@/lib/services/mongodb";
+import User from "@/models/User";
+import bcrypt from "bcryptjs";
+import { NextResponse } from "next/server";
+import { generateRefreshToken, createSession } from "@/lib/services/auth";
+import { signAccessToken } from "@/lib/services/jwt";
+
+export async function POST(req: Request) {
+  try {
+    await connectDB();
+
+    const { email, password } = await req.json();
+
+    if (!email || !password) {
+      return NextResponse.json(
+        { message: "Email and password are required" },
+        { status: 400 },
+      );
+    }
+
+    const user = await User.findOne({ email }).select("-password");
+
+    if (!user) {
+      return NextResponse.json(
+        { message: "Invalid email or password" },
+        { status: 401 },
+      );
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      return NextResponse.json(
+        { message: "Invalid email or password" },
+        { status: 401 },
+      );
+    }
+
+    const refreshToken = generateRefreshToken();
+
+    await createSession(user._id.toString(), refreshToken);
+
+    const accessToken = signAccessToken(user._id.toString());
+
+    const response = NextResponse.json(
+      {
+        user: {
+          id: user._id,
+          email: user.email,
+          name: user.name,
+          profile: user.profile,
+          dailyNorm: user.dailyNorm,
+        },
+      },
+      { status: 200 },
+    );
+
+    response.cookies.set("accessToken", accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 15,
+    });
+
+    response.cookies.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Login error", error);
+
+    return NextResponse.json({ message: "Server error" }, { status: 500 });
+  }
+}

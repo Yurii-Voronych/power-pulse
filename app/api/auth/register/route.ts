@@ -1,43 +1,77 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { connectDB } from "@/lib/mongodb";
+import { connectDB } from "@/lib/services/mongodb";
 import User from "@/models/User";
+import { generateRefreshToken, createSession } from "@/lib/services/auth";
+import { signAccessToken } from "@/lib/services/jwt";
 
 export async function POST(req: Request) {
   try {
     await connectDB();
 
-    const body = await req.json();
-    const { email, password, name } = body;
-    if (!email || !password) {
+    const { email, password, name } = await req.json();
+
+    if (!email || !password || !name) {
       return NextResponse.json(
-        { message: "Email and password required" },
+        { message: "Email, name and password required" },
         { status: 400 },
       );
     }
 
     const existingUser = await User.findOne({ email });
+
     if (existingUser) {
-      return NextResponse.json({ message: "Email in use" }, { status: 409 });
+      return NextResponse.json(
+        { message: "Email already in use" },
+        { status: 409 },
+      );
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await User.create({
+    const user = await User.create({
       email,
       name,
       password: hashedPassword,
     });
 
-    return NextResponse.json(
+    const refreshToken = generateRefreshToken();
+
+    await createSession(user._id.toString(), refreshToken);
+
+    const accessToken = signAccessToken(user._id.toString());
+
+    const response = NextResponse.json(
       {
-        id: newUser._id,
-        email: newUser.email,
-        name: newUser.name,
+        user: {
+          id: user._id,
+          email: user.email,
+          name: user.name,
+        },
       },
       { status: 201 },
     );
+
+    response.cookies.set("accessToken", accessToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 15,
+    });
+
+    response.cookies.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 30,
+    });
+
+    return response;
   } catch (error) {
+    console.error("Register error", error);
+
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }
