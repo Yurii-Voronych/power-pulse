@@ -6,8 +6,8 @@ export const generateRefreshToken = () => {
   return crypto.randomBytes(40).toString("hex");
 };
 
-export const hashToken = async (token: string) => {
-  return bcrypt.hash(token, 10);
+export const hashToken = (token: string) => {
+  return crypto.createHash("sha256").update(token).digest("hex");
 };
 
 export const verifyRefreshToken = async (token: string, hash: string) => {
@@ -20,7 +20,7 @@ export const createSession = async (
   userAgent?: string,
   ip?: string,
 ) => {
-  const refreshTokenHash = await hashToken(refreshToken);
+  const refreshTokenHash = hashToken(refreshToken);
 
   return Session.create({
     userId,

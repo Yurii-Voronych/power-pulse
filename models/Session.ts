@@ -32,5 +32,6 @@ const SessionSchema = new Schema(
 
 SessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 SessionSchema.index({ userId: 1 });
+SessionSchema.index({ refreshTokenHash: 1 });
 
 export default models.Session || model("Session", SessionSchema);
