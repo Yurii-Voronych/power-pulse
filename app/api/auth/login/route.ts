@@ -18,7 +18,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const user = await User.findOne({ email }).select("-password");
+    const user = await User.findOne({ email });
 
     if (!user) {
       return NextResponse.json(
@@ -37,8 +37,14 @@ export async function POST(req: Request) {
     }
 
     const refreshToken = generateRefreshToken();
+    const userAgent = req.headers.get("user-agent") || "unknown";
 
-    await createSession(user._id.toString(), refreshToken);
+    const ip =
+      req.headers.get("x-forwarded-for") ||
+      req.headers.get("x-real-ip") ||
+      "unknown";
+
+    await createSession(user._id.toString(), refreshToken, userAgent, ip);
 
     const accessToken = signAccessToken(user._id.toString());
 

@@ -2,9 +2,7 @@ import Link from "next/link";
 import Container from "./Container";
 import { LogoIcon } from "./icons/LogoIcon";
 
-const Header = async () => {
-  const user = false;
-
+const Header = () => {
   return (
     <header className="absolute top-0 left-0 w-full z-50">
       <Container className="flex items-center justify-between h-15.25 md:h-21">
@@ -14,8 +12,6 @@ const Header = async () => {
             dumbbellClassName="text-orange"
           />
         </Link>
-
-        {user && <div>hello</div>}
       </Container>
     </header>
   );

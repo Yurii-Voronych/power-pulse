@@ -7,6 +7,8 @@ import Link from "next/link";
 
 import { AxiosError } from "axios";
 import { ErrorIcon } from "./icons/ErrorIcon";
+import { loginUser } from "@/lib/api/authApi";
+import useAuthStore from "@/lib/store/authStore";
 
 interface LoginValues {
   email: string;
@@ -23,14 +25,17 @@ const Schema = Yup.object().shape({
 });
 
 const LoginForm = () => {
+  const setUser = useAuthStore((state) => state.setUser);
   const router = useRouter();
   const handleSubmit = async (
     values: LoginValues,
     actions: FormikHelpers<LoginValues>,
   ) => {
     try {
+      const user = await loginUser(values);
+      setUser(user);
       actions.resetForm();
-      router.push("/");
+      router.push("/profile/edit");
     } catch (error) {
       if ((error as AxiosError).status === 401) {
         alert("Invalid credentials");

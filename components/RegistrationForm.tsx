@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 import { ErrorIcon } from "./icons/ErrorIcon";
-import { register } from "@/lib/api/api";
+import { registerUser } from "@/lib/api/authApi";
+import useAuthStore from "@/lib/store/authStore";
 
 interface RegistrationValues {
   name: string;
@@ -28,15 +29,16 @@ const Schema = Yup.object().shape({
 
 const RegistrationForm = () => {
   const router = useRouter();
-
+  const setUser = useAuthStore((state) => state.setUser);
   const handleSubmit = async (
     values: RegistrationValues,
     actions: FormikHelpers<RegistrationValues>,
   ) => {
     try {
-      await register(values);
+      const user = await registerUser(values);
+      setUser(user);
       actions.resetForm();
-      // router.push("/profile/edit");
+      router.push("/profile/edit");
     } catch (error) {
       if ((error as AxiosError).status === 409) {
         alert("Email is already in use");
