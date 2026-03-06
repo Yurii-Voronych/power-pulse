@@ -4,19 +4,26 @@ import { connectDB } from "@/lib/services/mongodb";
 import User from "@/models/User";
 import { generateRefreshToken, createSession } from "@/lib/services/auth";
 import { signAccessToken } from "@/lib/services/jwt";
+import { validate } from "@/lib/validators/validate";
+import {
+  registerSchema,
+  RegisterCredentials,
+} from "@/lib/validators/auth/registerSchema";
 
 export async function POST(req: Request) {
   try {
+    const body = await req.json();
+
+    const { data, error } = await validate<RegisterCredentials>(
+      registerSchema,
+      body,
+    );
+
+    if (error) return error;
+
+    const { email, password, name } = data;
+
     await connectDB();
-
-    const { email, password, name } = await req.json();
-
-    if (!email || !password || !name) {
-      return NextResponse.json(
-        { message: "Email, name and password required" },
-        { status: 400 },
-      );
-    }
 
     const existingUser = await User.findOne({ email });
 
@@ -37,7 +44,14 @@ export async function POST(req: Request) {
 
     const refreshToken = generateRefreshToken();
 
-    await createSession(user._id.toString(), refreshToken);
+    const userAgent = req.headers.get("user-agent") || "unknown";
+
+    const ip =
+      req.headers.get("x-forwarded-for") ||
+      req.headers.get("x-real-ip") ||
+      "unknown";
+
+    await createSession(user._id.toString(), refreshToken, userAgent, ip);
 
     const accessToken = signAccessToken(user._id.toString());
 

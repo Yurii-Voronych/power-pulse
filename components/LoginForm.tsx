@@ -2,13 +2,12 @@
 
 import { Field, Form, Formik, type FormikHelpers, ErrorMessage } from "formik";
 import { useRouter } from "next/navigation";
-import * as Yup from "yup";
 import Link from "next/link";
-
 import { AxiosError } from "axios";
 import { ErrorIcon } from "./icons/ErrorIcon";
 import { loginUser } from "@/lib/api/authApi";
 import useAuthStore from "@/lib/store/authStore";
+import { loginSchema } from "@/lib/validators/auth/loginSchema";
 
 interface LoginValues {
   email: string;
@@ -16,13 +15,6 @@ interface LoginValues {
 }
 
 const initialValues: LoginValues = { email: "", password: "" };
-
-const Schema = Yup.object().shape({
-  email: Yup.string().email("Incorrect email").required("Required field"),
-  password: Yup.string()
-    .min(8, "Minimal length 8 symbols")
-    .required("Required field"),
-});
 
 const LoginForm = () => {
   const setUser = useAuthStore((state) => state.setUser);
@@ -55,7 +47,7 @@ const LoginForm = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        validationSchema={Schema}
+        validationSchema={loginSchema}
       >
         {({ isValid, dirty }) => (
           <Form className="">

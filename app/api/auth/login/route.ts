@@ -4,19 +4,23 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { generateRefreshToken, createSession } from "@/lib/services/auth";
 import { signAccessToken } from "@/lib/services/jwt";
+import { validate } from "@/lib/validators/validate";
+import {
+  LoginCredentials,
+  loginSchema,
+} from "@/lib/validators/auth/loginSchema";
 
 export async function POST(req: Request) {
   try {
+    const body = await req.json();
+
+    const { data, error } = await validate<LoginCredentials>(loginSchema, body);
+
+    if (error) return error;
+
+    const { email, password } = data;
+
     await connectDB();
-
-    const { email, password } = await req.json();
-
-    if (!email || !password) {
-      return NextResponse.json(
-        { message: "Email and password are required" },
-        { status: 400 },
-      );
-    }
 
     const user = await User.findOne({ email });
 
@@ -37,6 +41,7 @@ export async function POST(req: Request) {
     }
 
     const refreshToken = generateRefreshToken();
+
     const userAgent = req.headers.get("user-agent") || "unknown";
 
     const ip =

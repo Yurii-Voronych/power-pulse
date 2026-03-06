@@ -3,10 +3,10 @@ import { AxiosError } from "axios";
 import { Field, Form, Formik, type FormikHelpers, ErrorMessage } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import * as Yup from "yup";
 import { ErrorIcon } from "./icons/ErrorIcon";
 import { registerUser } from "@/lib/api/authApi";
 import useAuthStore from "@/lib/store/authStore";
+import { registerSchema } from "@/lib/validators/auth/registerSchema";
 
 interface RegistrationValues {
   name: string;
@@ -15,17 +15,6 @@ interface RegistrationValues {
 }
 
 const initialValues: RegistrationValues = { name: "", email: "", password: "" };
-
-const Schema = Yup.object().shape({
-  name: Yup.string()
-    .min(2, "Minimal length 2 symbols")
-    .max(20, "Maximal length 20 symbols")
-    .required("Required field"),
-  email: Yup.string().email("Incorrect email").required("Required field"),
-  password: Yup.string()
-    .min(8, "Minimal length 8 symbols")
-    .required("Required field"),
-});
 
 const RegistrationForm = () => {
   const router = useRouter();
@@ -59,7 +48,7 @@ const RegistrationForm = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        validationSchema={Schema}
+        validationSchema={registerSchema}
       >
         {({ isValid, dirty }) => (
           <Form className="flex flex-col">
