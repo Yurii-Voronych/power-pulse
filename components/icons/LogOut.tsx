@@ -2,7 +2,7 @@ type LogOutIconProps = {
   className?: string;
 };
 
-export function LogOut({ className }: LogOutIconProps) {
+export function LogOutIcon({ className }: LogOutIconProps) {
   return (
     <svg
       width="20"
