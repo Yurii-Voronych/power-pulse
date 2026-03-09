@@ -28,6 +28,7 @@ const RegistrationForm = () => {
       setUser(user);
       actions.resetForm();
       router.push("/profile/edit");
+      router.refresh();
     } catch (error) {
       if ((error as AxiosError).status === 409) {
         alert("Email is already in use");

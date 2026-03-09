@@ -28,6 +28,7 @@ const LoginForm = () => {
       setUser(user);
       actions.resetForm();
       router.push("/profile/edit");
+      router.refresh();
     } catch (error) {
       if ((error as AxiosError).status === 401) {
         alert("Invalid credentials");

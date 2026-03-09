@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { verifyAccessToken } from "@/lib/services/jwt";
 import { connectDB } from "@/lib/services/mongodb";
 import User from "@/models/User";
+import type { User as UserType } from "@/types/types";
 
 export const getCurrentUser = async () => {
   const cookieStore = await cookies();
@@ -14,7 +15,9 @@ export const getCurrentUser = async () => {
 
     await connectDB();
 
-    const user = await User.findById(payload.userId).select("-password").lean();
+    const user = await User.findById(payload.userId)
+      .select("-password")
+      .lean<UserType>();
 
     return user;
   } catch {
