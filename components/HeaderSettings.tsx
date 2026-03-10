@@ -3,11 +3,13 @@ import { logoutUser } from "@/lib/api/authApi";
 import { LogOutIcon } from "./icons/LogOut";
 import { SettingsIcon } from "./icons/SettingsIcon";
 import { UserIcon } from "./icons/UserIcon";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { MenuIcon } from "./icons/MenuIcon";
 
 const HeaderSettings = () => {
+  const pathname = usePathname();
+  const isActive = (path: string) => pathname.startsWith(path);
   const router = useRouter();
   const handleLogOut = async () => {
     try {
@@ -22,14 +24,35 @@ const HeaderSettings = () => {
     <div className="flex justify-center items-center gap-8">
       <nav className="hidden 2xl:block">
         <ul className="flex justify-center items-center gap-4">
-          <li>
-            <Link href={"/"}>Diary</Link>
+          <li
+            className={`flex justify-center items-center border rounded-xl w-22.75 h-11
+  ${
+    isActive("/diary")
+      ? "border-orange bg-orange"
+      : "border-[rgba(239,237,232,0.2)]"
+  }`}
+          >
+            <Link href={"/diary"}>Diary</Link>
           </li>
-          <li>
-            <Link href={"/"}>Products</Link>
+          <li
+            className={`flex justify-center items-center border rounded-xl w-22.75 h-11
+  ${
+    isActive("/products")
+      ? "border-orange bg-orange"
+      : "border-[rgba(239,237,232,0.2)]"
+  }`}
+          >
+            <Link href={"/products"}>Products</Link>
           </li>
-          <li>
-            <Link href={"/"}>Exercises</Link>
+          <li
+            className={`flex justify-center items-center border rounded-xl w-22.75 h-11
+  ${
+    isActive("/exercises")
+      ? "border-orange bg-orange"
+      : "border-[rgba(239,237,232,0.2)]"
+  }`}
+          >
+            <Link href={"/exercises"}>Exercises</Link>
           </li>
         </ul>
       </nav>
@@ -45,7 +68,7 @@ const HeaderSettings = () => {
           onClick={handleLogOut}
           className="2xl:inline-flex gap-2 justify-center items-center hidden "
         >
-          LogOut
+          Logout
           <LogOutIcon />
         </button>
         <button
