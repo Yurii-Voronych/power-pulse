@@ -3,17 +3,12 @@ import { ErrorMessage, Field } from "formik";
 import BirthdayInput from "./BirthdayInput";
 import { NextIcon } from "@/components/icons/NextArrowIcon";
 
-const FirstStep = () => {
+const SecondStep = () => {
   return (
     <>
       <h1 className="text-2xl leading-[1.66] font-bold mt-31.75 mb-3.5">
         Get Closer To Your Goals
       </h1>
-      <p className="text-[14px] leading-[1.29] mb-7 text-white/30 w-83.75">
-        To ensure a personalized user experience and the proper functioning of
-        our platform, we ask you to provide the following information about your
-        weight, height and other relevant data:
-      </p>
       <div className="grid grid-cols-2 gap-3.5 mb-7">
         <Field
           id="height"
@@ -78,4 +73,4 @@ const FirstStep = () => {
   );
 };
 
-export default FirstStep;
+export default SecondStep;
