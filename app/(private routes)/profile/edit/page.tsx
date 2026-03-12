@@ -8,14 +8,27 @@ import SecondStep from "./SecondStep";
 import { useState } from "react";
 import clsx from "clsx";
 import ThirdStep from "./ThirdStep";
+import { editProfileSchema } from "@/lib/validators/profile/editSchema";
 
+export interface EditProfileFormValues {
+  height: string;
+  currentWeight: string;
+  desiredWeight: string;
+  birthday?: Date;
+  blood: string;
+  sex: string;
+  levelActivity: string;
+}
 const initialValues = {
   height: "",
   currentWeight: "",
   desiredWeight: "",
   birthday: undefined as Date | undefined,
+  blood: "",
+  sex: "",
+  levelActivity: "",
 };
-const handleSubmit = (val) => {
+const handleSubmit = (val: EditProfileFormValues) => {
   console.log(val);
 };
 const EditProfilePage = () => {
@@ -25,13 +38,22 @@ const EditProfilePage = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        // validationSchema={loginSchema}
+        validationSchema={editProfileSchema}
       >
-        <Form className="ml-5 z-10">
-          {step === 1 && <FirstStep setStep={setStep} />}
-          {step === 2 && <SecondStep setStep={setStep} />}
-          {step === 3 && <ThirdStep setStep={setStep} />}
-        </Form>
+        {(formik) => (
+          <Form className="ml-5 z-10">
+            {step === 1 && (
+              <FirstStep setStep={setStep} validateForm={formik.validateForm} />
+            )}
+            {step === 2 && (
+              <SecondStep
+                setStep={setStep}
+                validateForm={formik.validateForm}
+              />
+            )}
+            {step === 3 && <ThirdStep setStep={setStep} />}
+          </Form>
+        )}
       </Formik>
 
       <div

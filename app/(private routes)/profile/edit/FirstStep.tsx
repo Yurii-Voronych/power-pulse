@@ -1,14 +1,26 @@
 import { ErrorIcon } from "@/components/icons/ErrorIcon";
-import { ErrorMessage, Field } from "formik";
+import { ErrorMessage, Field, FormikErrors } from "formik";
 import BirthdayInput from "./BirthdayInput";
 import { NextIcon } from "@/components/icons/NextArrowIcon";
 import { Dispatch, SetStateAction } from "react";
+import { EditProfileFormValues } from "./page";
 interface FirstStepProps {
   setStep: Dispatch<SetStateAction<number>>;
+  validateForm: () => Promise<FormikErrors<EditProfileFormValues>>;
 }
-const FirstStep = ({ setStep }: FirstStepProps) => {
-  const handleClick = () => {
-    setStep(2);
+const FirstStep = ({ setStep, validateForm }: FirstStepProps) => {
+  const handleClick = async () => {
+    const errors = await validateForm();
+    if (
+      !errors.height &&
+      !errors.currentWeight &&
+      !errors.desiredWeight &&
+      !errors.birthday
+    ) {
+      setStep(2);
+    } else {
+      console.log(errors);
+    }
   };
   return (
     <>
@@ -20,57 +32,65 @@ const FirstStep = ({ setStep }: FirstStepProps) => {
         our platform, we ask you to provide the following information about your
         weight, height and other relevant data:
       </p>
-      <div className="grid grid-cols-2 gap-3.5 mb-7">
-        <Field
-          id="height"
-          name="height"
-          type="text"
-          className="w-39.75 h-11.5 p-3.5 border border-white/30 rounded-xl"
-          placeholder="Height"
-        />
-        <ErrorMessage name="height">
-          {(msg) => (
-            <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-              <ErrorIcon /> {msg}
-            </span>
-          )}
-        </ErrorMessage>
-        <Field
-          id="currentWeight"
-          name="currentWeight"
-          type="text"
-          className="w-39.75 h-11.5 p-3.5 border border-white/30 rounded-xl"
-          placeholder="Current Weight"
-        />
-        <ErrorMessage name="currentWeight">
-          {(msg) => (
-            <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-              <ErrorIcon /> {msg}
-            </span>
-          )}
-        </ErrorMessage>
-        <Field
-          id="desiredWeight"
-          name="desiredWeight"
-          type="text"
-          className="w-39.75 h-11.5 p-3.5 border border-white/30 rounded-xl"
-          placeholder="Desired Weight"
-        />
-        <ErrorMessage name="desiredWeight">
-          {(msg) => (
-            <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-              <ErrorIcon /> {msg}
-            </span>
-          )}
-        </ErrorMessage>
-        <BirthdayInput name="birthday" />
-        <ErrorMessage name="birthday">
-          {(msg) => (
-            <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-              <ErrorIcon /> {msg}
-            </span>
-          )}
-        </ErrorMessage>
+      <div className="grid grid-cols-2 gap-3.75 mb-7">
+        <div className="relative">
+          <Field
+            id="height"
+            name="height"
+            type="text"
+            className="w-39.75 h-11.5 p-3.5 border border-white/30 rounded-xl relative"
+            placeholder="Height"
+          />
+          <ErrorMessage name="height">
+            {(msg) => (
+              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                <ErrorIcon /> {msg}
+              </span>
+            )}
+          </ErrorMessage>
+        </div>
+        <div className="relative">
+          <Field
+            id="currentWeight"
+            name="currentWeight"
+            type="text"
+            className="w-39.75 h-11.5 p-3.5 border border-white/30 rounded-xl "
+            placeholder="Current Weight"
+          />
+          <ErrorMessage name="currentWeight">
+            {(msg) => (
+              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                <ErrorIcon /> {msg}
+              </span>
+            )}
+          </ErrorMessage>
+        </div>
+        <div className="relative">
+          <Field
+            id="desiredWeight"
+            name="desiredWeight"
+            type="text"
+            className="w-39.75 h-11.5 p-3.5 border border-white/30 rounded-xl "
+            placeholder="Desired Weight"
+          />
+          <ErrorMessage name="desiredWeight">
+            {(msg) => (
+              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                <ErrorIcon /> {msg}
+              </span>
+            )}
+          </ErrorMessage>
+        </div>
+        <div className="relative">
+          <BirthdayInput name="birthday" />
+          <ErrorMessage name="birthday">
+            {(msg) => (
+              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                <ErrorIcon /> {msg}
+              </span>
+            )}
+          </ErrorMessage>
+        </div>
       </div>
       <button
         className="flex items-center gap-2 mb-85.75"

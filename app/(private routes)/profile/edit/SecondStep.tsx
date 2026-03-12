@@ -1,9 +1,11 @@
 import { ErrorIcon } from "@/components/icons/ErrorIcon";
-import { ErrorMessage, Field } from "formik";
+import { ErrorMessage, Field, FormikErrors } from "formik";
 import { NextIcon } from "@/components/icons/NextArrowIcon";
 import { Dispatch, SetStateAction } from "react";
+import { EditProfileFormValues } from "./page";
 interface SecondStepProps {
   setStep: Dispatch<SetStateAction<number>>;
+  validateForm: () => Promise<FormikErrors<EditProfileFormValues>>;
 }
 const SecondStep = ({ setStep }: SecondStepProps) => {
   return (
@@ -123,7 +125,7 @@ const SecondStep = ({ setStep }: SecondStepProps) => {
           </label>
         </div>
       </div>
-      <div className="flex items-center gap-4 mb-25">
+      <div className="flex items-center gap-4 mb-[159px]">
         <button
           className="flex items-center gap-2"
           type="button"
