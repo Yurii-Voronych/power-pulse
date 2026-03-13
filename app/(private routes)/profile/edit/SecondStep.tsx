@@ -1,19 +1,28 @@
-import { ErrorIcon } from "@/components/icons/ErrorIcon";
-import { ErrorMessage, Field, FormikErrors } from "formik";
+import { Field, FormikErrors } from "formik";
 import { NextIcon } from "@/components/icons/NextArrowIcon";
 import { Dispatch, SetStateAction } from "react";
 import { EditProfileFormValues } from "./page";
+import toast from "react-hot-toast";
 interface SecondStepProps {
   setStep: Dispatch<SetStateAction<number>>;
   validateForm: () => Promise<FormikErrors<EditProfileFormValues>>;
 }
-const SecondStep = ({ setStep }: SecondStepProps) => {
+const SecondStep = ({ setStep, validateForm }: SecondStepProps) => {
+  const handleClick = async () => {
+    const errors = await validateForm();
+    if (!errors.blood && !errors.sex && !errors.levelActivity) {
+      setStep(3);
+    } else {
+      console.log(errors);
+      toast.error("Please, fill all form fields");
+    }
+  };
   return (
     <>
       <p className="text-2xl leading-[1.66] font-bold mt-31.75 mb-7">
         Get Closer To Your Goals
       </p>
-      <div className="grid grid-cols-2 gap-3.5 mb-7 text-white text-[14px]">
+      <div className="grid grid-cols-2 gap-3.5 mb-7 text-white text-[14px] leading-[1.28]">
         <div>
           <p className="mb-4 ">Blood:</p>
 
@@ -33,13 +42,6 @@ const SecondStep = ({ setStep }: SecondStepProps) => {
               </label>
             ))}
           </div>
-          <ErrorMessage name="blood">
-            {(msg) => (
-              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                <ErrorIcon /> {msg}
-              </span>
-            )}
-          </ErrorMessage>
         </div>
         <div className="text-white text-[14px]">
           <p className="mb-4">Sex:</p>
@@ -62,13 +64,13 @@ const SecondStep = ({ setStep }: SecondStepProps) => {
           </div>
         </div>
       </div>
-      <div className="text-white text-[14px] pr-5 mb-7">
+      <div className="text-white text-[14px] pr-5 mb-7 leading-[1.28]">
         <p className="mb-3.5 ">Level Activity:</p>
-        <div className="space-y-2.25">
+        <div className="space-y-2">
           <label className="flex items-center gap-2 cursor-pointer">
             <Field
               type="radio"
-              name="activity"
+              name="levelActivity"
               value="1"
               className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1 shrink-0"
             />
@@ -78,7 +80,7 @@ const SecondStep = ({ setStep }: SecondStepProps) => {
           <label className="flex items-center gap-2 cursor-pointer">
             <Field
               type="radio"
-              name="activity"
+              name="levelActivity"
               value="2"
               className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1 shrink-0"
             />
@@ -90,7 +92,7 @@ const SecondStep = ({ setStep }: SecondStepProps) => {
           <label className="flex items-center gap-2 cursor-pointer">
             <Field
               type="radio"
-              name="activity"
+              name="levelActivity"
               value="3"
               className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1 shrink-0"
             />
@@ -102,7 +104,7 @@ const SecondStep = ({ setStep }: SecondStepProps) => {
           <label className="flex items-center gap-2 cursor-pointer">
             <Field
               type="radio"
-              name="activity"
+              name="levelActivity"
               value="4"
               className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1 shrink-0"
             />
@@ -114,7 +116,7 @@ const SecondStep = ({ setStep }: SecondStepProps) => {
           <label className="flex items-center gap-2 cursor-pointer">
             <Field
               type="radio"
-              name="activity"
+              name="levelActivity"
               value="5"
               className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1 shrink-0"
             />
@@ -125,7 +127,7 @@ const SecondStep = ({ setStep }: SecondStepProps) => {
           </label>
         </div>
       </div>
-      <div className="flex items-center gap-4 mb-[159px]">
+      <div className="flex items-center gap-4 mb-39.75">
         <button
           className="flex items-center gap-2"
           type="button"
@@ -139,9 +141,7 @@ const SecondStep = ({ setStep }: SecondStepProps) => {
         <button
           className="flex items-center gap-2"
           type="button"
-          onClick={() => {
-            setStep(3);
-          }}
+          onClick={handleClick}
         >
           Next <NextIcon />
         </button>

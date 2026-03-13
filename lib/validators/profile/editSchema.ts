@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import { subYears } from "date-fns";
+import { parse, isValid, subYears } from "date-fns";
 
 export const editProfileSchema = Yup.object({
   height: Yup.number()
@@ -17,11 +17,24 @@ export const editProfileSchema = Yup.object({
     .min(35, "Minimum weight is 35 kg")
     .required("Desired weight is required"),
 
-  birthday: Yup.date()
-    .typeError("Invalid date")
-    .max(subYears(new Date(), 18), "You must be at least 18 years old")
-    .required("Birthday is required"),
+  birthday: Yup.string()
+    .required("Birthday is required")
+    .test("valid-date", "Invalid date", (value) => {
+      if (!value) return false;
 
+      const parsed = parse(value, "dd.MM.yyyy", new Date());
+
+      return isValid(parsed);
+    })
+    .test("age", "You must be at least 18 years old", (value) => {
+      if (!value) return false;
+
+      const parsed = parse(value, "dd.MM.yyyy", new Date());
+
+      if (!isValid(parsed)) return false;
+
+      return parsed <= subYears(new Date(), 18);
+    }),
   blood: Yup.number()
     .oneOf([1, 2, 3, 4], "Invalid blood type")
     .required("Blood type is required"),

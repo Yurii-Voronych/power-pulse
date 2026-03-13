@@ -4,6 +4,7 @@ import BirthdayInput from "./BirthdayInput";
 import { NextIcon } from "@/components/icons/NextArrowIcon";
 import { Dispatch, SetStateAction } from "react";
 import { EditProfileFormValues } from "./page";
+import toast from "react-hot-toast";
 interface FirstStepProps {
   setStep: Dispatch<SetStateAction<number>>;
   validateForm: () => Promise<FormikErrors<EditProfileFormValues>>;
@@ -19,7 +20,7 @@ const FirstStep = ({ setStep, validateForm }: FirstStepProps) => {
     ) {
       setStep(2);
     } else {
-      console.log(errors);
+      toast.error("Please, fill all form fields");
     }
   };
   return (

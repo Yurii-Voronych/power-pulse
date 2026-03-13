@@ -12,63 +12,49 @@ type Props = {
 };
 
 export default function BirthdayInput({ name }: Props) {
-  const [field, , helpers] = useField<Date | undefined>(name);
+  const [field, , helpers] = useField<string>(name);
   const { value } = field;
   const { setValue } = helpers;
-
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState(
-    value ? format(value, "dd.MM.yyyy") : "",
-  );
 
-  const formatDateInput = (value: string) => {
-    const numbers = value.replace(/\D/g, "");
-
-    if (numbers.length <= 2) return numbers;
-
-    if (numbers.length <= 4)
-      return `${numbers.slice(0, 2)}.${numbers.slice(2)}`;
-
-    return `${numbers.slice(0, 2)}.${numbers.slice(2, 4)}.${numbers.slice(
-      4,
-      8,
-    )}`;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = e.target.value.replace(/\D/g, "");
+    let out = "";
+    if (v.length >= 1) out = v.substring(0, 2);
+    if (v.length >= 3) out += "." + v.substring(2, 4);
+    if (v.length >= 5) out += "." + v.substring(4, 8);
+    setValue(out);
   };
 
-  const parseInputDate = (value: string) => {
-    const parsed = parse(value, "dd.MM.yyyy", new Date());
-    return isValid(parsed) ? parsed : undefined;
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatDateInput(e.target.value);
-
-    setInputValue(formatted);
-
-    const parsed = parseInputDate(formatted);
-
-    if (parsed) {
-      setValue(parsed);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace" && field.value.endsWith(".")) {
+      e.preventDefault();
+      helpers.setValue(field.value.slice(0, -2));
     }
   };
 
   const handleSelect = (date: Date | undefined) => {
     if (!date) return;
-
-    setValue(date);
-    setInputValue(format(date, "dd.MM.yyyy"));
+    const formatted = format(date, "dd.MM.yyyy");
+    setValue(formatted);
     setOpen(false);
   };
 
-  const parsedDate = parseInputDate(inputValue);
+  const parsedDate = (() => {
+    const parsed = parse(value, "dd.MM.yyyy", new Date());
+    return isValid(parsed) ? parsed : undefined;
+  })();
 
   return (
-    <div className="relative w-[159px]">
+    <div className="relative w-39.75">
       <input
         type="text"
         placeholder="Birthday"
-        value={inputValue}
-        onChange={handleInputChange}
+        value={value}
+        name={name}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        onBlur={field.onBlur}
         className="w-full h-11.5 p-3.5 border border-white/30 rounded-xl bg-transparent"
       />
 

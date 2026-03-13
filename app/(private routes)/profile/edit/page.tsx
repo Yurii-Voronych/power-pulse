@@ -9,12 +9,14 @@ import { useState } from "react";
 import clsx from "clsx";
 import ThirdStep from "./ThirdStep";
 import { editProfileSchema } from "@/lib/validators/profile/editSchema";
+import Container from "@/components/Container";
+import { parse } from "date-fns";
 
 export interface EditProfileFormValues {
   height: string;
   currentWeight: string;
   desiredWeight: string;
-  birthday?: Date;
+  birthday: string;
   blood: string;
   sex: string;
   levelActivity: string;
@@ -23,42 +25,59 @@ const initialValues = {
   height: "",
   currentWeight: "",
   desiredWeight: "",
-  birthday: undefined as Date | undefined,
+  birthday: "",
   blood: "",
   sex: "",
   levelActivity: "",
 };
-const handleSubmit = (val: EditProfileFormValues) => {
-  console.log(val);
+const handleSubmit = (values: EditProfileFormValues) => {
+  const birthdayDate = parse(values.birthday, "dd.MM.yyyy", new Date());
+
+  const payload = {
+    ...values,
+    height: Number(values.height),
+    currentWeight: Number(values.currentWeight),
+    desiredWeight: Number(values.desiredWeight),
+    blood: Number(values.blood),
+    levelActivity: Number(values.levelActivity),
+    birthday: birthdayDate,
+  };
+
+  console.log(payload);
 };
 const EditProfilePage = () => {
   const [step, setStep] = useState(1);
   return (
-    <section className="max-w-360 min-h-screen m-auto flex justify-between relative overflow-hidden">
-      <Formik
-        initialValues={initialValues}
-        onSubmit={handleSubmit}
-        validationSchema={editProfileSchema}
-      >
-        {(formik) => (
-          <Form className="ml-5 z-10">
-            {step === 1 && (
-              <FirstStep setStep={setStep} validateForm={formik.validateForm} />
-            )}
-            {step === 2 && (
-              <SecondStep
-                setStep={setStep}
-                validateForm={formik.validateForm}
-              />
-            )}
-            {step === 3 && <ThirdStep setStep={setStep} />}
-          </Form>
-        )}
-      </Formik>
+    <section className="max-w-360 flex justify-between relative overflow-hidden">
+      <Container>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+          validationSchema={editProfileSchema}
+        >
+          {(formik) => (
+            <Form className="relative z-10">
+              {step === 1 && (
+                <FirstStep
+                  setStep={setStep}
+                  validateForm={formik.validateForm}
+                />
+              )}
+              {step === 2 && (
+                <SecondStep
+                  setStep={setStep}
+                  validateForm={formik.validateForm}
+                />
+              )}
+              {step === 3 && <ThirdStep setStep={setStep} />}
+            </Form>
+          )}
+        </Formik>
+      </Container>
 
       <div
         className={clsx(
-          "absolute top-60.25 left-18 w-111.5 h-167.25 bg-no-repeat bg-auto min-h-screen",
+          "absolute top-60.25 left-18 inset-0  bg-no-repeat bg-auto",
           step === 1 && "bg-[url('/step1_mobile.jpg')]",
           step === 2 && "bg-[url('/step2_mobile.jpg')]",
           step === 3 && "bg-[url('/step3_mobile.jpg')]",
