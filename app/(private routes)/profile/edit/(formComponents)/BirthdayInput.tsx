@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useField } from "formik";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
@@ -26,6 +26,24 @@ export default function BirthdayInput({ name }: Props) {
     setValue(out);
   };
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [open]);
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Backspace" && field.value.endsWith(".")) {
       e.preventDefault();
@@ -46,7 +64,7 @@ export default function BirthdayInput({ name }: Props) {
   })();
 
   return (
-    <div className="relative w-39.75">
+    <div className="relative w-full">
       <input
         type="text"
         placeholder="Birthday"
@@ -66,8 +84,11 @@ export default function BirthdayInput({ name }: Props) {
         <Calendar1Icon />
       </button>
       {open && (
-        <div className="absolute top-full mt-2 z-50">
-          <div className="w-53.75 h-59 bg-orange-1 rounded-[30px] p-3 text-white flex items-center justify-center">
+        <div className="absolute top-full right-0 mt-2 z-50 ">
+          <div
+            ref={containerRef}
+            className="w-53.75 h-59 bg-orange-1 rounded-[30px] p-3 text-white flex items-center justify-center"
+          >
             <DayPicker
               mode="single"
               selected={parsedDate}

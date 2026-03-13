@@ -3,11 +3,11 @@
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
 import { Form, Formik } from "formik";
-import FirstStep from "./FirstStep";
-import SecondStep from "./SecondStep";
+import FirstStep from "./(formComponents)/FirstStep";
+import SecondStep from "./(formComponents)/SecondStep";
 import { useState } from "react";
 import clsx from "clsx";
-import ThirdStep from "./ThirdStep";
+import ThirdStep from "./(formComponents)/ThirdStep";
 import { editProfileSchema } from "@/lib/validators/profile/editSchema";
 import Container from "@/components/Container";
 import { parse } from "date-fns";
@@ -78,7 +78,8 @@ const EditProfilePage = () => {
       <div
         className={clsx(
           "absolute top-60.25 left-18 inset-0  bg-no-repeat bg-auto",
-          step === 1 && "bg-[url('/step1_mobile.jpg')]",
+          step === 1 &&
+            "bg-[url('/step1_mobile.jpg')] md:bg-[url('/step1_tablet.jpg')] md:left-[39%] md:top-[20%]",
           step === 2 && "bg-[url('/step2_mobile.jpg')]",
           step === 3 && "bg-[url('/step3_mobile.jpg')]",
         )}
@@ -86,7 +87,7 @@ const EditProfilePage = () => {
         <Video
           className={clsx(
             "absolute",
-            step === 1 && "top-79.75 left-11",
+            step === 1 && "top-79.75 left-11 md:top-131.25 md:left-12.75",
             step === 2 && "top-98.5 left-25",
             step === 3 && "top-98.5 left-25",
           )}
@@ -94,7 +95,7 @@ const EditProfilePage = () => {
         <Calories
           className={clsx(
             "absolute",
-            step === 1 && "top-113.75 left-39.75",
+            step === 1 && "top-113.75 left-39.75 md:top-169.25 md:left-66.75",
             step === 2 && "top-121.25 left-39.75",
             step === 3 && "top-121.25 left-39.75",
           )}
