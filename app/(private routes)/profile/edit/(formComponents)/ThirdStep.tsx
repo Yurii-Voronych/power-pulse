@@ -2,7 +2,7 @@ import { NextIcon } from "@/components/icons/NextArrowIcon";
 import { Dispatch, SetStateAction } from "react";
 
 interface ThirdStepProps {
-  setStep: Dispatch<SetStateAction<number>>;
+  setStep: Dispatch<SetStateAction<1 | 2 | 3>>;
 }
 const ThirdStep = ({ setStep }: ThirdStepProps) => {
   return (
@@ -31,7 +31,7 @@ const ThirdStep = ({ setStep }: ThirdStepProps) => {
           Back
         </button>
       </div>
-      <div className="flex gap-3.5">
+      <div className="flex gap-3.5 mb-5 md:mb-8">
         <div className="w-12.5 h-1 bg-orange-1 rounded"></div>
         <div className="w-12.5 h-1 bg-orange-1 rounded"></div>
         <div className="w-12.5 h-1 bg-orange rounded"></div>

@@ -1,10 +1,11 @@
 import { Field, FormikErrors } from "formik";
 import { NextIcon } from "@/components/icons/NextArrowIcon";
 import { Dispatch, SetStateAction } from "react";
-import { EditProfileFormValues } from "./page";
 import toast from "react-hot-toast";
+import { EditProfileFormValues } from "../page";
+
 interface SecondStepProps {
-  setStep: Dispatch<SetStateAction<number>>;
+  setStep: Dispatch<SetStateAction<1 | 2 | 3>>;
   validateForm: () => Promise<FormikErrors<EditProfileFormValues>>;
 }
 const SecondStep = ({ setStep, validateForm }: SecondStepProps) => {
@@ -147,7 +148,7 @@ const SecondStep = ({ setStep, validateForm }: SecondStepProps) => {
         </button>
       </div>
 
-      <div className="flex gap-3.5">
+      <div className="flex gap-3.5 mb-5 md:mb-8">
         <div className="w-12.5 h-1 bg-orange-1 rounded"></div>
         <div className="w-12.5 h-1 bg-orange rounded"></div>
         <div className="w-12.5 h-1 bg-[#303030] rounded"></div>

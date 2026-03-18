@@ -73,7 +73,7 @@ export default function BirthdayInput({ name }: Props) {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onBlur={field.onBlur}
-        className="w-full h-11.5 p-3.5 border border-white/30 rounded-xl bg-transparent"
+        className="w-full h-11.5 2xl:h-12 p-3.5 border border-white/30 rounded-xl bg-transparent"
       />
 
       <button
