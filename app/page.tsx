@@ -22,7 +22,7 @@ export default function Home() {
   "
     >
       <Container className="relative ">
-        <h1 className="font-medium text-[38px] md:text-[50px] 2xl:text-[70px] leading-normal 2xl:leading-[1.14] mb-10 md:mb-16 ">
+        <h1 className="font-medium text-[38px] md:text-[50px] 2xl:text-[70px] leading-[1.05] md:leading-normal 2xl:leading-[1.14] mb-10 md:mb-16 ">
           Transforming your
           <br /> body shape with <br />
           Power Pulse

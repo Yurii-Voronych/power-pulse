@@ -7,7 +7,7 @@ interface ThirdStepProps {
 const ThirdStep = ({ setStep }: ThirdStepProps) => {
   return (
     <>
-      <p className="text-2xl leading-[1.66] font-bold mt-31.75 mb-3.5">
+      <p className="text-2xl leading-[1.66] font-bold pt-31.75 mb-3.5">
         Dear user
       </p>
       <p className="text-[14px] leading-[1.29] mb-7 text-white/30 w-83.75">
@@ -16,7 +16,7 @@ const ThirdStep = ({ setStep }: ThirdStepProps) => {
         information will allow us to provide you with a more individual and
         personalized approach.
       </p>
-      <div className="flex gap-4 mb-114.75">
+      <div className="flex gap-4 ">
         <button type="submit" className="rounded-xl w-25 h-10.5 bg-orange">
           Go
         </button>
@@ -30,11 +30,6 @@ const ThirdStep = ({ setStep }: ThirdStepProps) => {
           <NextIcon className="rotate-180" />
           Back
         </button>
-      </div>
-      <div className="flex gap-3.5 mb-5 md:mb-8">
-        <div className="w-12.5 h-1 bg-orange-1 rounded"></div>
-        <div className="w-12.5 h-1 bg-orange-1 rounded"></div>
-        <div className="w-12.5 h-1 bg-orange rounded"></div>
       </div>
     </>
   );

@@ -69,52 +69,33 @@ const bgImage = {
 
 const EditProfilePage = () => {
   const [step, setStep] = useState<1 | 2 | 3>(1);
-
+  const steps = [1, 2, 3];
   const currentBg = bgImage[step];
-
   return (
-    <section className="relative max-w-360 m-auto h-screen overflow-hidden flex justify-between">
-      <div className="absolute  w-[446px] h-[669px] top-[241px]">
-        <Image
-          src={currentBg.mobile}
-          alt=""
-          fill
-          priority
-          className="object-contain md:hidden"
-        />
-        <Image
-          src={currentBg.tablet}
-          alt=""
-          fill
-          className="hidden md:block 2xl:hidden"
-          priority
-        />
-        <Image
-          src={currentBg.desk}
-          alt=""
-          fill
-          className=" hidden 2xl:block"
-          priority
-        />
-        <Video
-          className={clsx(
-            "absolute",
-            step === 1 && "top-0 left-0",
-            step === 2 && "top-124 left-65 md:top-111 md:left-75",
-            step === 3 && "top-98.5 left-25",
-          )}
-        />
-        {/* <Calories
-          className={clsx(
-            "absolute",
-            step === 1 &&
-              "top-135.25 left-77 md:top-169.25 md:left-114 2xl:top-133",
-            step === 2 && "top-140 left-77 md:top-150 md:left-114",
-            step === 3 && "top-121.25 left-39.75",
-          )}
-        /> */}
-      </div>
+    <section className="relative max-w-360 mx-auto min-h-screen overflow-hidden">
+      <Image
+        src={currentBg.mobile}
+        alt=""
+        fill
+        priority
+        className="object-contain object-[right_200px] md:hidden"
+      />
 
+      <Image
+        src={currentBg.tablet}
+        alt=""
+        fill
+        priority
+        className="hidden md:block 2xl:hidden object-cover object-top"
+      />
+
+      <Image
+        src={currentBg.desk}
+        alt=""
+        fill
+        priority
+        className="hidden 2xl:block object-contain object-right"
+      />
       <Container className="relative z-10">
         <Formik
           initialValues={initialValues}
@@ -122,7 +103,13 @@ const EditProfilePage = () => {
           validationSchema={editProfileSchema}
         >
           {(formik) => (
-            <Form>
+            <Form
+              className={clsx(
+                step === 1 && "mb-28.75",
+                step === 2 && "mb-16.75",
+                step === 3 && "mb-69",
+              )}
+            >
               {step === 1 && (
                 <FirstStep
                   setStep={setStep}
@@ -139,6 +126,27 @@ const EditProfilePage = () => {
             </Form>
           )}
         </Formik>
+        <Video
+          className={clsx(
+            step === 1 && "ml-25.25 mb-17.5",
+            step === 2 && "absolute top-153.5 left-43.5",
+            step === 3 && "ml-25.25 mb-6.25",
+          )}
+        />
+        <Calories className="mb-4 ml-auto" />
+        <div className="flex gap-3.5">
+          {steps.map((s) => (
+            <div
+              key={s}
+              className={clsx(
+                "w-12.5 h-1 rounded",
+                step === s && "bg-orange",
+                step > s && "bg-orange-1",
+                step < s && "bg-[#303030]",
+              )}
+            />
+          ))}
+        </div>
       </Container>
     </section>
   );

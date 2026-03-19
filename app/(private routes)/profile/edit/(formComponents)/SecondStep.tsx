@@ -20,7 +20,7 @@ const SecondStep = ({ setStep, validateForm }: SecondStepProps) => {
   };
   return (
     <>
-      <p className="text-2xl leading-[1.66] font-bold mt-31.75 mb-7">
+      <p className="text-2xl leading-[1.67] font-bold pt-31.75 mb-7">
         Get Closer To Your Goals
       </p>
       <div className="grid grid-cols-2 gap-3.5 mb-7 text-white text-[14px] leading-[1.28]">
@@ -65,7 +65,7 @@ const SecondStep = ({ setStep, validateForm }: SecondStepProps) => {
           </div>
         </div>
       </div>
-      <div className="text-white text-[14px] pr-5 mb-7 leading-[1.28]">
+      <div className="text-white text-[14px] mb-7 leading-[1.28]">
         <p className="mb-3.5 ">Level Activity:</p>
         <div className="space-y-2">
           <label className="flex items-center gap-2 cursor-pointer">
@@ -128,7 +128,7 @@ const SecondStep = ({ setStep, validateForm }: SecondStepProps) => {
           </label>
         </div>
       </div>
-      <div className="flex items-center gap-4 mb-39.75">
+      <div className="flex gap-4 w-fit">
         <button
           className="flex items-center gap-2"
           type="button"
@@ -146,12 +146,6 @@ const SecondStep = ({ setStep, validateForm }: SecondStepProps) => {
         >
           Next <NextIcon />
         </button>
-      </div>
-
-      <div className="flex gap-3.5 mb-5 md:mb-8">
-        <div className="w-12.5 h-1 bg-orange-1 rounded"></div>
-        <div className="w-12.5 h-1 bg-orange rounded"></div>
-        <div className="w-12.5 h-1 bg-[#303030] rounded"></div>
       </div>
     </>
   );

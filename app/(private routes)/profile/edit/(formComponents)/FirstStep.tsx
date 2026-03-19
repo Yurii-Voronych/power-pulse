@@ -27,7 +27,7 @@ const FirstStep = ({ setStep, validateForm }: FirstStepProps) => {
   };
   return (
     <>
-      <p className="text-2xl md:text-[32px] leading-[1.66] md:leading-[1.38] font-bold mt-31.75 md:mt-47.25 mb-3.5 md:mb-4 2xl:mt-50">
+      <p className="text-2xl md:text-[32px] leading-[1.66] md:leading-[1.38] font-bold pt-31.75 md:pt-47.25 mb-3.5 md:mb-4 2xl:pt-50">
         Get Closer To Your Goals
       </p>
       <p className="text-[14px] leading-[1.29] md:text-[16px] md:leading-normal mb-7 md:mb-13.5 text-white/30 w-83.75 md:w-124">
@@ -96,17 +96,12 @@ const FirstStep = ({ setStep, validateForm }: FirstStepProps) => {
         </div>
       </div>
       <button
-        className="flex items-center gap-2 mb-85.75 md:mb-109.75 2xl:mb-51"
+        className="flex items-center gap-2"
         onClick={handleClick}
         type="button"
       >
         Next <NextIcon />
       </button>
-      <div className="flex gap-3.5 mb-5 md:mb-8">
-        <div className="w-12.5 h-1 bg-orange rounded"></div>
-        <div className="w-12.5 h-1 bg-[#303030] rounded"></div>
-        <div className="w-12.5 h-1 bg-[#303030] rounded"></div>
-      </div>
     </>
   );
 };
