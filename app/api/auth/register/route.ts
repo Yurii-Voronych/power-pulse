@@ -40,6 +40,7 @@ export async function POST(req: Request) {
       email,
       name,
       password: hashedPassword,
+      isProfileCompleted: false,
     });
 
     const refreshToken = generateRefreshToken();

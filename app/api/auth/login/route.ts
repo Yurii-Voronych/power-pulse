@@ -61,6 +61,7 @@ export async function POST(req: Request) {
           name: user.name,
           profile: user.profile,
           dailyNorm: user.dailyNorm,
+          isProfileCompleted: user.isProfileCompleted,
         },
       },
       { status: 200 },

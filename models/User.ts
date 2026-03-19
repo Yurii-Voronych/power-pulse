@@ -21,6 +21,11 @@ const userSchema = new Schema(
       required: true,
       minlength: 8,
     },
+    isProfileCompleted: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
 
     profile: {
       height: {

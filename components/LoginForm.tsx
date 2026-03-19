@@ -27,8 +27,11 @@ const LoginForm = () => {
       const user = await loginUser(values);
       setUser(user);
       actions.resetForm();
-      router.push("/profile/edit");
-      router.refresh();
+      if (!user.isProfileCompleted) {
+        router.replace("/profile/edit");
+      } else {
+        router.replace("/diary");
+      }
     } catch (error) {
       if ((error as AxiosError).status === 401) {
         alert("Invalid credentials");

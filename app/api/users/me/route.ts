@@ -9,24 +9,17 @@ export async function GET() {
 
     const payload = await requireAuth();
 
+    if (!payload) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
     const user = await User.findById(payload.userId).select("-password");
 
     if (!user) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    return NextResponse.json(
-      {
-        user: {
-          id: user._id,
-          email: user.email,
-          name: user.name,
-          profile: user.profile,
-          dailyNorm: user.dailyNorm,
-        },
-      },
-      { status: 200 },
-    );
+    return NextResponse.json({ user });
   } catch (error) {
     console.error("Auth me error", error);
 

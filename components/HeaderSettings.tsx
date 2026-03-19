@@ -6,16 +6,18 @@ import { UserIcon } from "./icons/UserIcon";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { MenuIcon } from "./icons/MenuIcon";
+import useAuthStore from "@/lib/store/authStore";
 
 const HeaderSettings = () => {
   const pathname = usePathname();
+  const clearAuth = useAuthStore((s) => s.clearAuth);
   const isActive = (path: string) => pathname.startsWith(path);
   const router = useRouter();
   const handleLogOut = async () => {
     try {
       await logoutUser();
+      clearAuth();
       router.replace("/auth/login");
-      router.refresh();
     } catch (error) {
       console.error("Logout failed", error);
     }
