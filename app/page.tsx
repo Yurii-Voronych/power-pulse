@@ -9,16 +9,17 @@ export default function Home() {
       className="
       relative
     max-w-360 mx-auto
-    min-h-screen
+    h-[100dvh]
     pt-31.75 md:pt-47.25 2xl:pt-47.25
     bg-[url('/womanPonytail_mobile.jpg')]
     md:bg-[url('/womanPonytail_tablet.jpg')]
-     2xl:bg-[url('/womanPonytail_desk.jpg')]
+    2xl:bg-[url('/womanPonytail_desk.jpg')]
     bg-no-repeat
     bg-contain
      bg-position-[80%_90%]
       md:bg-position-[75%_30%]
        2xl:bg-position-[100%_-10%]
+       overflow-hidden
   "
     >
       <Container className="relative ">
@@ -27,7 +28,7 @@ export default function Home() {
           <br /> body shape with <br />
           Power Pulse
         </h1>
-        <div className="mb-57.75 md:mb-42.75 2xl:mb-0">
+        <div className="">
           <Link href={"/auth/register"} className="btn-primary mr-3.5 md:mr-5">
             Sign Up
           </Link>
@@ -35,9 +36,9 @@ export default function Home() {
             Sign In
           </Link>
         </div>
-        <Video className="ml-25.25 md:ml-74.75 mb-17.5 md:mb-14 2xl:mb-0 2xl:ml-0 2xl:absolute left-175 top-35" />
-        <Calories className="ml-auto" />
       </Container>
+      <Video className="absolute bottom-50 left-25 md:left-95 2xl:bottom-130 2xl:left-155" />
+      <Calories className="absolute bottom-20 left-60 md:bottom-10 md:left-140 2xl:bottom-45 2xl:left-300" />
     </section>
   );
 }

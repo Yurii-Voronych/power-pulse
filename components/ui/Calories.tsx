@@ -5,7 +5,7 @@ interface CaloriesProps {
 const Calories = ({ className }: CaloriesProps) => {
   return (
     <div
-      className={`${className} w-29.75 md:w-45 h-19 md:h-27.5 bg-orange-1 rounded-xl relative pl-4.5 pt-9.5 font-bold text-[12px] md:text-[16px] leading-normal text-white/65`}
+      className={`${className} w-29.75 md:w-45 h-19 md:h-27.5 bg-orange-1 rounded-xl pl-4.5 pt-9.5 font-bold text-[12px] md:text-[16px] leading-normal text-white/65`}
     >
       <div className="bg-beige rounded-[50%] w-6 h-6 flex justify-center items-center absolute top-3.5 left-7">
         <PersonIcon className="text-white w-4 h-4" />
