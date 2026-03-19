@@ -7,7 +7,7 @@ interface ThirdStepProps {
 const ThirdStep = ({ setStep }: ThirdStepProps) => {
   return (
     <>
-      <p className="text-2xl leading-[1.66] font-bold pt-31.75 mb-3.5">
+      <p className="text-2xl leading-[1.66] md:text-[32px] md:leading-[1.38] font-bold pt-31.75 mb-3.5 2xl:pt-50">
         Dear user
       </p>
       <p className="text-[14px] leading-[1.29] mb-7 text-white/30 w-83.75">

@@ -20,10 +20,10 @@ const SecondStep = ({ setStep, validateForm }: SecondStepProps) => {
   };
   return (
     <>
-      <p className="text-2xl leading-[1.67] font-bold pt-31.75 mb-7">
+      <p className="text-2xl leading-[1.67] md:text-[32px] md:leading-[1.38] font-bold pt-31.75 2xl:pt-50 mb-7">
         Get Closer To Your Goals
       </p>
-      <div className="grid grid-cols-2 gap-3.5 mb-7 text-white text-[14px] leading-[1.28]">
+      <div className="grid grid-cols-2 gap-3.5  2xl:w-48.75 mb-7 text-white text-[14px] leading-[1.28]">
         <div>
           <p className="mb-4 ">Blood:</p>
 
