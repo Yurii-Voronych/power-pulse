@@ -20,9 +20,7 @@ export async function GET() {
     }
 
     return NextResponse.json({ user });
-  } catch (error) {
-    console.error("Auth me error", error);
-
+  } catch {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
 }

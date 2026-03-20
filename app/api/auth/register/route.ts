@@ -4,24 +4,18 @@ import { connectDB } from "@/lib/services/mongodb";
 import User from "@/models/User";
 import { generateRefreshToken, createSession } from "@/lib/services/auth";
 import { signAccessToken } from "@/lib/services/jwt";
-import { validate } from "@/lib/validators/validate";
-import {
-  registerSchema,
-  RegisterCredentials,
-} from "@/lib/validators/auth/registerSchema";
+import { registerSchemaServer } from "@/lib/validators/auth/registerSchema.server";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
+    const parsed = registerSchemaServer.safeParse(body);
 
-    const { data, error } = await validate<RegisterCredentials>(
-      registerSchema,
-      body,
-    );
+    if (!parsed.success) {
+      return NextResponse.json({ errors: parsed.error }, { status: 400 });
+    }
 
-    if (error) return error;
-
-    const { email, password, name } = data;
+    const { email, password, name } = parsed.data;
 
     await connectDB();
 

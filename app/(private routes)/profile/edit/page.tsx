@@ -2,16 +2,21 @@
 
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikHelpers } from "formik";
 import FirstStep from "./_formComponents/FirstStep";
 import SecondStep from "./_formComponents/SecondStep";
 import { useState } from "react";
 import clsx from "clsx";
 import ThirdStep from "./_formComponents/ThirdStep";
-import { editProfileSchema } from "@/lib/validators/profile/editSchema";
+import { editProfileSchema } from "@/lib/validators/profile/editProfileSchema";
 import Container from "@/components/Container";
 import { parse } from "date-fns";
 import Image from "next/image";
+import { updateProfile } from "@/lib/api/userApi";
+import { editProfileSchemaServer } from "@/lib/validators/profile/editProfileSchema.server";
+import useAuthStore from "@/lib/store/authStore";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export interface EditProfileFormValues {
   height: string;
@@ -31,22 +36,6 @@ const initialValues = {
   blood: "",
   sex: "",
   levelActivity: "",
-};
-
-const handleSubmit = (values: EditProfileFormValues) => {
-  const birthdayDate = parse(values.birthday, "dd.MM.yyyy", new Date());
-
-  const payload = {
-    ...values,
-    height: Number(values.height),
-    currentWeight: Number(values.currentWeight),
-    desiredWeight: Number(values.desiredWeight),
-    blood: Number(values.blood),
-    levelActivity: Number(values.levelActivity),
-    birthday: birthdayDate,
-  };
-
-  console.log(payload);
 };
 
 const bgImage = {
@@ -71,6 +60,38 @@ const EditProfilePage = () => {
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const steps: Array<1 | 2 | 3> = [1, 2, 3];
   const currentBg = bgImage[step];
+  const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
+
+  const handleSubmit = async (
+    values: EditProfileFormValues,
+    actions: FormikHelpers<EditProfileFormValues>,
+  ) => {
+    const raw = {
+      ...values,
+      height: Number(values.height),
+      currentWeight: Number(values.currentWeight),
+      desiredWeight: Number(values.desiredWeight),
+      blood: Number(values.blood),
+      levelActivity: Number(values.levelActivity),
+      birthday: parse(values.birthday, "dd.MM.yyyy", new Date()),
+    };
+
+    const parsed = editProfileSchemaServer.safeParse(raw);
+
+    if (!parsed.success) {
+      return;
+    }
+    try {
+      const user = await updateProfile(parsed.data);
+      setUser(user);
+      actions.resetForm();
+      router.replace("/diary");
+    } catch {
+      toast.error("Something went wrong, please try again later");
+    }
+  };
+
   return (
     <section className="relative max-w-360 mx-auto min-h-screen overflow-hidden">
       <Image
