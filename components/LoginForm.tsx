@@ -8,6 +8,7 @@ import { ErrorIcon } from "./icons/ErrorIcon";
 import { loginUser } from "@/lib/api/authApi";
 import useAuthStore from "@/lib/store/authStore";
 import { loginSchema } from "@/lib/validators/auth/loginSchema";
+import toast from "react-hot-toast";
 
 interface LoginValues {
   email: string;
@@ -34,9 +35,9 @@ const LoginForm = () => {
       }
     } catch (error) {
       if ((error as AxiosError).status === 401) {
-        alert("Invalid credentials");
+        toast.error("Invalid credentials");
       } else {
-        alert("Something went wrong try again later");
+        toast.error("Something went wrong try again later");
       }
     }
   };

@@ -7,6 +7,7 @@ import { ErrorIcon } from "./icons/ErrorIcon";
 import { registerUser } from "@/lib/api/authApi";
 import useAuthStore from "@/lib/store/authStore";
 import { registerSchema } from "@/lib/validators/auth/registerSchema";
+import toast from "react-hot-toast";
 
 interface RegistrationValues {
   name: string;
@@ -31,9 +32,9 @@ const RegistrationForm = () => {
       router.refresh();
     } catch (error) {
       if ((error as AxiosError).status === 409) {
-        alert("Email is already in use");
+        toast.error("Email is already in use");
       } else {
-        alert("Something went wrong try again later");
+        toast.error("Something went wrong try again later");
       }
     }
   };

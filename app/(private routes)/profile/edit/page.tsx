@@ -76,6 +76,7 @@ const EditProfilePage = () => {
       <Image
         src={currentBg.mobile}
         alt=""
+        sizes="446px"
         fill
         priority
         className="object-contain object-[right_200px] md:hidden"

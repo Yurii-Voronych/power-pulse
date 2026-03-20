@@ -4,21 +4,19 @@ import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { generateRefreshToken, createSession } from "@/lib/services/auth";
 import { signAccessToken } from "@/lib/services/jwt";
-import { validate } from "@/lib/validators/validate";
-import {
-  LoginCredentials,
-  loginSchema,
-} from "@/lib/validators/auth/loginSchema";
+import { loginSchemaServer } from "@/lib/validators/auth/loginSchema.server";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
-    const { data, error } = await validate<LoginCredentials>(loginSchema, body);
+    const parsed = loginSchemaServer.safeParse(body);
 
-    if (error) return error;
+    if (!parsed.success) {
+      return NextResponse.json({ errors: parsed.error }, { status: 400 });
+    }
 
-    const { email, password } = data;
+    const { email, password } = parsed.data;
 
     await connectDB();
 
