@@ -27,17 +27,30 @@ export default async function JourneyPage({ params }: JourneyPageProps) {
      2xl:bg-[url('/womanPonytail_desk.jpg')]
     bg-no-repeat
     bg-contain
-     bg-position-[80%_90%]
-      md:bg-position-[75%_30%]
-       2xl:bg-position-[100%_-10%]
+     bg-position-[bottom_right]
   "
     >
       <Container className="relative ">
         {authType[0] === "login" ? <LoginForm /> : <RegistrationForm />}
-        <Video className="ml-25.25 mb-17.5 md:ml-74.75 md:mb-14 2xl:mb-0 2xl:ml-0 2xl:absolute left-175 top-35" />
+        <Video
+          className={`
+    absolute short-viewport:hidden
+    ${
+      authType[0] === "login"
+        ? "-bottom-25 left-35 md:-bottom-25 md:left-60 2xl:bottom-20 2xl:left-150"
+        : "-bottom-20 left-35 md:bottom-0 md:left-85 2xl:bottom-50 2xl:left-150"
+    }`}
+        />
+
         <Calories
-          className="ml-auto 2xl:absolute 2xl:left-267 2xl:top-90
-        "
+          className={`
+    absolute short-viewport:hidden
+    ${
+      authType[0] === "login"
+        ? "-bottom-50 left-60 md:-bottom-55 md:left-95 2xl:-bottom-50 2xl:left-270"
+        : "-bottom-45 left-58 md:-bottom-40 md:left-135 2xl:-bottom-50 2xl:left-270"
+    }
+  `}
         />
       </Container>
     </section>

@@ -9,17 +9,14 @@ export default function Home() {
       className="
       relative
     max-w-360 mx-auto
-    h-[100dvh]
+    min-h-screen
     pt-31.75 md:pt-47.25 2xl:pt-47.25
     bg-[url('/womanPonytail_mobile.jpg')]
     md:bg-[url('/womanPonytail_tablet.jpg')]
     2xl:bg-[url('/womanPonytail_desk.jpg')]
     bg-no-repeat
     bg-contain
-     bg-position-[80%_90%]
-      md:bg-position-[75%_30%]
-       2xl:bg-position-[100%_-10%]
-       overflow-hidden
+     bg-position-[bottom_right]
   "
     >
       <Container className="relative ">
@@ -37,8 +34,8 @@ export default function Home() {
           </Link>
         </div>
       </Container>
-      <Video className="absolute bottom-50 left-25 md:left-95 2xl:bottom-130 2xl:left-155" />
-      <Calories className="absolute bottom-20 left-60 md:bottom-10 md:left-140 2xl:bottom-45 2xl:left-300" />
+      <Video className="absolute bottom-50 left-25 md:left-95 2xl:bottom-130 2xl:left-155 short-viewport:hidden md:[@media(max-height:830px)]:hidden" />
+      <Calories className="absolute bottom-20 left-60 md:bottom-10 md:left-140 2xl:bottom-45 2xl:left-300 short-viewport:hidden md:[@media(max-height:830px)]:hidden" />
     </section>
   );
 }

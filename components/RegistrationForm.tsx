@@ -108,7 +108,7 @@ const RegistrationForm = () => {
           </Form>
         )}
       </Formik>
-      <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal mb-15.25 md:mb-9.75 2xl:mb-0">
+      <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal">
         Already have account?
       </p>
       <Link

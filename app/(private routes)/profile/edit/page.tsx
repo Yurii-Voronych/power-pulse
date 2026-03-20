@@ -3,11 +3,11 @@
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
 import { Form, Formik } from "formik";
-import FirstStep from "./(formComponents)/FirstStep";
-import SecondStep from "./(formComponents)/SecondStep";
+import FirstStep from "./_formComponents/FirstStep";
+import SecondStep from "./_formComponents/SecondStep";
 import { useState } from "react";
 import clsx from "clsx";
-import ThirdStep from "./(formComponents)/ThirdStep";
+import ThirdStep from "./_formComponents/ThirdStep";
 import { editProfileSchema } from "@/lib/validators/profile/editSchema";
 import Container from "@/components/Container";
 import { parse } from "date-fns";
@@ -77,7 +77,6 @@ const EditProfilePage = () => {
         src={currentBg.mobile}
         alt=""
         fill
-        sizes="100vw"
         priority
         className="object-contain object-[right_200px] md:hidden"
       />
@@ -86,7 +85,7 @@ const EditProfilePage = () => {
         src={currentBg.tablet}
         alt=""
         fill
-        sizes="100vw"
+        sizes="670px"
         priority
         className="hidden md:block 2xl:hidden object-contain object-[100%_200px]"
       />
@@ -95,7 +94,7 @@ const EditProfilePage = () => {
         src={currentBg.desk}
         alt=""
         fill
-        sizes="100vw"
+        sizes="670px"
         priority
         className="hidden 2xl:block object-contain object-right"
       />

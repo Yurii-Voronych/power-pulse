@@ -15,9 +15,9 @@ export function MenuIcon({ className }: MenuIconProps) {
       <path
         d="M3 12H15M3 6H21M3 18H21"
         stroke="#E6533C"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
