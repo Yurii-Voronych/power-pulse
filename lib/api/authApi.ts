@@ -24,6 +24,6 @@ export const logoutUser = async () => {
 };
 
 export const refreshSession = async () => {
-  const { data } = await api.post("/auth/refresh");
-  return data;
+  const res = await api.post("/auth/refresh");
+  return res;
 };
