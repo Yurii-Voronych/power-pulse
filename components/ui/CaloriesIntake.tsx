@@ -1,6 +1,6 @@
 import { ForkIcon } from "../icons/ForkIcon";
 interface CaloriesIntakeProps {
-  amount?: number;
+  amount: number;
   classname?: string;
 }
 const CaloriesIntake = ({ amount, classname }: CaloriesIntakeProps) => {
