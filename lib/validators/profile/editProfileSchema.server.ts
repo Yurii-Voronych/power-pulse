@@ -26,5 +26,11 @@ export const editProfileSchemaServer = z.object({
     z.literal(4),
     z.literal(5),
   ]),
+  email: z.email("Incorrect email").optional(),
+  name: z
+    .string()
+    .min(2, "Minimal length 2 symbols")
+    .max(20, "Maximal length 20 symbols")
+    .optional(),
 });
 export type ProfileInput = z.infer<typeof editProfileSchemaServer>;

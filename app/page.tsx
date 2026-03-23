@@ -1,9 +1,16 @@
 import Container from "@/components/Container";
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
-import Link from "next/link";
+import { getCurrentUser } from "@/lib/auth/getCurrentUser";
 
-export default function Home() {
+import Link from "next/link";
+import { redirect } from "next/navigation";
+
+export default async function Home() {
+  const user = await getCurrentUser();
+  if (user) {
+    redirect("/diary");
+  }
   return (
     <section
       className="

@@ -2,6 +2,12 @@ import * as Yup from "yup";
 import { parse, isValid, subYears } from "date-fns";
 
 export const editProfileSchema = Yup.object({
+  name: Yup.string()
+    .min(2, "Minimal length 2 symbols")
+    .max(20, "Maximal length 20 symbols"),
+
+  email: Yup.string().email("Incorrect email"),
+
   height: Yup.number()
     .typeError("Height must be a number")
     .min(150, "Minimum height is 150 cm")

@@ -3,13 +3,18 @@ import LoginForm from "@/components/LoginForm";
 import RegistrationForm from "@/components/RegistrationForm";
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
-import { notFound } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth/getCurrentUser";
+import { notFound, redirect } from "next/navigation";
 
 type JourneyPageProps = {
   params: Promise<{ authType?: string[] }>;
 };
 
 export default async function JourneyPage({ params }: JourneyPageProps) {
+  const user = await getCurrentUser();
+  if (user) {
+    redirect("/diary");
+  }
   const { authType } = await params;
   const validTypes = ["login", "register"];
   if (!authType || !validTypes.includes(authType[0])) {

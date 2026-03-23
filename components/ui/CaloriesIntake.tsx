@@ -1,9 +1,11 @@
+"use client";
+import useAuthStore from "@/lib/store/authStore";
 import { ForkIcon } from "../icons/ForkIcon";
 interface CaloriesIntakeProps {
-  amount: number;
   classname?: string;
 }
-const CaloriesIntake = ({ amount, classname }: CaloriesIntakeProps) => {
+const CaloriesIntake = ({ classname }: CaloriesIntakeProps) => {
+  const user = useAuthStore((s) => s.user);
   return (
     <div
       className={`${classname} flex flex-col justify-between bg-orange rounded-xl w-41.25 h-24 p-3.5 md:w-53.5 md:h-27`}
@@ -12,7 +14,9 @@ const CaloriesIntake = ({ amount, classname }: CaloriesIntakeProps) => {
         <ForkIcon />
         Daily calorie intake
       </div>
-      <span className="text-[18px] font-bold md:text-2xl">{amount}</span>
+      <span className="text-[18px] font-bold md:text-2xl">
+        {user?.dailyNorm?.calories}
+      </span>
     </div>
   );
 };

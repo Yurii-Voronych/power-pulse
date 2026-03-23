@@ -11,7 +11,7 @@ const SportMinutes = ({ amount, classname }: SportMinutesProps) => {
     >
       <div className="text-[12px] text-white/80 flex items-center gap-2 ">
         <DumbbellIcon />
-        Daily calorie intake
+        Daily norm of sports
       </div>
       <span className="text-[18px] font-bold md:text-2xl">{amount}</span>
     </div>

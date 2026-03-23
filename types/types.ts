@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  _id: string;
   email: string;
   name: string;
   isProfileCompleted: boolean;
@@ -16,4 +16,6 @@ export interface User {
     calories: number;
     sportMinutes: number;
   };
+  createdAt: string;
+  updatedAt: string;
 }
