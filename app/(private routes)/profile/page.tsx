@@ -12,13 +12,22 @@ const profilePage = async () => {
   const user = await getCurrentUser();
   if (!user) redirect("/auth/login");
   return (
-    <Container className="flex flex-col 2xl:flex-row-reverse">
-      <section className="mt-25.25 md:mt-39 mb-9">
-        <h1 className="text-[24px] leading-[1.17] font-bold mb-10 md:text-[30px] md:leading-snug">
-          Profile Settings
-        </h1>
-
-        <>
+    <>
+      <h1 className="text-[24px] leading-[1.17] font-bold mb-10 mx-auto pl-5 md:pl-8 2xl:pl-24 md:text-[30px] md:leading-snug mt-25.25 md:mt-39 max-w-360">
+        Profile Settings
+      </h1>
+      <Container className="flex flex-col 2xl:flex-row-reverse 2xl:justify-between">
+        <section
+          className="mb-9 
+  relative 
+  2xl:after:content-[''] 
+  2xl:after:absolute 
+  2xl:after:-left-12.5 
+  2xl:after:top-0 
+  2xl:after:h-full 
+  2xl:after:w-px 
+  2xl:after:bg-white/20 shrink-0"
+        >
           <UserIcon className="w-22.5 h-22.5 border-2 border-orange rounded-full mb-8 mx-auto md:w-37.5 md:h-37.5" />
           <p className="text-[18px] leading-[1.11] text-center mb-15.5 md:text-2xl md:mb-14.5">
             {user.name}
@@ -41,12 +50,12 @@ const profilePage = async () => {
             to diet is relative and tailored to your unique body and goals.
           </div>
           <LogOutBtn className="ml-auto" />
-        </>
-      </section>
-      <section className="">
-        <ProfileForm />
-      </section>
-    </Container>
+        </section>
+        <section className="">
+          <ProfileForm />
+        </section>
+      </Container>
+    </>
   );
 };
 

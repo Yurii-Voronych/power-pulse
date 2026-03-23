@@ -10,8 +10,6 @@ export const getCurrentUser = async () => {
   const accessToken = cookieStore.get("accessToken")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
 
-  if (!refreshToken) return null;
-
   await connectDB();
 
   if (accessToken) {
@@ -24,29 +22,33 @@ export const getCurrentUser = async () => {
     } catch {}
   }
 
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/refresh`,
-      {
-        method: "POST",
-        headers: {
-          cookie: `refreshToken=${refreshToken}`,
+  if (refreshToken) {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/refresh`,
+        {
+          method: "POST",
+          headers: {
+            cookie: cookieStore.toString(),
+          },
+          cache: "no-store",
         },
-        cache: "no-store",
-      },
-    );
+      );
 
-    if (!res.ok) return null;
+      if (!res.ok) return null;
 
-    const newAccessToken = (await cookies()).get("accessToken")?.value;
-    if (!newAccessToken) return null;
+      const newAccess = (await cookies()).get("accessToken")?.value;
+      if (!newAccess) return null;
 
-    const payload = verifyAccessToken(newAccessToken);
+      const payload = verifyAccessToken(newAccess);
 
-    return await User.findById(payload.userId)
-      .select("-password")
-      .lean<UserType>();
-  } catch {
-    return null;
+      return await User.findById(payload.userId)
+        .select("-password")
+        .lean<UserType>();
+    } catch {
+      return null;
+    }
   }
+
+  return null;
 };

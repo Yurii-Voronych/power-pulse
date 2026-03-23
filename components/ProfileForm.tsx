@@ -77,105 +77,122 @@ const ProfileForm = () => {
       enableReinitialize
     >
       <Form>
-        <div>
-          <Field
-            id="name"
-            name="name"
-            type="text"
-            className="w-full h-11.5 2xl:h-12 p-3.5 border border-white/30 rounded-xl"
-            placeholder="name"
-          />
-          <ErrorMessage name="name">
-            {(msg) => (
-              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                <ErrorIcon /> {msg}
-              </span>
-            )}
-          </ErrorMessage>
-        </div>
-        <div>
-          <Field
-            id="email"
-            name="email"
-            type="text"
-            className="w-full h-11.5 2xl:h-12 p-3.5 border border-white/30 rounded-xl"
-            placeholder="email"
-          />
-          <ErrorMessage name="email">
-            {(msg) => (
-              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                <ErrorIcon /> {msg}
-              </span>
-            )}
-          </ErrorMessage>
-        </div>
-        <div>
-          <Field
-            id="height"
-            name="height"
-            type="text"
-            className="w-full h-11.5 2xl:h-12 p-3.5 border border-white/30 rounded-xl"
-            placeholder="Height"
-          />
-          <ErrorMessage name="height">
-            {(msg) => (
-              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                <ErrorIcon /> {msg}
-              </span>
-            )}
-          </ErrorMessage>
-        </div>
-        <div className="relative">
-          <Field
-            id="currentWeight"
-            name="currentWeight"
-            type="text"
-            className="w-full h-11.5 2xl:h-12 p-3.5 border border-white/30 rounded-xl "
-            placeholder="Current Weight"
-          />
-          <ErrorMessage name="currentWeight">
-            {(msg) => (
-              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                <ErrorIcon /> {msg}
-              </span>
-            )}
-          </ErrorMessage>
-        </div>
-        <div className="relative">
-          <Field
-            id="desiredWeight"
-            name="desiredWeight"
-            type="text"
-            className="w-full h-11.5 2xl:h-13 p-3.5 border border-white/30 rounded-xl"
-            placeholder="Desired Weight"
-          />
-          <ErrorMessage name="desiredWeight">
-            {(msg) => (
-              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                <ErrorIcon /> {msg}
-              </span>
-            )}
-          </ErrorMessage>
-        </div>
-        <div className="relative">
-          <BirthdayInput name="birthday" />
-          <ErrorMessage name="birthday">
-            {(msg) => (
-              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                <ErrorIcon /> {msg}
-              </span>
-            )}
-          </ErrorMessage>
-        </div>
-        <div className="grid grid-cols-2 gap-3.5  2xl:w-48.75 mb-7 text-white text-[14px] leading-[1.28]">
+        <div className="flex flex-col gap-3.5 mb-9 md:flex-row">
+          <div className="">
+            <Field
+              id="name"
+              name="name"
+              type="text"
+              className="w-full h-11.5 2xl:h-12 p-3.5 border border-white/30 rounded-xl md:w-85.25 "
+              placeholder="name"
+            />
+            <ErrorMessage name="name">
+              {(msg) => (
+                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                  <ErrorIcon /> {msg}
+                </span>
+              )}
+            </ErrorMessage>
+          </div>
           <div>
-            <p className="mb-4 ">Blood:</p>
+            <Field
+              id="email"
+              name="email"
+              type="text"
+              className="w-full h-11.5 2xl:h-12 p-3.5 border border-white/30 rounded-xl md:w-85.25 "
+              placeholder="email"
+            />
+            <ErrorMessage name="email">
+              {(msg) => (
+                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                  <ErrorIcon /> {msg}
+                </span>
+              )}
+            </ErrorMessage>
+          </div>
+        </div>
 
-            <div className="space-y-2">
+        <div className="grid grid-cols-2 gap-x-3.5 gap-y-9 mb-7 justify-items-start md:grid-cols-4  md:mb-8 2xl:w-174">
+          <div>
+            <Field
+              id="height"
+              name="height"
+              type="text"
+              className="w-full h-11.5 2xl:h-12 p-3.5 border border-white/30 rounded-xl"
+              placeholder="Height"
+            />
+            <ErrorMessage name="height">
+              {(msg) => (
+                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                  <ErrorIcon /> {msg}
+                </span>
+              )}
+            </ErrorMessage>
+          </div>
+          <div className="relative">
+            <Field
+              id="currentWeight"
+              name="currentWeight"
+              type="text"
+              className="w-full h-11.5 2xl:h-12 p-3.5 border border-white/30 rounded-xl "
+              placeholder="Current Weight"
+            />
+            <ErrorMessage name="currentWeight">
+              {(msg) => (
+                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                  <ErrorIcon /> {msg}
+                </span>
+              )}
+            </ErrorMessage>
+          </div>
+          <div className="relative">
+            <Field
+              id="desiredWeight"
+              name="desiredWeight"
+              type="text"
+              className="w-full h-11.5 2xl:h-13 p-3.5 border border-white/30 rounded-xl"
+              placeholder="Desired Weight"
+            />
+            <ErrorMessage name="desiredWeight">
+              {(msg) => (
+                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                  <ErrorIcon /> {msg}
+                </span>
+              )}
+            </ErrorMessage>
+          </div>
+          <div className="relative">
+            <BirthdayInput name="birthday" />
+            <ErrorMessage name="birthday">
+              {(msg) => (
+                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                  <ErrorIcon /> {msg}
+                </span>
+              )}
+            </ErrorMessage>
+          </div>
+        </div>
+
+        <div
+          className="grid 
+  grid-cols-2 
+  gap-3.5 
+  mb-10 
+  text-white 
+  text-[14px] 
+  leading-[1.28]
+  
+  2xl:flex 
+  2xl:gap-16
+  2xl:w-auto"
+        >
+          <div className="">
+            <p className="mb-4">Blood:</p>
+            <div className="flex gap-2">
               {[1, 2, 3, 4].map((type) => (
                 <label
                   key={type}
-                  className="flex items-center gap-3 cursor-pointer"
+                  className="flex items-center gap-2 cursor-pointer"
                 >
                   <Field
                     type="radio"
@@ -190,11 +207,11 @@ const ProfileForm = () => {
           </div>
           <div className="text-white text-[14px]">
             <p className="mb-4">Sex:</p>
-            <div className="space-y-2">
+            <div className="flex gap-2">
               {["male", "female"].map((sex) => (
                 <label
                   key={sex}
-                  className="flex items-center gap-3 cursor-pointer"
+                  className="flex items-center gap-2 cursor-pointer"
                 >
                   <Field
                     type="radio"
@@ -209,7 +226,7 @@ const ProfileForm = () => {
             </div>
           </div>
         </div>
-        <div className="text-white text-[14px] mb-7 leading-[1.28]">
+        <div className="text-white text-[14px] mb-7 leading-[1.28] 2xl:mb-15">
           <p className="mb-3.5 ">Level Activity:</p>
           <div className="space-y-2">
             <label className="flex items-center gap-2 cursor-pointer">
@@ -272,7 +289,9 @@ const ProfileForm = () => {
             </label>
           </div>
         </div>
-        <button type="submit">submit</button>
+        <button type="submit" className="btn-primary mb-5">
+          Save
+        </button>
       </Form>
     </Formik>
   );
