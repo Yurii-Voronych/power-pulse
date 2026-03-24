@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import Session from "@/models/Session";
+import { signAccessToken } from "./jwt";
 
 export const generateRefreshToken = () => {
   return crypto.randomBytes(40).toString("hex");
@@ -29,4 +30,40 @@ export const createSession = async (
     ip,
     expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
   });
+};
+
+export const refreshSession = async (refreshToken: string, rotate = false) => {
+  const refreshTokenHash = hashToken(refreshToken);
+
+  const session = await Session.findOne({ refreshTokenHash });
+
+  if (!session) return null;
+
+  if (session.expiresAt < new Date()) {
+    await Session.deleteOne({ _id: session._id });
+    return null;
+  }
+
+  const accessToken = signAccessToken(session.userId.toString());
+
+  if (!rotate) {
+    return {
+      accessToken,
+      userId: session.userId.toString(),
+    };
+  }
+
+  const newRefreshToken = generateRefreshToken();
+  const newRefreshTokenHash = hashToken(newRefreshToken);
+
+  session.refreshTokenHash = newRefreshTokenHash;
+  session.expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+
+  await session.save();
+
+  return {
+    accessToken,
+    refreshToken: newRefreshToken,
+    userId: session.userId.toString(),
+  };
 };

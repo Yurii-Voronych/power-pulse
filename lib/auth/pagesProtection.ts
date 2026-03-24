@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth/getCurrentUser";
+import { getCurrentUser } from "./getCurrentUser";
 
-export const withAuth = async () => {
+export const pagesProtection = async () => {
   const user = await getCurrentUser();
 
   if (!user) {

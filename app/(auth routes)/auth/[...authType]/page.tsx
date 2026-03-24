@@ -6,11 +6,11 @@ import Video from "@/components/ui/Video";
 import { getCurrentUser } from "@/lib/auth/getCurrentUser";
 import { notFound, redirect } from "next/navigation";
 
-type JourneyPageProps = {
+type AuthPageProps = {
   params: Promise<{ authType?: string[] }>;
 };
 
-export default async function JourneyPage({ params }: JourneyPageProps) {
+export default async function AuthPage({ params }: AuthPageProps) {
   const user = await getCurrentUser();
   if (user) {
     redirect("/diary");
@@ -20,6 +20,7 @@ export default async function JourneyPage({ params }: JourneyPageProps) {
   if (!authType || !validTypes.includes(authType[0])) {
     return notFound();
   }
+
   return (
     <section
       className="

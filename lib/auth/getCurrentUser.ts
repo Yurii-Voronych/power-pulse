@@ -3,6 +3,7 @@ import { verifyAccessToken } from "@/lib/services/jwt";
 import { connectDB } from "@/lib/services/mongodb";
 import User from "@/models/User";
 import type { User as UserType } from "@/types/types";
+import { refreshSession } from "../services/auth";
 
 export const getCurrentUser = async () => {
   const cookieStore = await cookies();
@@ -23,31 +24,13 @@ export const getCurrentUser = async () => {
   }
 
   if (refreshToken) {
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/refresh`,
-        {
-          method: "POST",
-          headers: {
-            cookie: cookieStore.toString(),
-          },
-          cache: "no-store",
-        },
-      );
+    const result = await refreshSession(refreshToken);
 
-      if (!res.ok) return null;
+    if (!result) return null;
 
-      const newAccess = (await cookies()).get("accessToken")?.value;
-      if (!newAccess) return null;
-
-      const payload = verifyAccessToken(newAccess);
-
-      return await User.findById(payload.userId)
-        .select("-password")
-        .lean<UserType>();
-    } catch {
-      return null;
-    }
+    return await User.findById(result.userId)
+      .select("-password")
+      .lean<UserType>();
   }
 
   return null;

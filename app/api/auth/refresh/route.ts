@@ -1,9 +1,7 @@
+import { refreshSession } from "@/lib/services/auth";
 import { connectDB } from "@/lib/services/mongodb";
-import Session from "@/models/Session";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { generateRefreshToken, hashToken } from "@/lib/services/auth";
-import { signAccessToken } from "@/lib/services/jwt";
 
 export async function POST() {
   try {
@@ -16,36 +14,17 @@ export async function POST() {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const refreshTokenHash = hashToken(refreshToken);
-
-    const session = await Session.findOne({ refreshTokenHash });
-
-    if (!session) {
-      return NextResponse.json({ message: "Invalid session" }, { status: 401 });
+    const result = await refreshSession(refreshToken, true);
+    if (!result || !result.refreshToken) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
-
-    if (session.expiresAt < new Date()) {
-      await Session.deleteOne({ _id: session._id });
-
-      return NextResponse.json({ message: "Session expired" }, { status: 401 });
-    }
-
-    const newRefreshToken = generateRefreshToken();
-    const newRefreshTokenHash = hashToken(newRefreshToken);
-
-    session.refreshTokenHash = newRefreshTokenHash;
-    session.expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-
-    await session.save();
-
-    const accessToken = signAccessToken(session.userId.toString());
 
     const response = NextResponse.json(
       { message: "Session refreshed" },
       { status: 200 },
     );
 
-    response.cookies.set("accessToken", accessToken, {
+    response.cookies.set("accessToken", result.accessToken, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
@@ -53,7 +32,7 @@ export async function POST() {
       maxAge: 60 * 15,
     });
 
-    response.cookies.set("refreshToken", newRefreshToken, {
+    response.cookies.set("refreshToken", result.refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",

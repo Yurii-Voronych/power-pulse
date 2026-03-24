@@ -1,18 +1,28 @@
 import { cookies } from "next/headers";
 import { verifyAccessToken } from "@/lib/services/jwt";
+import { refreshSession } from "../services/auth";
 
 export const requireAuth = async () => {
   const cookieStore = await cookies();
+
   const accessToken = cookieStore.get("accessToken")?.value;
+  const refreshToken = cookieStore.get("refreshToken")?.value;
 
-  if (!accessToken) {
-    return null;
+  if (accessToken) {
+    try {
+      return verifyAccessToken(accessToken);
+    } catch {}
   }
 
-  try {
-    const payload = verifyAccessToken(accessToken);
-    return payload;
-  } catch {
-    return null;
+  if (refreshToken) {
+    const result = await refreshSession(refreshToken);
+
+    if (!result) return null;
+
+    return {
+      userId: result.userId,
+    };
   }
+
+  return null;
 };

@@ -1,11 +1,11 @@
-import { withAuth } from "@/lib/auth/withAuth";
+import { pagesProtection } from "@/lib/auth/pagesProtection";
 
 export default async function PrivateLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  await withAuth();
+  await pagesProtection();
 
   return <>{children} </>;
 }

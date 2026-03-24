@@ -10,7 +10,9 @@ import { redirect } from "next/navigation";
 
 const profilePage = async () => {
   const user = await getCurrentUser();
-  if (!user) redirect("/auth/login");
+  if (!user) {
+    redirect("/auth/login");
+  }
   return (
     <>
       <h1 className="text-[24px] leading-[1.17] font-bold mb-10 mx-auto pl-5 md:pl-8 2xl:pl-24 md:text-[30px] md:leading-snug mt-25.25 md:mt-39 max-w-360">
