@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import AuthProvider from "@/providers/AuthProvider";
 import { Toaster } from "react-hot-toast";
+import { ModalRoot } from "@/components/ui/modal/ModalRoot";
 
 export const roboto = Roboto({
   subsets: ["latin", "cyrillic"],
@@ -28,6 +29,7 @@ export default function RootLayout({
         <AuthProvider>
           <Header />
           {children}
+          <ModalRoot />
           <Toaster position="top-right" />
         </AuthProvider>
       </body>

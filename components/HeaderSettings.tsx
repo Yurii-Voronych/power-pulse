@@ -1,16 +1,17 @@
 "use client";
-import { LogOutIcon } from "./icons/LogOut";
 import { SettingsIcon } from "./icons/SettingsIcon";
 import { UserIcon } from "./icons/UserIcon";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { MenuIcon } from "./icons/MenuIcon";
 import LogOutBtn from "./LogOutBtn";
+import { useModalStore } from "./ui/modal/modal.store";
+import MobileMenu from "./MobileMenu";
 
 const HeaderSettings = () => {
   const pathname = usePathname();
   const isActive = (path: string) => pathname.startsWith(path);
-
+  const open = useModalStore((s) => s.open);
   return (
     <div className="flex justify-center items-center gap-8">
       <nav className="hidden 2xl:block">
@@ -56,7 +57,10 @@ const HeaderSettings = () => {
           <UserIcon />
         </div>
         <LogOutBtn className={"max-2xl:hidden"} />
-        <button className="inline-flex gap-2 justify-center items-center 2xl:hidden">
+        <button
+          className="inline-flex gap-2 justify-center items-center 2xl:hidden"
+          onClick={() => open(<MobileMenu />)}
+        >
           <MenuIcon className="md:w-8 md:h-8" />
         </button>
       </div>

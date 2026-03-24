@@ -4,15 +4,17 @@ import useAuthStore from "@/lib/store/authStore";
 import { useRouter } from "next/navigation";
 import { LogOutIcon } from "./icons/LogOut";
 interface LogOutBtnProps {
-  className: string;
+  className?: string;
+  onSuccess?: () => void;
 }
-const LogOutBtn = ({ className }: LogOutBtnProps) => {
+const LogOutBtn = ({ className, onSuccess }: LogOutBtnProps) => {
   const clearAuth = useAuthStore((s) => s.clearAuth);
   const router = useRouter();
   const handleLogOut = async () => {
     try {
       await logoutUser();
       clearAuth();
+      onSuccess?.();
       router.replace("/auth/login");
     } catch (error) {
       console.error("Logout failed", error);
