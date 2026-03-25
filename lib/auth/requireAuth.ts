@@ -1,8 +1,11 @@
 import { cookies } from "next/headers";
 import { verifyAccessToken } from "@/lib/services/jwt";
 import { refreshSession } from "../services/auth";
-
-export const requireAuth = async () => {
+type AuthResult = {
+  userId: string;
+  accessToken?: string;
+};
+export const requireAuth = async (): Promise<AuthResult | null> => {
   const cookieStore = await cookies();
 
   const accessToken = cookieStore.get("accessToken")?.value;
@@ -21,6 +24,7 @@ export const requireAuth = async () => {
 
     return {
       userId: result.userId,
+      accessToken: result.accessToken,
     };
   }
 

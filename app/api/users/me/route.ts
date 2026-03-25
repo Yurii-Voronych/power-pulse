@@ -19,7 +19,17 @@ export async function GET() {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ user });
+    const res = NextResponse.json({ user });
+
+    if (payload.accessToken) {
+      res.cookies.set("accessToken", payload.accessToken, {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+      });
+    }
+
+    return res;
   } catch {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
