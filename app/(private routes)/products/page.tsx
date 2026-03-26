@@ -1,10 +1,12 @@
 import Container from "@/components/Container";
 import ProductsFilters from "@/components/ProductsFilters";
 import { getCategories } from "@/lib/categories/getCategories";
+// import { getProducts } from "@/lib/products/getProducts";
 
 const ProductsPage = async () => {
   const categoriesList = await getCategories();
-
+  // const products = await getProducts();
+  // console.log(products);
   return (
     <section
       className="

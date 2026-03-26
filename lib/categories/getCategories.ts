@@ -10,7 +10,7 @@ export const getCategories = async (): Promise<
 > => {
   await connectDB();
 
-  const categories = await Category.find().sort({ name: 1 }).lean();
+  const categories = await Category.find().sort({ value: 1 }).lean();
   return categories.map((c) => ({
     id: c._id.toString(),
     name: c.name,

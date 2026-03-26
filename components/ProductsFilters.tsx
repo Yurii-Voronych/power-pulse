@@ -74,7 +74,7 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
           </button>
         )}
       </div>
-      <div className="flex justify-between mt-4">
+      <div className="flex gap-3.5 mt-4">
         <CustomSelect
           options={categoriesList}
           param="category"
