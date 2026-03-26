@@ -3,20 +3,22 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 interface Options {
-  _id: string;
+  id: string;
+  value: string;
   name: string;
 }
 
 type Props = {
   param: string;
   options: Options[];
-  onChange: (v: string, key: string) => void;
+  onChange: (key: string, v: string) => void;
+  chosen: string;
 };
 
-export const CustomSelect = ({ options, onChange, param }: Props) => {
+export const CustomSelect = ({ options, onChange, param, chosen }: Props) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const selected = options.find((o) => o.name === o.name);
+  const selected = options.find((o) => o.value === chosen);
 
   useEffect(() => {
     if (!open) return;
@@ -36,29 +38,31 @@ export const CustomSelect = ({ options, onChange, param }: Props) => {
     };
   }, [open]);
   return (
-    <div className="relative" ref={ref}>
+    <div className="relative text-[14px]" ref={ref}>
       <button
         onClick={() => setOpen((p) => !p)}
-        className="flex items-center justify-between w-[200px] px-4 py-3 rounded-2xl border border-gray-700 bg-black text-white"
+        className="flex items-center justify-between form-input text-white w-36.5 capitalize"
       >
-        {selected?.name}
+        {selected?.name || (param === "category" ? "category" : "all")}
         <ChevronDown size={16} />
       </button>
 
       {open && (
-        <div className="absolute top-full mt-2 w-full bg-[#1a1a1a] border border-gray-700 rounded-xl shadow-lg max-h-[200px] overflow-y-auto z-50">
-          {options.map((o) => (
-            <div
-              key={o._id}
-              onClick={() => {
-                onChange(param, o.name);
-                setOpen(false);
-              }}
-              className="px-4 py-2 hover:bg-gray-800 cursor-pointer"
-            >
-              {o.name}
-            </div>
-          ))}
+        <div className="absolute top-full mt-2 w-36.5 bg-[#1c1c1c] rounded-xl max-h-50 overflow-hidden z-50  pr-2">
+          <div className="max-h-50 overflow-y-auto custom-scrollbar pt-1 pb-1.5">
+            {options.map((o) => (
+              <div
+                key={o.id}
+                onClick={() => {
+                  onChange(param, o.value);
+                  setOpen(false);
+                }}
+                className="cursor-pointer capitalize pl-3.5 pt-2 pb-2"
+              >
+                {o.name}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

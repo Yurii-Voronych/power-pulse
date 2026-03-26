@@ -1,7 +1,10 @@
 import Container from "@/components/Container";
 import ProductsFilters from "@/components/ProductsFilters";
+import { getCategories } from "@/lib/categories/getCategories";
 
-const ProductsPage = () => {
+const ProductsPage = async () => {
+  const categoriesList = await getCategories();
+
   return (
     <section
       className="
@@ -19,7 +22,7 @@ const ProductsPage = () => {
         <h1 className="text-[24px] leading-[1.16667] font-bold mb-10">
           Products
         </h1>
-        <ProductsFilters />
+        <ProductsFilters categoriesList={categoriesList} />
       </Container>
     </section>
   );

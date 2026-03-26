@@ -104,3 +104,16 @@
       leading-[1.28571];
   }
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(239, 237, 232, 0.1);
+  border-radius: 12px;
+}
