@@ -23,10 +23,10 @@ const MobileMenu = () => {
             <Link href="/diary">Diary</Link>
           </li>
           <li className="btn-outline" onClick={() => close()}>
-            <Link href="/">Products</Link>
+            <Link href="/products">Products</Link>
           </li>
           <li className="btn-outline" onClick={() => close()}>
-            <Link href="/">Exercises</Link>
+            <Link href="/exercises">Exercises</Link>
           </li>
         </ul>
       </nav>

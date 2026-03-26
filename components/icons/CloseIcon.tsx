@@ -1,5 +1,5 @@
 interface CloseIconProps {
-  className: string;
+  className?: string;
 }
 const CloseIcon = ({ className }: CloseIconProps) => {
   return (
