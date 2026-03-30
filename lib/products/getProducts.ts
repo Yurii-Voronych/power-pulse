@@ -1,21 +1,6 @@
+import { GetProductsResult } from "@/types/types";
 import { connectDB } from "../services/mongodb";
 import Product from "@/models/Product";
-export type Product = {
-  id: string;
-  weight: number;
-  calories: number;
-  category: string;
-  title: string;
-  blood: Record<string, boolean>;
-  recommended: boolean | null;
-};
-
-export type GetProductsResult = {
-  products: Product[];
-  total: number;
-  page: number;
-  totalPages: number;
-};
 
 type GetProductsParams = {
   page?: number;
@@ -29,8 +14,8 @@ export const getProducts = async ({
   page = 1,
   limit = 12,
   category,
-  recommended,
   search,
+  recommended,
   blood,
 }: GetProductsParams): Promise<GetProductsResult> => {
   await connectDB();
@@ -46,35 +31,34 @@ export const getProducts = async ({
     filter.category = category;
   }
 
-  let userBlood: number | null = null;
-
-  if (recommended && blood) {
-    userBlood = blood ?? null;
+  if (recommended && recommended === "true") {
+    filter[`groupBloodAllowed.${blood}`] = true;
   }
-
-  if (userBlood && recommended === "true") {
-    filter[`groupBloodNotAllowed.${userBlood}`] = false;
+  if (recommended && recommended === "false") {
+    filter[`groupBloodAllowed.${blood}`] = false;
   }
-
-  if (userBlood && recommended === "false") {
-    filter[`groupBloodNotAllowed.${userBlood}`] = true;
-  }
-
   const [products, total] = await Promise.all([
     Product.find(filter).skip(skip).limit(limit).lean(),
     Product.countDocuments(filter),
   ]);
 
   return {
-    products: products.map((p) => ({
-      id: p._id.toString(),
-      weight: p.weight,
-      calories: p.calories,
-      category: p.category,
-      title: p.title,
-      blood: p.groupBloodNotAllowed,
-      recommended: userBlood ? !p.groupBloodNotAllowed[userBlood] : null,
-    })),
+    products: products.map((p) => {
+      let recommended: boolean | null = null;
+
+      if (blood) {
+        recommended = p.groupBloodAllowed?.[blood] ?? null;
+      }
+
+      return {
+        id: p._id.toString(),
+        weight: p.weight,
+        calories: p.calories,
+        category: p.category,
+        title: p.title,
+        recommended,
+      };
+    }),
     total,
     page,
     totalPages: Math.ceil(total / limit),

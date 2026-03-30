@@ -54,7 +54,7 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
   }, [debouncedSearch, searchFromUrl, updateParams, search]);
 
   return (
-    <div>
+    <div className="mb-10">
       <div className="relative">
         <input
           value={search}

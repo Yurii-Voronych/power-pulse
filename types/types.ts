@@ -19,3 +19,18 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+export type Product = {
+  id: string;
+  weight: number;
+  calories: number;
+  category: string;
+  title: string;
+  recommended: boolean | null;
+};
+
+export type GetProductsResult = {
+  products: Product[];
+  total: number;
+  page: number;
+  totalPages: number;
+};

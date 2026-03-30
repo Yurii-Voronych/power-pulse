@@ -1,4 +1,5 @@
 import Container from "@/components/Container";
+import Pagination from "@/components/Pagination";
 import ProductsFilters from "@/components/ProductsFilters";
 import ProductsList from "@/components/ProductsList";
 import { getCurrentUser } from "@/lib/auth/getCurrentUser";
@@ -60,7 +61,27 @@ const ProductsPage = async ({
           Products
         </h1>
         <ProductsFilters categoriesList={categoriesList} />
-        <ProductsList products={products.products} />
+        {products.products.length > 0 && (
+          <ProductsList products={products.products} />
+        )}
+        {products.products.length === 0 && (
+          <div className="text-[12px]">
+            <p className="mb-4">
+              <span className="text-orange">Sorry, no results were found</span>{" "}
+              for the product filters you selected. You may want to consider
+              other search options to find the product you want. Our range is
+              wide and you have the opportunity to find more options that suit
+              your needs.
+            </p>
+            <p className="text-orange">Try changing the search parameters.</p>
+          </div>
+        )}
+        {products.totalPages > 1 && (
+          <Pagination
+            currentPage={products.page}
+            totalPages={products.totalPages}
+          />
+        )}
       </Container>
     </section>
   );
