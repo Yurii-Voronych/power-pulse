@@ -1,16 +1,51 @@
 import Container from "@/components/Container";
 import ProductsFilters from "@/components/ProductsFilters";
+import ProductsList from "@/components/ProductsList";
+import { getCurrentUser } from "@/lib/auth/getCurrentUser";
 import { getCategories } from "@/lib/categories/getCategories";
-// import { getProducts } from "@/lib/products/getProducts";
+import { getProducts } from "@/lib/products/getProducts";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 
-const ProductsPage = async () => {
+const ProductsPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string>>;
+}) => {
   const categoriesList = await getCategories();
-  // const products = await getProducts();
-  // console.log(products);
+  const categoriesValidationArr = categoriesList.map((c) => c.value);
+  const rawParams = await searchParams;
+  const user = await getCurrentUser();
+  const blood = user?.profile?.blood;
+  const searchParamsSchema = z.object({
+    page: z.string().transform(Number).default(1),
+    limit: z.string().transform(Number).default(12),
+    category: z.enum(categoriesValidationArr).optional(),
+    recommended: z.enum(["true", "false"]).optional(),
+    search: z.string().optional(),
+  });
+
+  const parsed = searchParamsSchema.safeParse(rawParams);
+
+  if (!parsed.success) {
+    redirect("/products?page=1");
+  }
+
+  const { page, limit, category, recommended, search } = parsed.data;
+
+  const products = await getProducts({
+    page,
+    limit,
+    category,
+    recommended,
+    search,
+    blood,
+  });
+
   return (
     <section
       className="
-      relative
+      relative  
     max-w-360 mx-auto
     min-h-screen
     mt-25
@@ -25,6 +60,7 @@ const ProductsPage = async () => {
           Products
         </h1>
         <ProductsFilters categoriesList={categoriesList} />
+        <ProductsList products={products.products} />
       </Container>
     </section>
   );

@@ -15,8 +15,8 @@ interface ProductsFiltersProps {
 const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
   const recommendationList = [
     { id: "1", value: "", name: "All" },
-    { id: "2", value: "recommended", name: "Recommended" },
-    { id: "3", value: "not-recommended", name: "Not recommended" },
+    { id: "2", value: "true", name: "Recommended" },
+    { id: "3", value: "false", name: "Not recommended" },
   ];
   const router = useRouter();
   const params = useSearchParams();
@@ -46,10 +46,12 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
   );
 
   useEffect(() => {
+    if (debouncedSearch !== search) return;
+
     if (debouncedSearch === searchFromUrl) return;
 
     updateParams("search", debouncedSearch);
-  }, [debouncedSearch, searchFromUrl, updateParams]);
+  }, [debouncedSearch, searchFromUrl, updateParams, search]);
 
   return (
     <div>
