@@ -2,9 +2,9 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import CloseIcon from "./icons/CloseIcon";
-import { useCallback, useEffect, useState } from "react";
-import { useDebounce } from "@/hooks/useDebounce";
+import { useState } from "react";
 import { CustomSelect } from "./CustomSelect";
+import { useDebouncedCallback } from "use-debounce";
 interface ProductsFiltersProps {
   categoriesList: {
     id: string;
@@ -25,33 +25,26 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
   const recommended = params.get("recommended") || "";
 
   const [search, setSearch] = useState(searchFromUrl);
-  const debouncedSearch = useDebounce(search, 400);
 
-  useEffect(() => {
-    setSearch(searchFromUrl);
-  }, [searchFromUrl]);
+  const handleClear = () => {
+    setSearch("");
+    debouncedUpdate.cancel();
+    updateParams("search", "");
+  };
+  const updateParams = (key: string, value: string) => {
+    const newParams = new URLSearchParams(params.toString());
 
-  const updateParams = useCallback(
-    (key: string, value: string) => {
-      const newParams = new URLSearchParams(params.toString());
+    if (value) newParams.set(key, value);
+    else newParams.delete(key);
 
-      if (value) newParams.set(key, value);
-      else newParams.delete(key);
+    newParams.delete("page");
 
-      newParams.delete("page");
+    router.replace(`/products?${newParams.toString()}`);
+  };
 
-      router.replace(`/products?${newParams.toString()}`);
-    },
-    [params, router],
-  );
-
-  useEffect(() => {
-    if (debouncedSearch !== search) return;
-
-    if (debouncedSearch === searchFromUrl) return;
-
-    updateParams("search", debouncedSearch);
-  }, [debouncedSearch, searchFromUrl, updateParams, search]);
+  const debouncedUpdate = useDebouncedCallback((value: string) => {
+    updateParams("search", value);
+  }, 400);
 
   return (
     <div className="mb-10">
@@ -61,15 +54,15 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
           type="text"
           className="form-input placeholder:text-white"
           placeholder="Search"
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            debouncedUpdate(e.target.value);
+          }}
         ></input>
         {search && (
           <button
             type="button"
-            onClick={() => {
-              setSearch("");
-              updateParams("search", "");
-            }}
+            onClick={handleClear}
             className="absolute right-2 top-1/2 -translate-y-1/2"
           >
             <CloseIcon className="text-orange" />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { NextIcon } from "./icons/NextArrowIcon";
 
 type PaginationProps = {
   currentPage: number;
@@ -44,7 +45,7 @@ const Pagination = ({ currentPage, totalPages }: PaginationProps) => {
         disabled={currentPage === 1}
         className="px-3 py-1 rounded disabled:opacity-30 hover:text-orange transition-colors"
       >
-        ←
+        <NextIcon className="rotate-180" />
       </button>
 
       {getPages().map((page, i) =>
@@ -73,7 +74,7 @@ const Pagination = ({ currentPage, totalPages }: PaginationProps) => {
         disabled={currentPage === totalPages}
         className="px-3 py-1 rounded disabled:opacity-30 hover:text-orange transition-colors"
       >
-        →
+        <NextIcon />
       </button>
     </div>
   );
