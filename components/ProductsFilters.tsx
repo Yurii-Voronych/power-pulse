@@ -47,12 +47,12 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
   }, 400);
 
   return (
-    <div className="mb-10">
+    <div className="mb-10 md:flex items-center gap-4 2xl:justify-between">
       <div className="relative">
         <input
           value={search}
           type="text"
-          className="form-input placeholder:text-white"
+          className="form-input placeholder:text-white max-md:w-59"
           placeholder="Search"
           onChange={(e) => {
             setSearch(e.target.value);
@@ -69,7 +69,7 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
           </button>
         )}
       </div>
-      <div className="flex gap-3.5 mt-4">
+      <div className="flex gap-3.5 max-md:mt-4">
         <CustomSelect
           options={categoriesList}
           param="category"

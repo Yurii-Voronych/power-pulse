@@ -45,19 +45,15 @@ const ProductsPage = async ({
 
   return (
     <section
-      className="
-      relative  
-    max-w-360 mx-auto
-    min-h-screen
-    mt-25
-       2xl:bg-[url('/products_desk.jpg')]
+      className="relative max-w-360 mx-auto min-h-screen 2xl:bg-[url('/products_desk.jpg')]
     bg-no-repeat
     bg-contain
      bg-position-[bottom_right]
+     overflow-hidden
   "
     >
       <Container>
-        <h1 className="text-[24px] leading-[1.16667] font-bold mb-10">
+        <h1 className="text-[24px] leading-[1.16667] font-bold mb-10 mt-25">
           Products
         </h1>
         <ProductsFilters categoriesList={categoriesList} />
@@ -65,7 +61,7 @@ const ProductsPage = async ({
           <ProductsList products={products.products} />
         )}
         {products.products.length === 0 && (
-          <div className="text-[12px]">
+          <div className="text-[12px] 2xl:w-100">
             <p className="mb-4">
               <span className="text-orange">Sorry, no results were found</span>{" "}
               for the product filters you selected. You may want to consider

@@ -37,7 +37,7 @@ const ProductCard = async ({ product }: ProductCardProp) => {
         </div>
         <div className="capitalize">
           <span className="text-white/40">Category:</span>
-          {product.category}
+          {product.category.replace(/-/g, " ")}
         </div>
         <div>
           <span className="text-white/40">Weight:</span>

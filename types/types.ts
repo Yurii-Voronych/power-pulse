@@ -34,3 +34,9 @@ export type GetProductsResult = {
   page: number;
   totalPages: number;
 };
+export type Card = {
+  id: string;
+  filter: string;
+  name: string;
+  imgURL: string;
+};
