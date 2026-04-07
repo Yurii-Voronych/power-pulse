@@ -69,7 +69,7 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
           </button>
         )}
       </div>
-      <div className="flex gap-3.5 max-md:mt-4">
+      <div className="flex gap-3.5 max-md:mt-4 w-f">
         <CustomSelect
           options={categoriesList}
           param="category"

@@ -12,12 +12,12 @@ const ExercisesPage = async ({
 }) => {
   const { filter = "Body parts" } = await searchParams;
   const { cards } = await getFilters(filter);
-  console.log(cards);
+
   return (
     <Container>
       <h1 className="mt-25 text-2xl font-bold mb-4">Exercises</h1>
       <ExercisesTabs />
-      <ExercisesList cards={cards} />
+      <ExercisesList cards={cards} key={filter} />
     </Container>
   );
 };

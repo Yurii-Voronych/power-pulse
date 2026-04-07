@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.className} bg-black text-white min-h-screen`}>
+      <body className={`${roboto.className} bg-black text-white`}>
         <AuthProvider>
           <Header />
           {children}

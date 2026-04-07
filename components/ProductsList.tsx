@@ -6,7 +6,7 @@ interface productsListProps {
 }
 const ProductsList = ({ products }: productsListProps) => {
   return (
-    <ul className="flex gap-5 max-md:flex-col mb-4 md:flex-wrap md:md-6 2xl:mb-8">
+    <ul className="flex gap-5 max-md:flex-col mb-4 md:flex-wrap md:md-6 2xl:mb-8 max-md:items-center">
       {products.map((p) => (
         <li key={p.id}>
           <ProductCard product={p} />
