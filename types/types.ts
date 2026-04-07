@@ -40,3 +40,14 @@ export type Card = {
   name: string;
   imgURL: string;
 };
+
+export type Exercise = {
+  _id: string;
+  bodyPart: string;
+  equipment: string;
+  gifUrl: string;
+  name: string;
+  target: string;
+  burnedCalories: number;
+  time: number;
+};

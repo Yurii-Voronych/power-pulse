@@ -14,7 +14,7 @@ export function NextIcon({ className }: NextIconProps) {
     >
       <path
         d="M11.3333 14.1666L15.5 9.99998M15.5 9.99998L11.3333 5.83331M15.5 9.99998H5.5"
-        stroke="#E6533C"
+        stroke="currentColor"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"

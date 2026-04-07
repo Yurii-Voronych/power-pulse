@@ -1,5 +1,5 @@
 import Container from "@/components/Container";
-import ExercisesList from "@/components/ExercisesList";
+import ExercisesList from "@/components/ExercisesCategoriesList";
 
 import { ExercisesTabs } from "@/components/ExercisesTabs";
 
