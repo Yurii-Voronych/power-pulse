@@ -7,9 +7,9 @@ import { useState } from "react";
 
 interface exercisesListProps {
   cards: Card[];
-  key: string;
+  filter: string;
 }
-const ExercisesCategoriesList = ({ cards }: exercisesListProps) => {
+const ExercisesCategoriesList = ({ cards, filter }: exercisesListProps) => {
   const ITEMS_PER_PAGE = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(cards.length / ITEMS_PER_PAGE);
@@ -23,13 +23,14 @@ const ExercisesCategoriesList = ({ cards }: exercisesListProps) => {
       <ul className="flex gap-5 max-md:flex-col mb-4 md:flex-wrap 2xl:mb-8 max-md:items-center">
         {currentCards.map((c) => (
           <li key={c.name}>
-            <Link href={`exercises/${c.name}`}>
+            <Link href={`/exercises/${filter}/${encodeURIComponent(c.name)}`}>
               <div className="relative w-83.75 h-51.5 overflow-hidden rounded-xl 2xl:w-58">
                 <Image
                   src={c.imgURL}
                   alt={c.name}
                   fill
                   className="object-cover"
+                  sizes="335px 226px"
                 />
 
                 <div className="absolute inset-0 bg-[rgba(4,4,4,0.5)]" />
@@ -43,7 +44,7 @@ const ExercisesCategoriesList = ({ cards }: exercisesListProps) => {
         ))}
       </ul>
       {totalPages > 1 && (
-        <div className="flex gap-2 justify-center mt-4 mx-auto">
+        <div className="flex gap-2 justify-center mt-4 mx-auto mb-5">
           {Array.from({ length: totalPages }, (_, i) => {
             const page = i + 1;
             const isActive = page === currentPage;

@@ -9,10 +9,13 @@ const ExercisesCategoryPage = async ({
   params,
   searchParams,
 }: {
-  params: Promise<{ category: string }>;
+  params: Promise<{
+    category: string;
+    filter: string;
+  }>;
   searchParams: Promise<{ page: string }>;
 }) => {
-  const { category } = await params;
+  const { category, filter } = await params;
   const { page: currentPage } = await searchParams;
   const decoded = decodeURIComponent(category);
   const { exercises, page, totalPage } = await getExercisesByCategory({
@@ -31,7 +34,7 @@ const ExercisesCategoryPage = async ({
     >
       <Container>
         <Link
-          href="/exercises"
+          href={`/exercises/${filter}`}
           className="mt-25 text-[14px] text-white/40 flex mb-3"
         >
           <NextIcon className="rotate-180" />

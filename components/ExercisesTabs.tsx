@@ -1,39 +1,32 @@
 "use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { useRouter, useSearchParams } from "next/navigation";
-
-const TABS = ["Body parts", "Muscles", "Equipment"];
+const TABS = [
+  { label: "Body parts", value: "body-parts" },
+  { label: "Muscles", value: "muscles" },
+  { label: "Equipment", value: "equipment" },
+];
 
 export const ExercisesTabs = () => {
-  const router = useRouter();
-  const params = useSearchParams();
-
-  const activeTab = params.get("filter") || "Body parts";
-
-  const handleChange = (tab: string) => {
-    const newParams = new URLSearchParams(params.toString());
-    newParams.set("filter", tab);
-
-    router.push(`?${newParams.toString()}`);
-  };
+  const pathname = usePathname();
 
   return (
     <ul className="flex gap-4 mb-10">
       {TABS.map((tab) => {
-        const isActive = tab === activeTab;
-
+        const isActive = pathname.includes(tab.value);
         return (
-          <li key={tab}>
-            <button
-              onClick={() => handleChange(tab)}
+          <li key={tab.value}>
+            <Link
+              href={`/exercises/${tab.value}`}
               className={`pb-1 text-sm ${
                 isActive
                   ? "text-white border-b-3 border-orange-1"
-                  : "text-white/40 "
+                  : "text-white/40"
               }`}
             >
-              {tab}
-            </button>
+              {tab.label}
+            </Link>
           </li>
         );
       })}
