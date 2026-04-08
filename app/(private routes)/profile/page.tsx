@@ -43,7 +43,7 @@ const profilePage = async () => {
                   Please, fill form bellow!
                 </div>
               )}
-              <SportMinutes amount={user.dailyNorm.sportMinutes} />
+              <SportMinutes />
             </div>
           )}
           <div className="flex gap-2 text-[14px] leading-[1.28] text-white/30 mb-11 md:text-[16px] md:leading-normal md:w-110 md:mx-auto md:mb-8">

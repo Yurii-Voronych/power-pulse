@@ -1,5 +1,6 @@
 import Container from "@/components/Container";
 import ExercisesList from "@/components/ExercisesList";
+import { ExercisesTabs } from "@/components/ExercisesTabs";
 import { NextIcon } from "@/components/icons/NextArrowIcon";
 import Pagination from "@/components/Pagination";
 import { getExercisesByCategory } from "@/lib/exercises/getExercisesByCategory";
@@ -40,6 +41,7 @@ const ExercisesCategoryPage = async ({
           <NextIcon className="rotate-180" />
           Back
         </Link>
+        <ExercisesTabs />
         <p className="text-2xl font-bold capitalize mb-4">{decoded}</p>
         <ExercisesList cards={exercises} />
         <Pagination currentPage={page} totalPages={totalPage} />
