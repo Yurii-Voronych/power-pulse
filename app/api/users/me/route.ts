@@ -1,7 +1,7 @@
-import { connectDB } from "@/lib/services/mongodb";
+import { connectDB } from "@/lib/server/db/mongodb";
 import User from "@/models/User";
 import { NextResponse } from "next/server";
-import { requireAuth } from "@/lib/auth/requireAuth";
+import { requireAuth } from "@/lib/server/auth/requireAuth";
 
 export async function GET() {
   try {
@@ -24,8 +24,10 @@ export async function GET() {
     if (payload.accessToken) {
       res.cookies.set("accessToken", payload.accessToken, {
         httpOnly: true,
+        secure: true,
         sameSite: "lax",
         path: "/",
+        maxAge: 60 * 15,
       });
     }
 

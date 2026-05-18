@@ -1,6 +1,6 @@
 "use client";
-import { logoutUser } from "@/lib/api/authApi";
-import useAuthStore from "@/lib/store/authStore";
+import { logoutUser } from "@/lib/client/api/authApi";
+import useAuthStore from "@/lib/client/store/authStore";
 import { useRouter } from "next/navigation";
 import { LogOutIcon } from "./icons/LogOut";
 interface LogOutBtnProps {

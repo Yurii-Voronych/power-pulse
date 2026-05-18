@@ -4,8 +4,8 @@ import { Field, Form, Formik, type FormikHelpers, ErrorMessage } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ErrorIcon } from "./icons/ErrorIcon";
-import { registerUser } from "@/lib/api/authApi";
-import useAuthStore from "@/lib/store/authStore";
+import { registerUser } from "@/lib/client/api/authApi";
+import useAuthStore from "@/lib/client/store/authStore";
 import { registerSchema } from "@/lib/validators/auth/registerSchema";
 import toast from "react-hot-toast";
 

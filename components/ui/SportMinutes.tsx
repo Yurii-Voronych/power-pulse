@@ -1,5 +1,5 @@
 "use client";
-import useAuthStore from "@/lib/store/authStore";
+import useAuthStore from "@/lib/client/store/authStore";
 import { DumbbellIcon } from "../icons/DumbbellIcon";
 
 interface SportMinutesProps {

@@ -12,9 +12,9 @@ import { editProfileSchema } from "@/lib/validators/profile/editProfileSchema";
 import Container from "@/components/Container";
 import { parse } from "date-fns";
 import Image from "next/image";
-import { updateProfile } from "@/lib/api/userApi";
+import { updateProfile } from "@/lib/client/api/userApi";
 import { editProfileSchemaServer } from "@/lib/validators/profile/editProfileSchema.server";
-import useAuthStore from "@/lib/store/authStore";
+import useAuthStore from "@/lib/client/store/authStore";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 

@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AxiosError } from "axios";
 import { ErrorIcon } from "./icons/ErrorIcon";
-import { loginUser } from "@/lib/api/authApi";
-import useAuthStore from "@/lib/store/authStore";
+import { loginUser } from "@/lib/client/api/authApi";
+import useAuthStore from "@/lib/client/store/authStore";
 import { loginSchema } from "@/lib/validators/auth/loginSchema";
 import toast from "react-hot-toast";
 

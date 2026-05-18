@@ -1,5 +1,5 @@
 import Filter from "@/models/Filter";
-import { connectDB } from "../services/mongodb";
+import { connectDB } from "../db/mongodb";
 import { Card } from "@/types/types";
 
 export const getFilters = async (

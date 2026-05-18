@@ -1,6 +1,6 @@
 import { GetProductsResult } from "@/types/types";
-import { connectDB } from "../services/mongodb";
 import Product from "@/models/Product";
+import { connectDB } from "../db/mongodb";
 
 type GetProductsParams = {
   page?: number;

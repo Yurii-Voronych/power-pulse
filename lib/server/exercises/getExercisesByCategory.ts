@@ -1,5 +1,5 @@
 import Exercise from "@/models/Exercise";
-import { connectDB } from "../services/mongodb";
+import { connectDB } from "../db/mongodb";
 type GetExercisesParams = {
   page?: number;
   limit?: number;

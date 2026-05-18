@@ -1,5 +1,5 @@
 "use client";
-import useAuthStore from "@/lib/store/authStore";
+import useAuthStore from "@/lib/client/store/authStore";
 import { ForkIcon } from "../icons/ForkIcon";
 interface CaloriesIntakeProps {
   classname?: string;

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "@/lib/services/mongodb";
+import { connectDB } from "@/lib/server/db/mongodb";
 import User from "@/models/User";
-import { requireAuth } from "@/lib/auth/requireAuth";
+import { requireAuth } from "@/lib/server/auth/requireAuth";
 import { editProfileSchemaServer } from "@/lib/validators/profile/editProfileSchema.server";
 import { calculateDailyNorm } from "@/lib/services/calculateDailyNorm";
 
@@ -25,8 +25,6 @@ export async function PATCH(req: Request) {
 
     await connectDB();
 
-    const user = await User.findById(payload.userId).select("-password");
-
     const { calories, sportMinutes } = calculateDailyNorm({
       height: data.height,
       currentWeight: data.currentWeight,
@@ -36,7 +34,7 @@ export async function PATCH(req: Request) {
     });
 
     const updatedUser = await User.findByIdAndUpdate(
-      user.id,
+      payload.userId,
       {
         name: data.name,
         email: data.email,
@@ -57,6 +55,10 @@ export async function PATCH(req: Request) {
       },
       { returnDocument: "after", runValidators: true },
     );
+
+    if (!updatedUser) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
 
     return NextResponse.json(
       {

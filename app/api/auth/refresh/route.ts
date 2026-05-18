@@ -1,5 +1,5 @@
 import { refreshSession } from "@/lib/services/auth";
-import { connectDB } from "@/lib/services/mongodb";
+import { connectDB } from "@/lib/server/db/mongodb";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 

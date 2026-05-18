@@ -1,7 +1,7 @@
 import Container from "@/components/Container";
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
-import { getCurrentUser } from "@/lib/auth/getCurrentUser";
+import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
 
 import Link from "next/link";
 import { redirect } from "next/navigation";

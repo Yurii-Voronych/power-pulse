@@ -1,4 +1,4 @@
-import { connectDB } from "@/lib/services/mongodb";
+import { connectDB } from "@/lib/server/db/mongodb";
 import Session from "@/models/Session";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";

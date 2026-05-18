@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { connectDB } from "@/lib/services/mongodb";
+import { connectDB } from "@/lib/server/db/mongodb";
 import User from "@/models/User";
 import { generateRefreshToken, createSession } from "@/lib/services/auth";
 import { signAccessToken } from "@/lib/services/jwt";

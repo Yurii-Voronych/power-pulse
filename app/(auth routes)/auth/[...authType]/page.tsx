@@ -3,7 +3,7 @@ import LoginForm from "@/components/LoginForm";
 import RegistrationForm from "@/components/RegistrationForm";
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
-import { getCurrentUser } from "@/lib/auth/getCurrentUser";
+import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
 import { notFound, redirect } from "next/navigation";
 
 type AuthPageProps = {

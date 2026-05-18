@@ -1,4 +1,4 @@
-import { pagesProtection } from "@/lib/auth/pagesProtection";
+import { pagesProtection } from "@/lib/server/auth/pagesProtection";
 
 export default async function PrivateLayout({
   children,

@@ -3,7 +3,7 @@ import Link from "next/link";
 import Container from "./Container";
 import { LogoIcon } from "./icons/LogoIcon";
 import HeaderSettings from "./HeaderSettings";
-import useAuthStore from "@/lib/store/authStore";
+import useAuthStore from "@/lib/client/store/authStore";
 
 const Header = () => {
   const user = useAuthStore((s) => s.user);

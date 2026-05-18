@@ -1,7 +1,7 @@
 "use client";
 
-import { getCurrentUser } from "@/lib/api/userApi";
-import useAuthStore from "@/lib/store/authStore";
+import { getCurrentUser } from "@/lib/client/api/userApi";
+import useAuthStore from "@/lib/client/store/authStore";
 import { useEffect } from "react";
 
 interface AuthProviderProps {
