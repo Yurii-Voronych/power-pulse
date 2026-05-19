@@ -2,7 +2,7 @@ import { connectDB } from "@/lib/server/db/mongodb";
 import Session from "@/models/Session";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { hashToken } from "@/lib/services/auth";
+import { hashToken } from "@/lib/server/auth/sessions";
 
 export async function POST() {
   try {

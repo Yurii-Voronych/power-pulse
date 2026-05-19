@@ -3,8 +3,8 @@ import Pagination from "@/components/Pagination";
 import ProductsFilters from "@/components/ProductsFilters";
 import ProductsList from "@/components/ProductsList";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
-import { getCategories } from "@/lib/server/categories/getCategories";
-import { getProducts } from "@/lib/server/products/getProducts";
+import { getCategories } from "@/lib/server/data/categories/getCategories";
+import { getProducts } from "@/lib/server/data/products/getProducts";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 

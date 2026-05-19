@@ -3,7 +3,7 @@ import ExercisesCategoriesList from "@/components/ExercisesCategoriesList";
 
 import { ExercisesTabs } from "@/components/ExercisesTabs";
 
-import { getFilters } from "@/lib/server/filters/getFilters";
+import { getFilters } from "@/lib/server/data/filters/getFilters";
 
 const ExercisesPage = async ({
   params,

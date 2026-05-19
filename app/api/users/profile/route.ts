@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/server/db/mongodb";
 import User from "@/models/User";
 import { requireAuth } from "@/lib/server/auth/requireAuth";
-import { editProfileSchemaServer } from "@/lib/validators/profile/editProfileSchema.server";
-import { calculateDailyNorm } from "@/lib/services/calculateDailyNorm";
+import { editProfileSchemaServer } from "@/lib/shared/validators/profile/editProfileSchema.server";
+import { calculateDailyNorm } from "@/lib/shared/calculations/calculateDailyNorm";
 
 export async function PATCH(req: Request) {
   try {

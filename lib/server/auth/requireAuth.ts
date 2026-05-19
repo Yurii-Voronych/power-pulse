@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
-import { verifyAccessToken } from "@/lib/services/jwt";
-import { refreshSession } from "../../services/auth";
+import { verifyAccessToken } from "@/lib/server/auth/jwt";
+import { refreshSession } from "@/lib/server/auth/sessions";
+
 type AuthResult = {
   userId: string;
   accessToken?: string;

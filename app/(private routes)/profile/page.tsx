@@ -6,6 +6,7 @@ import ProfileForm from "@/components/ProfileForm";
 import CaloriesIntake from "@/components/ui/CaloriesIntake";
 import SportMinutes from "@/components/ui/SportMinutes";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
+
 import { redirect } from "next/navigation";
 
 const profilePage = async () => {

@@ -3,7 +3,7 @@ import ExercisesList from "@/components/ExercisesList";
 import { ExercisesTabs } from "@/components/ExercisesTabs";
 import { NextIcon } from "@/components/icons/NextArrowIcon";
 import Pagination from "@/components/Pagination";
-import { getExercisesByCategory } from "@/lib/server/exercises/getExercisesByCategory";
+import { getExercisesByCategory } from "@/lib/server/data/exercises/getExercisesByCategory";
 import Link from "next/link";
 
 const ExercisesCategoryPage = async ({

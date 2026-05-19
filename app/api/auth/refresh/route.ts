@@ -1,4 +1,4 @@
-import { refreshSession } from "@/lib/services/auth";
+import { refreshSession } from "@/lib/server/auth/sessions";
 import { connectDB } from "@/lib/server/db/mongodb";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";

@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 import { ErrorIcon } from "./icons/ErrorIcon";
 import { loginUser } from "@/lib/client/api/authApi";
 import useAuthStore from "@/lib/client/store/authStore";
-import { loginSchema } from "@/lib/validators/auth/loginSchema";
+import { loginSchema } from "@/lib/shared/validators/auth/loginSchema";
 import toast from "react-hot-toast";
 
 interface LoginValues {

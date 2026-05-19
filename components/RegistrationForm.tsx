@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { ErrorIcon } from "./icons/ErrorIcon";
 import { registerUser } from "@/lib/client/api/authApi";
 import useAuthStore from "@/lib/client/store/authStore";
-import { registerSchema } from "@/lib/validators/auth/registerSchema";
+import { registerSchema } from "@/lib/shared/validators/auth/registerSchema";
 import toast from "react-hot-toast";
 
 interface RegistrationValues {

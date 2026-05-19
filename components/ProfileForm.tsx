@@ -3,12 +3,12 @@ import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
 import { ErrorIcon } from "./icons/ErrorIcon";
 import BirthdayInput from "@/app/(private routes)/profile/edit/_formComponents/BirthdayInput";
 import { parse } from "date-fns";
-import { editProfileSchemaServer } from "@/lib/validators/profile/editProfileSchema.server";
+import { editProfileSchemaServer } from "@/lib/shared/validators/profile/editProfileSchema.server";
 import { updateProfile } from "@/lib/client/api/userApi";
 import useAuthStore from "@/lib/client/store/authStore";
 import toast from "react-hot-toast";
-import { editProfileSchema } from "@/lib/validators/profile/editProfileSchema";
-import { mapUserToFormValues } from "@/lib/services/userMapValues";
+import { editProfileSchema } from "@/lib/shared/validators/profile/editProfileSchema";
+import { mapUserToFormValues } from "@/lib/shared/mappers/userMapValues";
 
 export interface SettingsFormValues {
   height: string;

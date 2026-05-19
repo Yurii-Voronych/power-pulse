@@ -1,5 +1,5 @@
 import Category from "@/models/Category";
-import { connectDB } from "../db/mongodb";
+import { connectDB } from "../../db/mongodb";
 
 export const getCategories = async (): Promise<
   {

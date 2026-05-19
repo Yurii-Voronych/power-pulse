@@ -1,6 +1,6 @@
 import { User } from "@/types/types";
 import api from "./axios";
-import { ProfileInput } from "../../validators/profile/editProfileSchema.server";
+import { ProfileInput } from "../../shared/validators/profile/editProfileSchema.server";
 interface Respond {
   user: User;
 }

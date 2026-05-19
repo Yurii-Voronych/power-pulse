@@ -1,9 +1,9 @@
 import { cookies } from "next/headers";
-import { verifyAccessToken } from "@/lib/services/jwt";
+import { verifyAccessToken } from "@/lib/server/auth/jwt";
 import { connectDB } from "@/lib/server/db/mongodb";
 import User from "@/models/User";
 import type { User as UserType } from "@/types/types";
-import { refreshSession } from "../../services/auth";
+import { refreshSession } from "./sessions";
 
 export const getCurrentUser = async () => {
   const cookieStore = await cookies();

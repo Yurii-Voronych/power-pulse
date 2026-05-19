@@ -2,9 +2,9 @@ import { connectDB } from "@/lib/server/db/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
-import { generateRefreshToken, createSession } from "@/lib/services/auth";
-import { signAccessToken } from "@/lib/services/jwt";
-import { loginSchemaServer } from "@/lib/validators/auth/loginSchema.server";
+import { generateRefreshToken, createSession } from "@/lib/server/auth/sessions";
+import { signAccessToken } from "@/lib/server/auth/jwt";
+import { loginSchemaServer } from "@/lib/shared/validators/auth/loginSchema.server";
 
 export async function POST(req: Request) {
   try {
