@@ -4,6 +4,7 @@ import User from "@/models/User";
 import { requireAuth } from "@/lib/server/auth/requireAuth";
 import { editProfileSchemaServer } from "@/lib/shared/validators/profile/editProfileSchema.server";
 import { calculateDailyNorm } from "@/lib/shared/calculations/calculateDailyNorm";
+import { mapUserToDTO } from "@/lib/shared/mappers/mapUserToDTO";
 
 export async function PATCH(req: Request) {
   try {
@@ -62,14 +63,7 @@ export async function PATCH(req: Request) {
 
     return NextResponse.json(
       {
-        user: {
-          id: updatedUser._id,
-          email: updatedUser.email,
-          name: updatedUser.name,
-          profile: updatedUser.profile,
-          dailyNorm: updatedUser.dailyNorm,
-          isProfileCompleted: updatedUser.isProfileCompleted,
-        },
+        user: mapUserToDTO(updatedUser),
       },
       { status: 200 },
     );

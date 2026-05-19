@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { SettingsFormValues } from "@/components/ProfileForm";
-import { User } from "@/types/types";
+import { User } from "@/lib/shared/types/user";
 
 export const mapUserToFormValues = (user: User): SettingsFormValues => {
   return {

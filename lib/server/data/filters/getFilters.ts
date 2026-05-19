@@ -1,6 +1,6 @@
 import Filter from "@/models/Filter";
 
-import { Card } from "@/types/types";
+import { Card } from "@/lib/shared/types/types";
 import { connectDB } from "../../db/mongodb";
 
 export const getFilters = async (

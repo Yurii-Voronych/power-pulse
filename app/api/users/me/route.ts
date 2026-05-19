@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/server/db/mongodb";
 import User from "@/models/User";
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/server/auth/requireAuth";
+import { mapUserToDTO } from "@/lib/shared/mappers/mapUserToDTO";
 
 export async function GET() {
   try {
@@ -19,7 +20,7 @@ export async function GET() {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
-    const res = NextResponse.json({ user });
+    const res = NextResponse.json({ user: mapUserToDTO(user) });
 
     if (payload.accessToken) {
       res.cookies.set("accessToken", payload.accessToken, {

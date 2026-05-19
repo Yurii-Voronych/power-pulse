@@ -37,14 +37,16 @@ const profilePage = async () => {
           </p>
           {user.dailyNorm && (
             <div className="flex gap-3.5 mb-10 w-fit mx-auto">
-              {user.dailyNorm.calories && <CaloriesIntake />}
+              {user.dailyNorm.calories && (
+                <CaloriesIntake value={user.dailyNorm.calories} />
+              )}
               {!user.dailyNorm.calories && (
                 <div className="bg-orange rounded-xl w-41.25 h-24 p-3.5 md:w-53.5 md:h-27 text-[12px] text-white/80">
                   We don&apos;t have enough info to count your daily norm!
                   Please, fill form bellow!
                 </div>
               )}
-              <SportMinutes />
+              <SportMinutes value={user.dailyNorm.sportMinutes} />
             </div>
           )}
           <div className="flex gap-2 text-[14px] leading-[1.28] text-white/30 mb-11 md:text-[16px] md:leading-normal md:w-110 md:mx-auto md:mb-8">

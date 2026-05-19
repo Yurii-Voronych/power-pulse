@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { generateRefreshToken, createSession } from "@/lib/server/auth/sessions";
 import { signAccessToken } from "@/lib/server/auth/jwt";
 import { loginSchemaServer } from "@/lib/shared/validators/auth/loginSchema.server";
+import { mapUserToDTO } from "@/lib/shared/mappers/mapUserToDTO";
 
 export async function POST(req: Request) {
   try {
@@ -53,14 +54,7 @@ export async function POST(req: Request) {
 
     const response = NextResponse.json(
       {
-        user: {
-          id: user._id,
-          email: user.email,
-          name: user.name,
-          profile: user.profile,
-          dailyNorm: user.dailyNorm,
-          isProfileCompleted: user.isProfileCompleted,
-        },
+        user: mapUserToDTO(user),
       },
       { status: 200 },
     );

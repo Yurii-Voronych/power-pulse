@@ -5,6 +5,7 @@ import User from "@/models/User";
 import { generateRefreshToken, createSession } from "@/lib/server/auth/sessions";
 import { signAccessToken } from "@/lib/server/auth/jwt";
 import { registerSchemaServer } from "@/lib/shared/validators/auth/registerSchema.server";
+import { mapUserToDTO } from "@/lib/shared/mappers/mapUserToDTO";
 
 export async function POST(req: Request) {
   try {
@@ -52,11 +53,7 @@ export async function POST(req: Request) {
 
     const response = NextResponse.json(
       {
-        user: {
-          id: user._id,
-          email: user.email,
-          name: user.name,
-        },
+        user: mapUserToDTO(user),
       },
       { status: 201 },
     );

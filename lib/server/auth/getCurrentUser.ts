@@ -2,8 +2,8 @@ import { cookies } from "next/headers";
 import { verifyAccessToken } from "@/lib/server/auth/jwt";
 import { connectDB } from "@/lib/server/db/mongodb";
 import User from "@/models/User";
-import type { User as UserType } from "@/types/types";
 import { refreshSession } from "./sessions";
+import { mapUserToDTO } from "@/lib/shared/mappers/mapUserToDTO";
 
 export const getCurrentUser = async () => {
   const cookieStore = await cookies();
@@ -17,9 +17,9 @@ export const getCurrentUser = async () => {
     try {
       const payload = verifyAccessToken(accessToken);
 
-      return await User.findById(payload.userId)
-        .select("-password")
-        .lean<UserType>();
+      const user = await User.findById(payload.userId).select("-password");
+
+      return user ? mapUserToDTO(user) : null;
     } catch {}
   }
 
@@ -28,9 +28,9 @@ export const getCurrentUser = async () => {
 
     if (!result) return null;
 
-    return await User.findById(result.userId)
-      .select("-password")
-      .lean<UserType>();
+    const user = await User.findById(result.userId).select("-password");
+
+    return user ? mapUserToDTO(user) : null;
   }
 
   return null;

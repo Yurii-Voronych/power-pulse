@@ -8,7 +8,7 @@ import { updateProfile } from "@/lib/client/api/userApi";
 import useAuthStore from "@/lib/client/store/authStore";
 import toast from "react-hot-toast";
 import { editProfileSchema } from "@/lib/shared/validators/profile/editProfileSchema";
-import { mapUserToFormValues } from "@/lib/shared/mappers/userMapValues";
+import { mapUserToFormValues } from "@/lib/shared/mappers/mapUserToFormValues";
 
 export interface SettingsFormValues {
   height: string;

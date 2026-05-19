@@ -1,4 +1,4 @@
-import { User } from "@/types/types";
+import { User } from "@/lib/shared/types/user";
 import api from "./axios";
 import { ProfileInput } from "../../shared/validators/profile/editProfileSchema.server";
 interface Respond {

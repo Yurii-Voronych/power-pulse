@@ -1,4 +1,4 @@
-import { GetProductsResult } from "@/types/types";
+import { GetProductsResult } from "@/lib/shared/types/types";
 import Product from "@/models/Product";
 import { connectDB } from "../../db/mongodb";
 

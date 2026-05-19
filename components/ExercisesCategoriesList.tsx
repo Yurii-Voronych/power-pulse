@@ -1,5 +1,5 @@
 "use client";
-import { Card } from "@/types/types";
+import { Card } from "@/lib/shared/types/types";
 
 import Image from "next/image";
 import Link from "next/link";

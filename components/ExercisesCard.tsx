@@ -1,4 +1,4 @@
-import { Exercise } from "@/types/types";
+import { Exercise } from "@/lib/shared/types/types";
 import { PersonIcon } from "./icons/PersonIcon";
 
 interface ExerciseCardProp {
