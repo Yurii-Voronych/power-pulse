@@ -7,7 +7,11 @@ const DiaryProductSchema = new Schema(
       ref: "Product",
       required: true,
     },
-
+    mealType: {
+      type: String,
+      enum: ["breakfast", "lunch", "dinner", "snack"],
+      required: true,
+    },
     title: {
       type: String,
       required: true,

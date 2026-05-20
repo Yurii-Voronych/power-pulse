@@ -1,7 +1,7 @@
 import {
+  DBDiaryExercise,
+  DBDiaryProduct,
   DiaryData,
-  DiaryExercise,
-  DiaryProduct,
 } from "@/lib/shared/types/diary";
 import { connectDB } from "../../db/mongodb";
 import Diary from "@/models/Diary";
@@ -19,11 +19,12 @@ export const getDiaryData = async ({
   if (!diary) return null;
 
   return {
-    _id: diary._id.toString(),
+    id: diary._id.toString(),
     userId: diary.userId.toString(),
     date: diary.date,
-    products: diary.products.map((product: DiaryProduct) => ({
-      _id: product._id.toString(),
+    products: diary.products.map((product: DBDiaryProduct) => ({
+      id: product._id.toString(),
+      mealType: product.mealType,
       productId: product.productId.toString(),
       title: product.title,
       category: product.category,
@@ -31,8 +32,8 @@ export const getDiaryData = async ({
       weight: product.weight,
       recommended: product.recommended,
     })),
-    exercises: diary.exercises.map((exercise: DiaryExercise) => ({
-      _id: exercise._id.toString(),
+    exercises: diary.exercises.map((exercise: DBDiaryExercise) => ({
+      id: exercise._id.toString(),
       exerciseId: exercise.exerciseId.toString(),
       bodyPart: exercise.bodyPart,
       equipment: exercise.equipment,

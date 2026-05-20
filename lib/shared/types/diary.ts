@@ -1,5 +1,9 @@
+import type { Types } from "mongoose";
+export type MealType = "breakfast" | "lunch" | "dinner" | "snack";
+
 export type DiaryProduct = {
-  _id: string;
+  id: string;
+  mealType: MealType;
   productId: string;
   title: string;
   category: string;
@@ -9,7 +13,7 @@ export type DiaryProduct = {
 };
 
 export type DiaryExercise = {
-  _id: string;
+  id: string;
   exerciseId: string;
   bodyPart: string;
   equipment: string;
@@ -20,11 +24,31 @@ export type DiaryExercise = {
 };
 
 export type DiaryData = {
-  _id: string;
+  id: string;
   userId: string;
   date: string;
   products: DiaryProduct[];
   exercises: DiaryExercise[];
   createdAt: string;
   updatedAt: string;
+};
+export type DBDiaryProduct = {
+  _id: Types.ObjectId;
+  mealType: MealType;
+  productId: Types.ObjectId;
+  title: string;
+  category: string;
+  calories: number;
+  weight: number;
+  recommended: boolean;
+};
+export type DBDiaryExercise = {
+  _id: Types.ObjectId;
+  exerciseId: Types.ObjectId;
+  bodyPart: string;
+  equipment: string;
+  name: string;
+  target: string;
+  burnedCalories: number;
+  time: number;
 };

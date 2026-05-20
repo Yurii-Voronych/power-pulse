@@ -36,7 +36,7 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
         products={products}
         exercises={exercises}
       />
-      <ProductsGrid products={products} />
+      <ProductsGrid date={date} products={products} />
       <ExercisesGrid exercises={exercises} />
     </Container>
   );
