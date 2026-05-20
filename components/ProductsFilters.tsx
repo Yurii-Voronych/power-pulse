@@ -52,7 +52,7 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
         <input
           value={search}
           type="text"
-          className="form-input placeholder:text-white max-md:w-59"
+          className="form-input placeholder:text-white max-md:w-full"
           placeholder="Search"
           onChange={(e) => {
             setSearch(e.target.value);
