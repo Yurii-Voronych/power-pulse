@@ -1,7 +1,5 @@
 import { User } from "../types/user";
 
-type SerializableDate = Date | string | null | undefined;
-
 type UserDTOInput = {
   _id: { toString: () => string };
   email: string;
@@ -11,7 +9,7 @@ type UserDTOInput = {
     height?: number;
     currentWeight?: number;
     desiredWeight?: number;
-    birthday?: SerializableDate;
+    birthday?: Date;
     blood?: number;
     sex?: string;
     levelActivity?: number;
@@ -20,13 +18,8 @@ type UserDTOInput = {
     calories?: number;
     sportMinutes?: number;
   };
-  createdAt?: SerializableDate;
-  updatedAt?: SerializableDate;
-};
-
-const serializeDate = (date: SerializableDate) => {
-  if (!date) return undefined;
-  return typeof date === "string" ? date : date.toISOString();
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export const mapUserToDTO = (user: UserDTOInput): User => ({
@@ -39,7 +32,7 @@ export const mapUserToDTO = (user: UserDTOInput): User => ({
         height: user.profile.height,
         currentWeight: user.profile.currentWeight,
         desiredWeight: user.profile.desiredWeight,
-        birthday: serializeDate(user.profile.birthday),
+        birthday: user.profile.birthday?.toISOString(),
         blood: user.profile.blood,
         sex: user.profile.sex,
         levelActivity: user.profile.levelActivity,
@@ -51,6 +44,6 @@ export const mapUserToDTO = (user: UserDTOInput): User => ({
         sportMinutes: user.dailyNorm.sportMinutes,
       }
     : undefined,
-  createdAt: serializeDate(user.createdAt),
-  updatedAt: serializeDate(user.updatedAt),
+  createdAt: user.createdAt.toISOString(),
+  updatedAt: user.updatedAt.toISOString(),
 });
