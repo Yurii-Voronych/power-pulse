@@ -16,6 +16,6 @@ export interface User {
     calories?: number;
     sportMinutes?: number;
   };
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
 }

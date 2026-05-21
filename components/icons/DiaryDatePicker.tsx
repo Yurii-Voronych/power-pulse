@@ -5,27 +5,38 @@ import { useEffect, useRef, useState } from "react";
 import { CalendarIcon } from "./CalendarIcon";
 import { NextIcon } from "./NextArrowIcon";
 import { DayPicker } from "react-day-picker";
-import { parse, isValid, format, addDays } from "date-fns";
+import { parse, isValid, format, addDays, isAfter, isBefore } from "date-fns";
 import { useRouter } from "next/navigation";
 
 interface DiaryDatePickerProps {
   date: string;
+  minDate: string;
+  maxDate: string;
 }
 
-const DiaryDatePicker = ({ date }: DiaryDatePickerProps) => {
+const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const parsePickerDate = (date: string) => parse(date, "yyyy-MM-dd", new Date());
+  const formatDate = (date: Date) => format(date, "yyyy-MM-dd");
+
+  const minParsedDate = parsePickerDate(minDate);
+  const maxParsedDate = parsePickerDate(maxDate);
 
   const parsedDate = (() => {
-    const parsed = parse(date, "yyyy-MM-dd", new Date());
+    const parsed = parsePickerDate(date);
     return isValid(parsed) ? parsed : new Date();
   })();
 
-  const formatDate = (date: Date) => format(date, "yyyy-MM-dd");
+  const canGoPrev = isAfter(parsedDate, minParsedDate);
+  const canGoNext = isBefore(parsedDate, maxParsedDate);
 
   const handleSelect = (selected: Date | undefined) => {
     if (!selected) return;
+    if (isBefore(selected, minParsedDate) || isAfter(selected, maxParsedDate)) {
+      return;
+    }
 
     const formatted = formatDate(selected);
     router.push(`/diary/${formatted}`);
@@ -33,11 +44,15 @@ const DiaryDatePicker = ({ date }: DiaryDatePickerProps) => {
   };
 
   const handlePrev = () => {
+    if (!canGoPrev) return;
+
     const prev = formatDate(addDays(parsedDate, -1));
     router.push(`/diary/${prev}`);
   };
 
   const handleNext = () => {
+    if (!canGoNext) return;
+
     const next = formatDate(addDays(parsedDate, 1));
     router.push(`/diary/${next}`);
   };
@@ -80,6 +95,7 @@ const DiaryDatePicker = ({ date }: DiaryDatePickerProps) => {
               onSelect={handleSelect}
               showOutsideDays
               weekStartsOn={1}
+              disabled={[{ before: minParsedDate }, { after: maxParsedDate }]}
               classNames={{
                 root: "w-full h-full",
                 day_selected: "!bg-black !text-white rounded-full",
@@ -90,11 +106,21 @@ const DiaryDatePicker = ({ date }: DiaryDatePickerProps) => {
           </div>
         </div>
       )}
-      <button onClick={handlePrev}>
+      <button
+        type="button"
+        onClick={handlePrev}
+        disabled={!canGoPrev}
+        className={!canGoPrev ? "opacity-30" : undefined}
+      >
         <NextIcon className="rotate-180" />
       </button>
 
-      <button onClick={handleNext}>
+      <button
+        type="button"
+        onClick={handleNext}
+        disabled={!canGoNext}
+        className={!canGoNext ? "opacity-30" : undefined}
+      >
         <NextIcon />
       </button>
     </div>

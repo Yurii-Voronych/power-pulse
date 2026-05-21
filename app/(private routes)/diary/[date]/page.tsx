@@ -7,7 +7,8 @@ import ProductsGrid from "@/components/ProductsGrid";
 
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
 import { getDiaryData } from "@/lib/server/data/diary/getDiary";
-import { redirect } from "next/navigation";
+import { getDiaryDateRange, validateDiaryDate } from "@/lib/shared/utils/diaryDate";
+import { notFound, redirect } from "next/navigation";
 
 const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
   const { date } = await params;
@@ -19,6 +20,21 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
   if (!user.isProfileCompleted) {
     redirect("/profile/edit");
   }
+  if (!user.createdAt) {
+    notFound();
+  }
+
+  const diaryDateRange = getDiaryDateRange(user.createdAt);
+  const diaryDateValidation = validateDiaryDate(date, diaryDateRange);
+
+  if (diaryDateValidation.status === "invalid") {
+    notFound();
+  }
+
+  if (diaryDateValidation.status === "redirect") {
+    redirect(`/diary/${diaryDateValidation.date}`);
+  }
+
   const normOfCalories = user.dailyNorm?.calories ?? 0;
   const sportMinutes = user.dailyNorm?.sportMinutes ?? 0;
   const diary = await getDiaryData({ date, userId: user.id });
@@ -28,7 +44,11 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
     <Container>
       <div className="flex justify-between items-end mb-10">
         <h1 className="mt-25 text-2xl font-bold">Diary</h1>
-        <DiaryDatePicker date={date} />
+        <DiaryDatePicker
+          date={date}
+          minDate={diaryDateRange.minDate}
+          maxDate={diaryDateRange.maxDate}
+        />
       </div>
       <DiaryCaloriesInfoGrid
         intake={normOfCalories}
