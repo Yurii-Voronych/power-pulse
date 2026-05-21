@@ -1,13 +1,14 @@
 import Container from "@/components/Container";
 import DiaryCaloriesInfoGrid from "@/components/DiaryCaloriesInfoGrid";
 import ExercisesGrid from "@/components/ExercisesGrid";
-
 import DiaryDatePicker from "@/components/icons/DiaryDatePicker";
-import ProductsGrid from "@/components/ProductsGrid";
-
+import MealsGrid from "@/components/MealsGrid";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
 import { getDiaryData } from "@/lib/server/data/diary/getDiary";
-import { getDiaryDateRange, validateDiaryDate } from "@/lib/shared/utils/diaryDate";
+import {
+  getDiaryDateRange,
+  validateDiaryDate,
+} from "@/lib/shared/utils/diaryDate";
 import { notFound, redirect } from "next/navigation";
 
 const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
@@ -20,10 +21,6 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
   if (!user.isProfileCompleted) {
     redirect("/profile/edit");
   }
-  if (!user.createdAt) {
-    notFound();
-  }
-
   const diaryDateRange = getDiaryDateRange(user.createdAt);
   const diaryDateValidation = validateDiaryDate(date, diaryDateRange);
 
@@ -56,7 +53,7 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
         products={products}
         exercises={exercises}
       />
-      <ProductsGrid date={date} products={products} />
+      <MealsGrid date={date} products={products} />
       <ExercisesGrid exercises={exercises} />
     </Container>
   );
