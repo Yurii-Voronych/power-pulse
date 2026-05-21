@@ -96,11 +96,45 @@ export default function BirthdayInput({ name }: Props) {
               onSelect={handleSelect}
               showOutsideDays
               weekStartsOn={1}
+              styles={{
+                root: {
+                  "--rdp-accent-color": "#efede8",
+                  "--rdp-day-width": "27px",
+                  "--rdp-day-height": "27px",
+                  "--rdp-day_button-width": "24px",
+                  "--rdp-day_button-height": "24px",
+                  "--rdp-day_button-border": "0",
+                  "--rdp-nav_button-width": "24px",
+                  "--rdp-nav_button-height": "24px",
+                  "--rdp-nav-height": "38px",
+                  "--rdp-outside-opacity": "0.32",
+                } as React.CSSProperties,
+              }}
               classNames={{
-                root: "w-full h-full",
-                day_selected: "!bg-black !text-white rounded-full",
-                day_today: "!text-red-500",
-                day: "w-7 h-7 p-1 text-[14px] m-0",
+                root: "relative w-full h-full text-white",
+                month: "w-full",
+                month_caption:
+                  "relative mb-3 flex h-[38px] items-center justify-center border-b border-white/20 pb-3",
+                caption_label:
+                  "text-[20px] font-medium leading-none text-white",
+                nav: "absolute left-0 right-0 top-0 flex h-[38px] items-start justify-between",
+                button_previous:
+                  "flex size-6 items-center justify-center text-white/70 hover:text-white",
+                button_next:
+                  "flex size-6 items-center justify-center text-white/70 hover:text-white",
+                chevron: "size-4 fill-current",
+                month_grid: "w-full border-separate border-spacing-0",
+                weekdays: "mb-1",
+                weekday:
+                  "h-[27px] p-0 text-center text-[14px] font-medium leading-[27px] text-white/55",
+                week: "h-[27px]",
+                day: "size-[27px] p-0 text-center align-middle text-[14px] font-normal leading-none text-white",
+                day_button:
+                  "mx-auto flex size-6 items-center justify-center rounded-full text-[14px] font-normal leading-none hover:bg-black/15",
+                selected:
+                  "font-normal text-white [&>button]:bg-black [&>button]:text-white",
+                today: "text-white",
+                outside: "text-white/30",
               }}
             />
           </div>
