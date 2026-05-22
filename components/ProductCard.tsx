@@ -33,15 +33,11 @@ const ProductCard = async ({ product }: ProductCardProp) => {
       <div className="flex text-[12px] justify-between">
         <div>
           <span className="text-white/40">Calories:</span>
-          {product.calories}
+          {product.caloriesPer100g}
         </div>
         <div className="capitalize">
           <span className="text-white/40">Category:</span>
           {product.category.replace(/-/g, " ")}
-        </div>
-        <div>
-          <span className="text-white/40">Weight:</span>
-          {product.weight}
         </div>
       </div>
     </div>

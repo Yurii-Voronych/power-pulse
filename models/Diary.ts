@@ -22,7 +22,7 @@ const DiaryProductSchema = new Schema(
       required: true,
     },
 
-    calories: {
+    caloriesPer100g: {
       type: Number,
       required: true,
       min: 0,

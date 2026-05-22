@@ -9,13 +9,7 @@ const productSchema = new Schema(
       lowercase: true,
     },
 
-    calories: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-
-    weight: {
+    caloriesPer100g: {
       type: Number,
       required: true,
       min: 0,

@@ -18,7 +18,7 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
     <ul className="border border-white/20 rounded-xl p-2 flex flex-col gap-2 mb-10">
       {meals.map((meal) => {
         const calories = meal.products.reduce((total, product) => {
-          return total + product.calories * (product.weight / 100);
+          return total + product.caloriesPer100g * (product.weight / 100);
         }, 0);
 
         const hasProducts = meal.products.length > 0;

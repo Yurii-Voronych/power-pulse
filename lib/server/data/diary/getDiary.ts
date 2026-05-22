@@ -28,7 +28,7 @@ export const getDiaryData = async ({
       productId: product.productId.toString(),
       title: product.title,
       category: product.category,
-      calories: product.calories,
+      caloriesPer100g: product.caloriesPer100g,
       weight: product.weight,
       recommended: product.recommended,
     })),

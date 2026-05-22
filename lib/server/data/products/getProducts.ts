@@ -52,8 +52,7 @@ export const getProducts = async ({
 
       return {
         id: p._id.toString(),
-        weight: p.weight,
-        calories: p.calories,
+        caloriesPer100g: p.caloriesPer100g,
         category: p.category,
         title: p.title,
         recommended,

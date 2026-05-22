@@ -51,7 +51,7 @@ const MealPage = async ({
   const products =
     diary?.products.filter((p) => p.mealType === meal.value) ?? [];
   const totalMealConsumption = products.reduce((total, p) => {
-    return total + p.calories * (p.weight / 100);
+    return total + p.caloriesPer100g * (p.weight / 100);
   }, 0);
   const hasProducts = products.length > 0;
   return (

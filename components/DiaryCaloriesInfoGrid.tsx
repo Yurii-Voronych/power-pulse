@@ -20,7 +20,7 @@ const DiaryCaloriesInfoGrid = ({
   products,
 }: DiaryCaloriesInfoGridProps) => {
   const consumedCalories = products.reduce((total, product) => {
-    return total + product.calories;
+    return total + (product.caloriesPer100g * product.weight) / 100;
   }, 0);
 
   const burnedCalories = exercises.reduce((total, exercise) => {

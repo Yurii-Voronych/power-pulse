@@ -7,7 +7,8 @@ const ProductsGrid = ({ products }: productsGridProps) => {
   return (
     <ul className="text-[14px] flex flex-col gap-2">
       {products.map((product) => {
-        const consumedCalories = (product.weight / 100) * product.calories;
+        const consumedCalories =
+          (product.weight / 100) * product.caloriesPer100g;
         return (
           <li
             key={product.id}

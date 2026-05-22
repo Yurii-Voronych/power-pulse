@@ -7,7 +7,7 @@ export type DiaryProduct = {
   productId: string;
   title: string;
   category: string;
-  calories: number;
+  caloriesPer100g: number;
   weight: number;
   recommended: boolean;
 };
@@ -38,7 +38,7 @@ export type DBDiaryProduct = {
   productId: Types.ObjectId;
   title: string;
   category: string;
-  calories: number;
+  caloriesPer100g: number;
   weight: number;
   recommended: boolean;
 };

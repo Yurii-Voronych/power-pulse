@@ -1,7 +1,6 @@
 export type Product = {
   id: string;
-  weight: number;
-  calories: number;
+  caloriesPer100g: number;
   category: string;
   title: string;
   recommended: boolean | null;
