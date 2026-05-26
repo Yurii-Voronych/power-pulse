@@ -13,16 +13,10 @@ interface ProductsFiltersProps {
   }[];
 }
 const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
-  const recommendationList = [
-    { id: "1", value: "", name: "All" },
-    { id: "2", value: "true", name: "Recommended" },
-    { id: "3", value: "false", name: "Not recommended" },
-  ];
   const router = useRouter();
   const params = useSearchParams();
   const searchFromUrl = params.get("search") || "";
   const category = params.get("category") || "";
-  const recommended = params.get("recommended") || "";
 
   const [search, setSearch] = useState(searchFromUrl);
 
@@ -75,12 +69,6 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
           param="category"
           onChange={updateParams}
           chosen={category}
-        />
-        <CustomSelect
-          options={recommendationList}
-          param="recommended"
-          onChange={updateParams}
-          chosen={recommended}
         />
       </div>
     </div>

@@ -15,8 +15,6 @@ export const editProfileSchemaServer = z.object({
       "You must be at least 18 years old",
     ),
 
-  blood: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
-
   sex: z.enum(["male", "female"]),
 
   levelActivity: z.union([

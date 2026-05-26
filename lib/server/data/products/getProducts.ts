@@ -6,17 +6,13 @@ type GetProductsParams = {
   page?: number;
   limit?: number;
   category?: string;
-  recommended?: string;
   search?: string;
-  blood?: number;
 };
 export const getProducts = async ({
   page = 1,
   limit = 12,
   category,
   search,
-  recommended,
-  blood,
 }: GetProductsParams): Promise<GetProductsResult> => {
   await connectDB();
   const skip = (page - 1) * limit;
@@ -31,12 +27,6 @@ export const getProducts = async ({
     filter.category = category;
   }
 
-  if (recommended && recommended === "true") {
-    filter[`groupBloodAllowed.${blood}`] = true;
-  }
-  if (recommended && recommended === "false") {
-    filter[`groupBloodAllowed.${blood}`] = false;
-  }
   const [products, total] = await Promise.all([
     Product.find(filter).skip(skip).limit(limit).lean(),
     Product.countDocuments(filter),
@@ -44,18 +34,11 @@ export const getProducts = async ({
 
   return {
     products: products.map((p) => {
-      let recommended: boolean | null = null;
-
-      if (blood) {
-        recommended = p.groupBloodAllowed?.[blood] ?? null;
-      }
-
       return {
         id: p._id.toString(),
         caloriesPer100g: p.caloriesPer100g,
         category: p.category,
         title: p.title,
-        recommended,
       };
     }),
     total,

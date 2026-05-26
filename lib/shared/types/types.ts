@@ -3,7 +3,6 @@ export type Product = {
   caloriesPer100g: number;
   category: string;
   title: string;
-  recommended: boolean | null;
 };
 
 export type GetProductsResult = {

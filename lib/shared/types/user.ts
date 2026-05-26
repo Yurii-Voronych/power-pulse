@@ -8,7 +8,6 @@ export interface User {
     currentWeight?: number;
     desiredWeight?: number;
     birthday?: string;
-    blood?: number;
     sex?: string;
     levelActivity?: number;
   };

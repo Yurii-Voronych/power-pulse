@@ -2,7 +2,6 @@ import Container from "@/components/Container";
 import Pagination from "@/components/Pagination";
 import ProductsFilters from "@/components/ProductsFilters";
 import ProductsList from "@/components/ProductsList";
-import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
 import { getCategories } from "@/lib/server/data/categories/getCategories";
 import { getProducts } from "@/lib/server/data/products/getProducts";
 import { redirect } from "next/navigation";
@@ -16,13 +15,10 @@ const ProductsPage = async ({
   const categoriesList = await getCategories();
   const categoriesValidationArr = categoriesList.map((c) => c.value);
   const rawParams = await searchParams;
-  const user = await getCurrentUser();
-  const blood = user?.profile?.blood;
   const searchParamsSchema = z.object({
     page: z.string().transform(Number).default(1),
     limit: z.string().transform(Number).default(12),
     category: z.enum(categoriesValidationArr).optional(),
-    recommended: z.enum(["true", "false"]).optional(),
     search: z.string().optional(),
   });
 
@@ -32,15 +28,13 @@ const ProductsPage = async ({
     redirect("/products?page=1");
   }
 
-  const { page, limit, category, recommended, search } = parsed.data;
+  const { page, limit, category, search } = parsed.data;
 
   const products = await getProducts({
     page,
     limit,
     category,
-    recommended,
     search,
-    blood,
   });
 
   return (

@@ -10,7 +10,6 @@ type UserDTOInput = {
     currentWeight?: number;
     desiredWeight?: number;
     birthday?: Date;
-    blood?: number;
     sex?: string;
     levelActivity?: number;
   };
@@ -33,7 +32,6 @@ export const mapUserToDTO = (user: UserDTOInput): User => ({
         currentWeight: user.profile.currentWeight,
         desiredWeight: user.profile.desiredWeight,
         birthday: user.profile.birthday?.toISOString(),
-        blood: user.profile.blood,
         sex: user.profile.sex,
         levelActivity: user.profile.levelActivity,
       }

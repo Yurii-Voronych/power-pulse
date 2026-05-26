@@ -41,9 +41,6 @@ export const editProfileSchema = Yup.object({
 
       return parsed <= subYears(new Date(), 18);
     }),
-  blood: Yup.number()
-    .oneOf([1, 2, 3, 4], "Invalid blood type")
-    .required("Blood type is required"),
 
   sex: Yup.string()
     .oneOf(["male", "female"], "Invalid sex value")

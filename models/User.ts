@@ -47,11 +47,6 @@ const userSchema = new Schema(
         type: Date,
       },
 
-      blood: {
-        type: Number,
-        enum: [1, 2, 3, 4],
-      },
-
       sex: {
         type: String,
         enum: ["male", "female"],

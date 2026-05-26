@@ -44,7 +44,6 @@ export async function PATCH(req: Request) {
           currentWeight: data.currentWeight,
           desiredWeight: data.desiredWeight,
           birthday: data.birthday,
-          blood: data.blood,
           sex: data.sex,
           levelActivity: data.levelActivity,
         },

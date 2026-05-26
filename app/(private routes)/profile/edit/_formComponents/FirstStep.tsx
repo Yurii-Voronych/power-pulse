@@ -5,7 +5,7 @@ import { NextIcon } from "@/components/icons/NextArrowIcon";
 import { Dispatch, SetStateAction } from "react";
 
 import toast from "react-hot-toast";
-import { EditProfileFormValues } from "../page";
+import { EditProfileFormValues } from "../EditProfileForm";
 import BirthdayInput from "./BirthdayInput";
 interface FirstStepProps {
   setStep: Dispatch<SetStateAction<1 | 2 | 3>>;

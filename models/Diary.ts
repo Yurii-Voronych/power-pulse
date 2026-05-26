@@ -33,11 +33,6 @@ const DiaryProductSchema = new Schema(
       required: true,
       min: 0,
     },
-
-    recommended: {
-      type: Boolean,
-      required: true,
-    },
   },
   { _id: true },
 );

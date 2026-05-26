@@ -15,7 +15,6 @@ export interface SettingsFormValues {
   currentWeight: string;
   desiredWeight: string;
   birthday: string;
-  blood: string;
   sex: string;
   levelActivity: string;
   name: string;
@@ -32,7 +31,6 @@ const ProfileForm = () => {
         currentWeight: "",
         desiredWeight: "",
         birthday: "",
-        blood: "",
         sex: "",
         levelActivity: "",
         name: "",
@@ -50,7 +48,6 @@ const ProfileForm = () => {
       height: Number(values.height),
       currentWeight: Number(values.currentWeight),
       desiredWeight: Number(values.desiredWeight),
-      blood: Number(values.blood),
       levelActivity: Number(values.levelActivity),
       birthday: parse(values.birthday, "dd.MM.yyyy", new Date()),
     };
@@ -186,25 +183,6 @@ const ProfileForm = () => {
   2xl:gap-16
   2xl:w-auto"
         >
-          <div className="">
-            <p className="mb-4">Blood:</p>
-            <div className="flex gap-2">
-              {[1, 2, 3, 4].map((type) => (
-                <label
-                  key={type}
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <Field
-                    type="radio"
-                    name="blood"
-                    value={String(type)}
-                    className=" appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1"
-                  />
-                  <span>{type}</span>
-                </label>
-              ))}
-            </div>
-          </div>
           <div className="text-white text-[14px]">
             <p className="mb-4">Sex:</p>
             <div className="flex gap-2">

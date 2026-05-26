@@ -2,7 +2,7 @@ import { Field, FormikErrors } from "formik";
 import { NextIcon } from "@/components/icons/NextArrowIcon";
 import { Dispatch, SetStateAction } from "react";
 import toast from "react-hot-toast";
-import { EditProfileFormValues } from "../page";
+import { EditProfileFormValues } from "../EditProfileForm";
 
 interface SecondStepProps {
   setStep: Dispatch<SetStateAction<1 | 2 | 3>>;
@@ -11,7 +11,7 @@ interface SecondStepProps {
 const SecondStep = ({ setStep, validateForm }: SecondStepProps) => {
   const handleClick = async () => {
     const errors = await validateForm();
-    if (!errors.blood && !errors.sex && !errors.levelActivity) {
+    if (!errors.sex && !errors.levelActivity) {
       setStep(3);
     } else {
       console.log(errors);
@@ -24,26 +24,6 @@ const SecondStep = ({ setStep, validateForm }: SecondStepProps) => {
         Get Closer To Your Goals
       </p>
       <div className="grid grid-cols-2 gap-3.5  2xl:w-48.75 mb-7 text-white text-[14px] leading-[1.28]">
-        <div>
-          <p className="mb-4 ">Blood:</p>
-
-          <div className="space-y-2">
-            {[1, 2, 3, 4].map((type) => (
-              <label
-                key={type}
-                className="flex items-center gap-3 cursor-pointer"
-              >
-                <Field
-                  type="radio"
-                  name="blood"
-                  value={String(type)}
-                  className=" appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1"
-                />
-                <span>{type}</span>
-              </label>
-            ))}
-          </div>
-        </div>
         <div className="text-white text-[14px]">
           <p className="mb-4">Sex:</p>
           <div className="space-y-2">

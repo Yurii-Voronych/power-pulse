@@ -30,7 +30,6 @@ export const getDiaryData = async ({
       category: product.category,
       caloriesPer100g: product.caloriesPer100g,
       weight: product.weight,
-      recommended: product.recommended,
     })),
     exercises: diary.exercises.map((exercise: DBDiaryExercise) => ({
       id: exercise._id.toString(),

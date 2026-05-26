@@ -13,8 +13,6 @@ export const mapUserToFormValues = (user: User): SettingsFormValues => {
     birthday: user.profile?.birthday
       ? format(new Date(user.profile.birthday), "dd.MM.yyyy")
       : "",
-
-    blood: user.profile?.blood?.toString() || "",
     sex: user.profile?.sex || "",
     levelActivity: user.profile?.levelActivity?.toString() || "",
   };

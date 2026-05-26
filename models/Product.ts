@@ -2,7 +2,7 @@ import { Schema, model, models } from "mongoose";
 
 const productSchema = new Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
       trim: true,
@@ -19,19 +19,6 @@ const productSchema = new Schema(
       type: String,
       required: true,
       index: true,
-    },
-
-    recommended: {
-      type: Boolean,
-      default: true,
-      index: true,
-    },
-
-    groupBloodNotAllowed: {
-      1: { type: Boolean, default: false },
-      2: { type: Boolean, default: false },
-      3: { type: Boolean, default: false },
-      4: { type: Boolean, default: false },
     },
   },
   {
