@@ -9,6 +9,7 @@ const ProductsGrid = ({ products }: productsGridProps) => {
       {products.map((product) => {
         const consumedCalories =
           (product.weight / 100) * product.caloriesPer100g;
+        const roundedConsumedCalories = Math.ceil(consumedCalories);
         return (
           <li
             key={product.id}
@@ -16,7 +17,7 @@ const ProductsGrid = ({ products }: productsGridProps) => {
           >
             <div>
               <span className="text-orange-1">{product.title}</span>
-              <span>{consumedCalories} kcal</span>
+              <span>{roundedConsumedCalories} kcal</span>
               <span>{product.weight} g</span>
             </div>
           </li>

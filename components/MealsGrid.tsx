@@ -20,6 +20,7 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
         const calories = meal.products.reduce((total, product) => {
           return total + product.caloriesPer100g * (product.weight / 100);
         }, 0);
+        const roundedCalories = Math.ceil(calories);
 
         const hasProducts = meal.products.length > 0;
 
@@ -35,7 +36,7 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
               <div>
                 <h2 className="text-orange-1">{meal.label}</h2>
 
-                <span className="mr-2">{calories}</span>
+                <span className="mr-2">{roundedCalories}</span>
                 <span className="text-white mr-2">Kcal</span>
 
                 {hasProducts ? (

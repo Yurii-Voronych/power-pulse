@@ -53,6 +53,7 @@ const MealPage = async ({
   const totalMealConsumption = products.reduce((total, p) => {
     return total + p.caloriesPer100g * (p.weight / 100);
   }, 0);
+  const roundedTotalMealConsumption = Math.ceil(totalMealConsumption);
   const hasProducts = products.length > 0;
   return (
     <Container>
@@ -71,7 +72,7 @@ const MealPage = async ({
         {hasProducts ? (
           <>
             <ProductsGrid products={products} />
-            <p>{totalMealConsumption}</p>
+            <p>{roundedTotalMealConsumption}</p>
           </>
         ) : (
           <p className="pt-20 pb-20 text-center">No products added yet</p>

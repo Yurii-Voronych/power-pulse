@@ -22,6 +22,7 @@ const DiaryCaloriesInfoGrid = ({
   const consumedCalories = products.reduce((total, product) => {
     return total + (product.caloriesPer100g * product.weight) / 100;
   }, 0);
+  const roundedConsumedCalories = Math.ceil(consumedCalories);
 
   const burnedCalories = exercises.reduce((total, exercise) => {
     return total + exercise.burnedCalories;
@@ -31,7 +32,7 @@ const DiaryCaloriesInfoGrid = ({
     return total + exercise.time;
   }, 0);
 
-  const remainingCalories = intake - consumedCalories;
+  const remainingCalories = intake - roundedConsumedCalories;
   const remainingSportMinutes = sportMinutes - spentSportMinutes;
 
   return (
@@ -39,7 +40,7 @@ const DiaryCaloriesInfoGrid = ({
       <div className="grid grid-cols-2 gap-3.5 w-fit mb-5 md:grid-cols-3">
         <CaloriesIntake value={intake} />
         <SportMinutes value={sportMinutes} />
-        <CaloriesConsumed value={consumedCalories} />
+        <CaloriesConsumed value={roundedConsumedCalories} />
         <CaloriesBurned value={burnedCalories} />
         <CaloriesRest value={remainingCalories} />
         <SportsRest value={remainingSportMinutes} />
