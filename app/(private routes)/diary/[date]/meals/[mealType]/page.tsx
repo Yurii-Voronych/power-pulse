@@ -1,6 +1,6 @@
+import AddProductsManager from "@/components/AddProductsManager";
 import Container from "@/components/Container";
 import { NextIcon } from "@/components/icons/NextArrowIcon";
-import ProductsGrid from "@/components/ProductsGrid";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
 import { getDiaryData } from "@/lib/server/data/diary/getDiary";
 import { MEAL_TYPES } from "@/lib/shared/constants/constants";
@@ -48,13 +48,9 @@ const MealPage = async ({
     date,
     userId: user.id,
   });
-  const products =
+  const initialProducts =
     diary?.products.filter((p) => p.mealType === meal.value) ?? [];
-  const totalMealConsumption = products.reduce((total, p) => {
-    return total + p.caloriesPer100g * (p.weight / 100);
-  }, 0);
-  const roundedTotalMealConsumption = Math.ceil(totalMealConsumption);
-  const hasProducts = products.length > 0;
+
   return (
     <Container>
       <Link
@@ -68,17 +64,11 @@ const MealPage = async ({
         <h1 className="text-2xl font-bold">{meal.label}</h1>
         <p className="text-[18px] font-semibold">{date}</p>
       </div>
-      <div className="w-full max-h-60 border border-white/20 rounded-xl p-2 flex flex-col gap-2 mb-10">
-        {hasProducts ? (
-          <>
-            <ProductsGrid products={products} />
-            <p>{roundedTotalMealConsumption}</p>
-          </>
-        ) : (
-          <p className="pt-20 pb-20 text-center">No products added yet</p>
-        )}
-      </div>
-      <button>Add products</button>
+      <AddProductsManager
+        initialProducts={initialProducts}
+        date={date}
+        mealType={meal.value}
+      />
     </Container>
   );
 };

@@ -4,7 +4,7 @@ import { PersonIcon } from "./icons/PersonIcon";
 interface ProductCardProp {
   product: Product;
 }
-const ProductCard = async ({ product }: ProductCardProp) => {
+const ProductCard = ({ product }: ProductCardProp) => {
   return (
     <div
       className="w-83.75
