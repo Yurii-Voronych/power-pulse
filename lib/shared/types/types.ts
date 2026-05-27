@@ -28,3 +28,9 @@ export type Exercise = {
   burnedCalories: number;
   time: number;
 };
+export type SelectedProduct = {
+  productId: string;
+  title: string;
+  caloriesPer100g: number;
+  weight: number;
+};
