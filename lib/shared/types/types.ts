@@ -32,5 +32,5 @@ export type SelectedProduct = {
   productId: string;
   title: string;
   caloriesPer100g: number;
-  weight: number;
+  weight: string;
 };

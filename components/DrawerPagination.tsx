@@ -41,7 +41,7 @@ const DrawerPagination = ({
   if (totalPages <= 1) return null;
 
   return (
-    <div className="flex items-center gap-2 mb-4 justify-center">
+    <div className="flex items-center gap-2 mb-3 mt-3 justify-center">
       <button
         type="button"
         onClick={() => goToPage(currentPage - 1)}

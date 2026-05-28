@@ -1,6 +1,7 @@
 import { requireAuth } from "@/lib/server/auth/requireAuth";
 import { connectDB } from "@/lib/server/db/mongodb";
 import { MEAL_TYPES } from "@/lib/shared/constants/constants";
+import { DiaryProduct } from "@/lib/shared/types/diary";
 import {
   getDiaryDateRange,
   validateDiaryDate,
@@ -176,20 +177,46 @@ export async function POST(
     });
 
     const diary = await Diary.findOne({ userId: payload.userId, date });
+    let updatedDiary;
+
     if (!diary) {
-      await Diary.create({
+      updatedDiary = await Diary.create({
         userId: payload.userId,
         date,
         products: productsSnapshots,
       });
     } else {
       diary.products.push(...productsSnapshots);
-      await diary.save();
+      updatedDiary = await diary.save();
     }
+
+    const addedProducts = updatedDiary.products
+      .slice(-productsSnapshots.length)
+      .map(
+        (product: {
+          _id: { toString: () => string };
+          productId: { toString: () => string };
+          mealType: DiaryProduct["mealType"];
+          title: string;
+          category: string;
+          caloriesPer100g: number;
+          weight: number;
+        }): DiaryProduct => ({
+          id: product._id.toString(),
+          productId: product.productId.toString(),
+          mealType: product.mealType,
+          title: product.title,
+          category: product.category,
+          caloriesPer100g: product.caloriesPer100g,
+          weight: product.weight,
+        }),
+      );
+
     return jsonWithAuthCookie(
       {
         message: "Products added",
         addedCount: productsSnapshots.length,
+        products: addedProducts,
       },
       { status: 201 },
       payload.accessToken,

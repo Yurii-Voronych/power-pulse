@@ -10,12 +10,18 @@ import { NextIcon } from "./icons/NextArrowIcon";
 import DrawerProductsList from "./DrawerProductsList";
 import { SelectedProductsBox } from "./SelectedProductsBox";
 import { addProductsToMeal } from "@/lib/client/api/diaryApi";
+import { DiaryProduct } from "@/lib/shared/types/diary";
 interface AddProductsDrawerProps {
   date: string;
   mealType: string;
+  onProductsAdded: (addProducts: DiaryProduct[]) => void;
 }
 
-const AddProductsDrawer = ({ date, mealType }: AddProductsDrawerProps) => {
+const AddProductsDrawer = ({
+  date,
+  mealType,
+  onProductsAdded,
+}: AddProductsDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,6 +32,7 @@ const AddProductsDrawer = ({ date, mealType }: AddProductsDrawerProps) => {
   const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
     [],
   );
+  const [isSaving, setIsSaving] = useState(false);
   const addProduct = (product: Product) => {
     const exists = selectedProducts.some((p) => p.productId === product.id);
 
@@ -37,18 +44,14 @@ const AddProductsDrawer = ({ date, mealType }: AddProductsDrawerProps) => {
         productId: product.id,
         title: product.title,
         caloriesPer100g: product.caloriesPer100g,
-        weight: 100,
+        weight: "100",
       },
     ]);
   };
   const removeProduct = (id: string) => {
-    setSelectedProducts(selectedProducts.filter((p) => p.productId !== id));
+    setSelectedProducts((prev) => prev.filter((p) => p.productId !== id));
   };
   const updateWeight = (productId: string, weight: string) => {
-    const formattedWeight = Number(weight);
-
-    if (Number.isNaN(formattedWeight)) return;
-
     setSelectedProducts((prev) =>
       prev.map((product) => {
         if (product.productId !== productId) {
@@ -57,11 +60,23 @@ const AddProductsDrawer = ({ date, mealType }: AddProductsDrawerProps) => {
 
         return {
           ...product,
-          weight: formattedWeight,
+          weight: weight,
         };
       }),
     );
   };
+  const hasInvalidWeight = selectedProducts.some((product) => {
+    const weight = Number(product.weight);
+
+    return (
+      product.weight.trim() === "" ||
+      Number.isNaN(weight) ||
+      weight <= 0 ||
+      weight > 10000
+    );
+  });
+  const canSave =
+    selectedProducts.length > 0 && !hasInvalidWeight && !isSaving;
   const selectedProductIds = selectedProducts.map((p) => p.productId);
   const mealLabel = mealType.charAt(0).toUpperCase() + mealType.slice(1);
 
@@ -102,12 +117,25 @@ const AddProductsDrawer = ({ date, mealType }: AddProductsDrawerProps) => {
   const handleClick = () => {
     setIsDrawerOpen(!isDrawerOpen);
   };
-  const handleSave = async (
-    date: string,
-    mealType: string,
-    products: SelectedProduct[],
-  ) => {
-    const res = await addProductsToMeal({ date, mealType, products });
+  const handleSave = async () => {
+    if (!canSave) return;
+
+    try {
+      setIsSaving(true);
+      const { products } = await addProductsToMeal({
+        date,
+        mealType,
+        products: selectedProducts,
+      });
+      onProductsAdded(products);
+      setSelectedProducts([]);
+      setIsDrawerOpen(false);
+      toast.success("Products added");
+    } catch {
+      toast.error("Something went wrong, please try again later");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -130,7 +158,7 @@ const AddProductsDrawer = ({ date, mealType }: AddProductsDrawerProps) => {
             onClick={handleClick}
           />
 
-          <aside className="absolute right-0 top-0 flex h-full w-full max-w-110 flex-col border-l border-white/15 bg-black p-5 shadow-2xl">
+          <aside className="absolute right-0 top-0 flex h-full w-full max-w-110 flex-col border-l border-white/15 bg-black pt-5 px-5 shadow-2xl">
             <div className="mb-5 flex items-start justify-between gap-4">
               <div>
                 <p className="text-[12px] text-white/40">{date}</p>
@@ -141,7 +169,7 @@ const AddProductsDrawer = ({ date, mealType }: AddProductsDrawerProps) => {
               <button
                 type="button"
                 onClick={handleClick}
-                className="flex items-center gap-2 text-[14px] text-orange"
+                className="flex items-center gap-2 text-[14px] text-orange md:hidden"
               >
                 Close
                 <NextIcon className="rotate-270" />
@@ -186,15 +214,18 @@ const AddProductsDrawer = ({ date, mealType }: AddProductsDrawerProps) => {
               selectedProducts={selectedProducts}
               onRemove={removeProduct}
               onWeightChange={updateWeight}
+              onSave={handleSave}
+              canSave={canSave}
+              isSaving={isSaving}
             />
-            <div className="border-t border-white/10 pt-4">
+            <div className="border-t border-white/10">
               <DrawerPagination
                 currentPage={currentPage}
                 onPageChange={setCurrentPage}
                 totalPages={totalPages}
               />
 
-              <div className="flex gap-3">
+              <div className="flex gap-3 max-md:hidden">
                 <button
                   type="button"
                   onClick={handleClick}
@@ -204,10 +235,11 @@ const AddProductsDrawer = ({ date, mealType }: AddProductsDrawerProps) => {
                 </button>
                 <button
                   type="button"
+                  disabled={!canSave}
                   className="h-11 flex-1 rounded-xl bg-orange text-[14px] font-semibold text-white disabled:opacity-40"
-                  onClick={() => handleSave(date, mealType, selectedProducts)}
+                  onClick={handleSave}
                 >
-                  Save
+                  {isSaving ? "Saving..." : "Save"}
                 </button>
               </div>
             </div>

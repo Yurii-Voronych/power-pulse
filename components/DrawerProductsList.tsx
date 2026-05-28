@@ -17,12 +17,14 @@ const DrawerProductsList = ({
         return (
           <li
             key={p.id}
-            className="flex items-center justify-between gap-3 rounded-xl border border-white/15 bg-white/3 p-3"
+            className="flex items-center justify-between gap-3 rounded-xl border border-white/15 bg-white/3 p-1.5"
           >
-            <div className="min-w-0">
-              <p className="truncate text-[14px] font-medium">{p.title}</p>
-              <p className="mt-1 text-[12px] text-white/40">
-                {p.caloriesPer100g} kcal / 100g
+            <div className="flex justify-between w-full">
+              <p className="truncate max-w-50 text-[14px] font-medium">
+                {p.title}
+              </p>
+              <p className="text-[12px] text-white/40">
+                {p.caloriesPer100g} kcal
               </p>
             </div>
 
