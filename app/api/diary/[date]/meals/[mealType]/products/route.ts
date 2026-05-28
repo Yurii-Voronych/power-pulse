@@ -1,3 +1,4 @@
+import { jsonWithAuthCookie } from "@/lib/server/api/jsonWithAuthCookie";
 import { requireAuth } from "@/lib/server/auth/requireAuth";
 import { connectDB } from "@/lib/server/db/mongodb";
 import { MEAL_TYPES } from "@/lib/shared/constants/constants";
@@ -22,26 +23,6 @@ const postDiarySchema = z.object({
     .min(1)
     .max(50),
 });
-
-const jsonWithAuthCookie = (
-  body: unknown,
-  init: ResponseInit,
-  accessToken?: string,
-) => {
-  const res = NextResponse.json(body, init);
-
-  if (accessToken) {
-    res.cookies.set("accessToken", accessToken, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 15,
-    });
-  }
-
-  return res;
-};
 
 export async function POST(
   req: NextRequest,

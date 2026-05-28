@@ -75,8 +75,7 @@ const AddProductsDrawer = ({
       weight > 10000
     );
   });
-  const canSave =
-    selectedProducts.length > 0 && !hasInvalidWeight && !isSaving;
+  const canSave = selectedProducts.length > 0 && !hasInvalidWeight && !isSaving;
   const selectedProductIds = selectedProducts.map((p) => p.productId);
   const mealLabel = mealType.charAt(0).toUpperCase() + mealType.slice(1);
 
@@ -140,13 +139,8 @@ const AddProductsDrawer = ({
 
   return (
     <>
-      <button
-        type="button"
-        onClick={handleClick}
-        className="text-[14px] text-orange flex items-center gap-2 mb-4"
-      >
+      <button type="button" onClick={handleClick} className="btn-primary mb-2">
         Add products
-        <NextIcon className="rotate-90" />
       </button>
 
       {isDrawerOpen && (
