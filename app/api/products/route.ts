@@ -1,5 +1,6 @@
 import { requireAuth } from "@/lib/server/auth/requireAuth";
 import { getProducts } from "@/lib/server/data/products/getProducts";
+import { connectDB } from "@/lib/server/db/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
@@ -19,6 +20,7 @@ const schema = z.object({
 });
 export async function GET(req: NextRequest) {
   try {
+    await connectDB();
     const payload = await requireAuth();
 
     if (!payload) {

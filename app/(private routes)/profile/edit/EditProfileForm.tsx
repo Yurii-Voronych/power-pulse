@@ -161,7 +161,6 @@ const EditProfileForm = () => {
         <div className="flex gap-3.5 mb-3">
           {steps.map((s) => (
             <div
-              onClick={() => setStep(s)}
               key={s}
               className={clsx(
                 "w-12.5 h-1 rounded",
