@@ -37,7 +37,7 @@ const DiaryCaloriesInfoGrid = ({
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-3.5 w-fit mb-5 md:grid-cols-3">
+      <div className="grid w-full grid-cols-2 gap-3.5 mb-5 md:grid-cols-3 xl:grid-cols-2">
         <CaloriesIntake value={intake} />
         <SportMinutes value={sportMinutes} />
         <CaloriesConsumed value={roundedConsumedCalories} />
@@ -45,7 +45,7 @@ const DiaryCaloriesInfoGrid = ({
         <CaloriesRest value={remainingCalories} />
         <SportsRest value={remainingSportMinutes} />
       </div>
-      <div className="flex gap-2 mb-10">
+      <div className="flex gap-2 mb-10 xl:mb-0">
         <WarningIcon className="shrink-0" />
         <p className="text-[14px] text-white/30">
           Record all your meals in a calorie diary every day. This will help me

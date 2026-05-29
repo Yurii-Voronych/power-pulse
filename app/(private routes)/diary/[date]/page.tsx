@@ -39,22 +39,28 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
   const exercises = diary?.exercises ?? [];
   return (
     <Container>
-      <div className="flex justify-between items-end mb-10">
-        <h1 className="mt-25 text-2xl font-bold">Diary</h1>
+      <div className="flex justify-between items-end mb-10 xl:mb-7">
+        <h1 className="mt-25 text-2xl font-bold xl:mt-16">Diary</h1>
         <DiaryDatePicker
           date={date}
           minDate={diaryDateRange.minDate}
           maxDate={diaryDateRange.maxDate}
         />
       </div>
-      <DiaryCaloriesInfoGrid
-        intake={normOfCalories}
-        sportMinutes={sportMinutes}
-        products={products}
-        exercises={exercises}
-      />
-      <MealsGrid date={date} products={products} />
-      <ExercisesGrid exercises={exercises} />
+      <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_442px] xl:items-start xl:gap-7">
+        <div className="xl:order-2">
+          <DiaryCaloriesInfoGrid
+            intake={normOfCalories}
+            sportMinutes={sportMinutes}
+            products={products}
+            exercises={exercises}
+          />
+        </div>
+        <div className="xl:order-1">
+          <MealsGrid date={date} products={products} />
+          <ExercisesGrid exercises={exercises} />
+        </div>
+      </div>
     </Container>
   );
 };

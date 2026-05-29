@@ -7,7 +7,7 @@ interface ExercisesGridProps {
 
 const ExercisesGrid = ({ exercises }: ExercisesGridProps) => {
   return (
-    <div className="w-full border border-white/20 p-4 rounded-xl mb-10">
+    <div className="w-full border border-white/20 p-4 rounded-xl mb-10 xl:min-h-50">
       <div className="flex justify-between text-white/50 text-[14px]">
         <p>Exercises</p>
         <button className="flex text-[14px] text-orange gap-2">

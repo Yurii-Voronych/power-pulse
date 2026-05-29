@@ -15,7 +15,7 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
   }));
 
   return (
-    <ul className="border border-white/20 rounded-xl p-2 flex flex-col gap-2 mb-10">
+    <ul className="border border-white/20 rounded-xl p-2 flex flex-col gap-2 mb-10 xl:p-3 xl:gap-3">
       {meals.map((meal) => {
         const calories = meal.products.reduce((total, product) => {
           return total + product.caloriesPer100g * (product.weight / 100);
@@ -26,15 +26,15 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
 
         return (
           <li
-            className="text-[14px] border border-white/10 p-2 rounded-xl  bg-orange-500/10"
+            className="text-[14px] border border-white/10 p-2 rounded-xl bg-orange-500/10 xl:px-4 xl:py-3"
             key={meal.value}
           >
             <Link
               href={`/diary/${date}/meals/${meal.value}`}
-              className="flex justify-between items-center"
+              className="flex justify-between items-center gap-4"
             >
-              <div>
-                <h2 className="text-orange-1">{meal.label}</h2>
+              <div className="min-w-0">
+                <h2 className="text-orange-1 font-medium">{meal.label}</h2>
 
                 <span className="mr-2">{roundedCalories}</span>
                 <span className="text-white mr-2">Kcal</span>
@@ -50,11 +50,11 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
               </div>
 
               {hasProducts ? (
-                <div className=" text-orange">
+                <div className="shrink-0 text-orange">
                   Edit <NextIcon />
                 </div>
               ) : (
-                <div className="text-orange flex gap-2 ">
+                <div className="text-orange flex shrink-0 gap-2">
                   Add <NextIcon />
                 </div>
               )}
