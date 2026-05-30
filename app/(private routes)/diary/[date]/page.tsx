@@ -57,7 +57,11 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
           />
         </div>
         <div className="xl:order-1">
-          <MealsGrid date={date} products={products} />
+          <MealsGrid
+            date={date}
+            products={products}
+            shouldScroll={exercises.length > 0}
+          />
           <ExercisesGrid exercises={exercises} />
         </div>
       </div>

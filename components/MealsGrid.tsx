@@ -6,17 +6,27 @@ import { NextIcon } from "./icons/NextArrowIcon";
 interface ProductsGridProps {
   products: DiaryProduct[];
   date: string;
+  shouldScroll?: boolean;
 }
 
-const MealsGrid = ({ products, date }: ProductsGridProps) => {
+const MealsGrid = ({
+  products,
+  date,
+  shouldScroll = false,
+}: ProductsGridProps) => {
   const meals = MEAL_TYPES.map((meal) => ({
     ...meal,
     products: products.filter((product) => product.mealType === meal.value),
   }));
+  const scrollClasses = shouldScroll
+    ? "xl:max-h-73 xl:overflow-y-auto xl:pr-2"
+    : "";
 
   return (
     <div className="border border-white/20 rounded-xl p-2 mb-10 xl:p-3">
-      <ul className="meals-scrollbar flex flex-col gap-2 xl:max-h-73 xl:overflow-y-auto  xl:pr-2 xl:gap-3">
+      <ul
+        className={`meals-scrollbar flex flex-col gap-2 xl:gap-3 ${scrollClasses}`}
+      >
         {meals.map((meal) => {
           const calories = meal.products.reduce((total, product) => {
             return total + product.caloriesPer100g * (product.weight / 100);
