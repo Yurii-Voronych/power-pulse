@@ -15,54 +15,58 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
   }));
 
   return (
-    <ul className="border border-white/20 rounded-xl p-2 flex flex-col gap-2 mb-10 xl:p-3 xl:gap-3">
-      {meals.map((meal) => {
-        const calories = meal.products.reduce((total, product) => {
-          return total + product.caloriesPer100g * (product.weight / 100);
-        }, 0);
-        const roundedCalories = Math.ceil(calories);
+    <div className="border border-white/20 rounded-xl p-2 mb-10 xl:p-3">
+      <ul className="meals-scrollbar flex flex-col gap-2 xl:max-h-73 xl:overflow-y-auto  xl:pr-2 xl:gap-3">
+        {meals.map((meal) => {
+          const calories = meal.products.reduce((total, product) => {
+            return total + product.caloriesPer100g * (product.weight / 100);
+          }, 0);
+          const roundedCalories = Math.ceil(calories);
 
-        const hasProducts = meal.products.length > 0;
+          const hasProducts = meal.products.length > 0;
 
-        return (
-          <li
-            className="text-[14px] border border-white/10 p-2 rounded-xl bg-orange-500/10 xl:px-4 xl:py-3"
-            key={meal.value}
-          >
-            <Link
-              href={`/diary/${date}/meals/${meal.value}`}
-              className="flex justify-between items-center gap-4"
+          return (
+            <li
+              className="text-[14px] border border-white/10 p-2 rounded-xl bg-orange-500/10 xl:pl-4 xl:pr-2"
+              key={meal.value}
             >
-              <div className="min-w-0">
-                <h2 className="text-orange-1 font-medium">{meal.label}</h2>
+              <Link
+                href={`/diary/${date}/meals/${meal.value}`}
+                className="flex justify-between items-center gap-4"
+              >
+                <div className="min-w-0">
+                  <h2 className="text-orange-1 font-medium">{meal.label}</h2>
 
-                <span className="mr-2">{roundedCalories}</span>
-                <span className="text-white mr-2">Kcal</span>
+                  <span className="mr-2">{roundedCalories}</span>
+                  <span className="text-white mr-2">Kcal</span>
+
+                  {hasProducts ? (
+                    <>
+                      <span className="mr-2">{meal.products.length}</span>
+                      <span className="text-white/70">products</span>
+                    </>
+                  ) : (
+                    <p className="text-white/70">
+                      Tap to add your {meal.value}
+                    </p>
+                  )}
+                </div>
 
                 {hasProducts ? (
-                  <>
-                    <span className="mr-2">{meal.products.length}</span>
-                    <span className="text-white/70">products</span>
-                  </>
+                  <div className="shrink-0 text-orange">
+                    Edit <NextIcon />
+                  </div>
                 ) : (
-                  <p className="text-white/70">Tap to add your {meal.value}</p>
+                  <div className="text-orange flex shrink-0 gap-2">
+                    Add <NextIcon />
+                  </div>
                 )}
-              </div>
-
-              {hasProducts ? (
-                <div className="shrink-0 text-orange">
-                  Edit <NextIcon />
-                </div>
-              ) : (
-                <div className="text-orange flex shrink-0 gap-2">
-                  Add <NextIcon />
-                </div>
-              )}
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 

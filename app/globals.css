@@ -115,3 +115,22 @@
   background: rgba(239, 237, 232, 0.1);
   border-radius: 12px;
 }
+
+.meals-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.meals-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  margin-block: 12px;
+}
+
+.meals-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(239, 237, 232, 0.28);
+  border: 2px solid #050505;
+  border-radius: 999px;
+}
+
+.meals-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(239, 237, 232, 0.42);
+}

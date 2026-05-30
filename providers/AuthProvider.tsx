@@ -11,8 +11,6 @@ interface AuthProviderProps {
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const setUser = useAuthStore((state) => state.setUser);
   const clearAuth = useAuthStore((state) => state.clearAuth);
-  const setLoading = useAuthStore((state) => state.setLoading);
-  const isLoading = useAuthStore((state) => state.isLoading);
 
   useEffect(() => {
     const initAuth = async () => {
@@ -21,21 +19,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(user);
       } catch {
         clearAuth();
-      } finally {
-        setLoading(false);
       }
     };
 
     initAuth();
-  }, [setUser, clearAuth, setLoading]);
+  }, [setUser, clearAuth]);
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        Loading...
-      </div>
-    );
-  }
   return <>{children}</>;
 };
 
