@@ -3,8 +3,10 @@ import ExercisesList from "@/components/ExercisesList";
 import { ExercisesTabs } from "@/components/ExercisesTabs";
 import { NextIcon } from "@/components/icons/NextArrowIcon";
 import Pagination from "@/components/Pagination";
+import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
 import { getExercisesByCategory } from "@/lib/server/data/exercises/getExercisesByCategory";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const ExercisesCategoryPage = async ({
   params,
@@ -23,6 +25,12 @@ const ExercisesCategoryPage = async ({
     category: decoded,
     page: Number(currentPage) || 1,
   });
+  const user = await getCurrentUser();
+  if (!user) {
+    redirect("/auth/login");
+  }
+
+  const weight = user.profile?.currentWeight;
 
   return (
     <section
@@ -43,7 +51,7 @@ const ExercisesCategoryPage = async ({
         </Link>
         <ExercisesTabs />
         <p className="text-2xl font-bold capitalize mb-4">{decoded}</p>
-        <ExercisesList cards={exercises} />
+        <ExercisesList cards={exercises} userWeight={weight} />
         <Pagination currentPage={page} totalPages={totalPage} />
       </Container>
     </section>

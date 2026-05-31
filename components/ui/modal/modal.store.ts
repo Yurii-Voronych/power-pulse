@@ -1,48 +1,33 @@
 import { create } from "zustand";
 import { ReactNode } from "react";
 
-type ModalOptions = {
-  backdropClassName?: string;
-  contentClassName?: string;
-  closeOnBackdrop?: boolean;
-  closeOnEscape?: boolean;
-};
+export type ModalBackdrop = "dark" | "orange";
 
 type ModalState = {
   isOpen: boolean;
   content: ReactNode | null;
-  options: ModalOptions;
+  backdrop: ModalBackdrop;
 
-  open: (content: ReactNode, options?: ModalOptions) => void;
+  open: (content: ReactNode, backdrop?: ModalBackdrop) => void;
   close: () => void;
-};
-
-const defaultOptions: ModalOptions = {
-  backdropClassName: "bg-black/50",
-  contentClassName: "",
-  closeOnBackdrop: true,
-  closeOnEscape: true,
 };
 
 export const useModalStore = create<ModalState>((set) => ({
   isOpen: false,
   content: null,
-  options: defaultOptions,
+  backdrop: "dark",
 
-  open: (content, options = {}) =>
+  open: (content, backdrop = "dark") =>
     set({
       isOpen: true,
       content,
-      options: {
-        ...defaultOptions,
-        ...options,
-      },
+      backdrop,
     }),
 
   close: () =>
     set({
       isOpen: false,
       content: null,
-      options: defaultOptions,
+      backdrop: "dark",
     }),
 }));

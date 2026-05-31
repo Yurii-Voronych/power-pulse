@@ -9,7 +9,7 @@ const MobileMenu = () => {
   const { close } = useModalStore();
 
   return (
-    <>
+    <div className="relative z-10">
       <button
         type="button"
         className="fixed top-10 right-10"
@@ -31,7 +31,7 @@ const MobileMenu = () => {
         </ul>
       </nav>
       <LogOutBtn className="fixed bottom-10 left-10" onSuccess={close} />
-    </>
+    </div>
   );
 };
 

@@ -18,10 +18,13 @@ const ExerciseSchema = new Schema(
       type: String,
     },
     burnedCalories: {
-      type: String,
+      type: Number,
     },
     time: {
-      type: String,
+      type: Number,
+    },
+    met: {
+      type: Number,
     },
   },
   {

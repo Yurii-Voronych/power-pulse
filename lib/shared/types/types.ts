@@ -27,6 +27,7 @@ export type Exercise = {
   target: string;
   burnedCalories: number;
   time: number;
+  met: number;
 };
 export type SelectedProduct = {
   productId: string;

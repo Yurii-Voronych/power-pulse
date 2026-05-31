@@ -59,9 +59,7 @@ const HeaderSettings = () => {
         <LogOutBtn className={"max-2xl:hidden"} />
         <button
           className="inline-flex gap-2 justify-center items-center 2xl:hidden"
-          onClick={() =>
-            open(<MobileMenu />, { backdropClassName: "bg-orange" })
-          }
+          onClick={() => open(<MobileMenu />, "orange")}
         >
           <MenuIcon className="md:w-8 md:h-8" />
         </button>
