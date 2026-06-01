@@ -39,10 +39,10 @@ export const CustomSelect = ({ options, onChange, param, chosen }: Props) => {
     };
   }, [open]);
   return (
-    <div className="relative text-[14px]" ref={ref}>
+    <div className="relative text-[14px] w-full" ref={ref}>
       <button
         onClick={() => setOpen((p) => !p)}
-        className="flex items-center justify-between form-input w-40 text-white capitalize"
+        className="flex items-center justify-between form-input text-white capitalize w-full"
       >
         {selected?.name || (param === "category" ? "category" : "all")}
         <ChevronDown size={16} />
