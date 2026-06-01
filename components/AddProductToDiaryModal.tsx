@@ -13,6 +13,7 @@ interface AddProductToDiaryModalProps {
 const AddProductToDiaryModal = ({ product }: AddProductToDiaryModalProps) => {
   const [productWeight, setProductWeight] = useState("100");
   const [mealType, setMealType] = useState("breakfast");
+  const [isLoading, setIsLoading] = useState(false);
   const nextWeight = Number(productWeight);
   const isInvalidWeight =
     productWeight.trim() === "" ||
@@ -25,6 +26,7 @@ const AddProductToDiaryModal = ({ product }: AddProductToDiaryModalProps) => {
     if (isInvalidWeight) return;
 
     try {
+      setIsLoading(true);
       await addProductsToMeal({
         date: formatDiaryDate(new Date()),
         mealType,
@@ -42,16 +44,24 @@ const AddProductToDiaryModal = ({ product }: AddProductToDiaryModalProps) => {
       close();
     } catch {
       toast.error("Something went wrong, please try again later");
+    } finally {
+      setIsLoading(false);
     }
   };
   const options = MEAL_TYPES.map((m, i) => {
     return { value: m.value, name: m.label, id: `${i}` };
   });
   return (
-    <div className="relative z-10 border border-white/50 rounded-xl p-6 w-[80%] bg-[#10100F]">
-      <h2 className="mb-4 text-[14px] text-white font-semibold">
-        {product.title}
-      </h2>
+    <div className="relative z-10 border border-white/50 rounded-xl p-6 w-[80%] bg-[#10100F] md:w-[50%] xl:w-[25%]">
+      <div className="flex justify-between">
+        <h2 className="mb-4 text-[14px] text-white font-semibold">
+          {product.title}
+        </h2>
+        <p>
+          Add product to date:{" "}
+          <span className="text-orange-1">{formatDiaryDate(new Date())}</span>
+        </p>
+      </div>
       <ValueSelect
         options={options}
         value={mealType}
@@ -77,16 +87,20 @@ const AddProductToDiaryModal = ({ product }: AddProductToDiaryModalProps) => {
         </p>
       )}
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 justify-center">
         <button
           type="button"
           className="btn-primary disabled:opacity-40"
-          disabled={isInvalidWeight}
+          disabled={isInvalidWeight || isLoading}
           onClick={handleAddProduct}
         >
-          Add to Diary
+          Add
         </button>
-        <button className="btn-outline" onClick={close}>
+        <button
+          className="btn-outline disabled:opacity-40"
+          onClick={close}
+          disabled={isLoading}
+        >
           Cancel
         </button>
       </div>

@@ -3,6 +3,7 @@ import { Product } from "@/lib/shared/types/types";
 import { PersonIcon } from "./icons/PersonIcon";
 import { useModalStore } from "./ui/modal/modal.store";
 import AddProductToDiaryModal from "./AddProductToDiaryModal";
+import { NextIcon } from "./icons/NextArrowIcon";
 
 interface ProductCardProp {
   product: Product;
@@ -16,12 +17,12 @@ const ProductCard = ({ product }: ProductCardProp) => {
     >
       <div className="flex gap-2 w-fit ml-auto text-[12px] mb-10">
         <button
-          className="text-orange"
+          className="text-orange flex gap-1.5 items-center"
           onClick={() => {
             open(<AddProductToDiaryModal product={product} />);
           }}
         >
-          add
+          Add <NextIcon />
         </button>
       </div>
       <div className="flex gap-4 w-70 mb-2">
