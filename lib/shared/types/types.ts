@@ -19,7 +19,7 @@ export type Card = {
 };
 
 export type Exercise = {
-  _id: string;
+  id: string;
   bodyPart: string;
   equipment: string;
   gifUrl: string;
@@ -34,4 +34,10 @@ export type SelectedProduct = {
   title: string;
   caloriesPer100g: number;
   weight: string;
+};
+export type SelectedExercise = {
+  exerciseId: string;
+  name: string;
+  burnedCalories: number;
+  time: number;
 };

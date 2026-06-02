@@ -1,10 +1,14 @@
-import { SelectedProduct } from "@/lib/shared/types/types";
+import { SelectedExercise, SelectedProduct } from "@/lib/shared/types/types";
 import api from "./axios";
-import { DiaryProduct } from "@/lib/shared/types/diary";
+import { DiaryExercise, DiaryProduct } from "@/lib/shared/types/diary";
 interface addProductsToMealProps {
   date: string;
   mealType: string;
   products: SelectedProduct[];
+}
+interface addExercisesToDiaryProps {
+  date: string;
+  exercises: SelectedExercise[];
 }
 interface removeProductFromMealProps {
   date: string;
@@ -36,6 +40,24 @@ export const addProductsToMeal = async ({
     `/diary/${date}/meals/${mealType}/products`,
     items,
   );
+  return data;
+};
+
+export const addExercisesToDiary = async ({
+  date,
+  exercises,
+}: addExercisesToDiaryProps): Promise<{
+  message: string;
+  addedCount: number;
+  exercises: DiaryExercise[];
+}> => {
+  const items = {
+    items: exercises.map((exercise) => ({
+      exerciseId: exercise.exerciseId,
+      time: exercise.time,
+    })),
+  };
+  const { data } = await api.post(`/diary/${date}/exercises`, items);
   return data;
 };
 

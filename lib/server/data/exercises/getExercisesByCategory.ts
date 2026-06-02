@@ -5,6 +5,7 @@ type GetExercisesParams = {
   page?: number;
   limit?: number;
   category?: string;
+  search?: string;
 };
 export const getExercisesByCategory = async ({
   page = 1,
@@ -28,10 +29,38 @@ export const getExercisesByCategory = async ({
   return {
     exercises: exercises.map((e) => ({
       ...e,
-      _id: e._id.toString(),
+      id: e._id.toString(),
     })),
     total,
     page,
     totalPage: Math.ceil(total / limit),
+  };
+};
+export const getExercises = async ({
+  page = 1,
+  search,
+  limit = 12,
+}: GetExercisesParams) => {
+  await connectDB();
+  const skip = (page - 1) * limit;
+  let filterQuery = {};
+  if (search)
+    filterQuery = {
+      name: search,
+    };
+
+  const [exercises, total] = await Promise.all([
+    Exercise.find(filterQuery).skip(skip).limit(limit).lean(),
+    Exercise.countDocuments(filterQuery),
+  ]);
+
+  return {
+    exercises: exercises.map((e) => ({
+      ...e,
+      id: e._id.toString(),
+    })),
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
   };
 };

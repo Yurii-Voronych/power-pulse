@@ -34,6 +34,7 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
 
   const normOfCalories = user.dailyNorm?.calories ?? 0;
   const sportMinutes = user.dailyNorm?.sportMinutes ?? 0;
+  const userWeight = user.profile?.currentWeight ?? undefined;
   const diary = await getDiaryData({ date, userId: user.id });
   const products = diary?.products ?? [];
   const exercises = diary?.exercises ?? [];
@@ -62,7 +63,11 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
             products={products}
             shouldScroll={exercises.length > 0}
           />
-          <ExercisesGrid exercises={exercises} />
+          <ExercisesGrid
+            initialExercises={exercises}
+            date={date}
+            userWeight={userWeight}
+          />
         </div>
       </div>
     </Container>
