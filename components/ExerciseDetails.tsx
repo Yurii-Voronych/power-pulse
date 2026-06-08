@@ -3,6 +3,10 @@ import { Exercise } from "@/lib/shared/types/types";
 import Image from "next/image";
 import CloseIcon from "./icons/CloseIcon";
 import { useModalStore } from "./ui/modal/modal.store";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { addExercisesToDiary } from "@/lib/client/api/diaryApi";
+import { formatDiaryDate } from "@/lib/shared/utils/diaryDate";
 
 interface ExerciseDetailsProps {
   exercise: Exercise;
@@ -10,6 +14,39 @@ interface ExerciseDetailsProps {
 }
 const ExerciseDetails = ({ exercise, calories }: ExerciseDetailsProps) => {
   const close = useModalStore((s) => s.close);
+  const [draftTime, setDraftTime] = useState("10");
+  const [isLoading, setIsLoading] = useState(false);
+  const nextTime = Number(draftTime);
+  const burnedCalories = Math.round((calories / 60) * nextTime);
+  const isInvalidTime =
+    draftTime.trim() === "" ||
+    Number.isNaN(nextTime) ||
+    !Number.isInteger(nextTime) ||
+    nextTime <= 0 ||
+    nextTime > 1440;
+  const handleAddExercise = async () => {
+    try {
+      setIsLoading(true);
+      await addExercisesToDiary({
+        date: formatDiaryDate(new Date()),
+        exercises: [
+          {
+            exerciseId: exercise.id,
+            name: exercise.name,
+            burnedCalories: calories,
+            time: nextTime,
+          },
+        ],
+      });
+      toast.success("Exercise added");
+      close();
+    } catch {
+      toast.error("Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="relative z-10 w-[calc(100%-40px)] max-w-83.75 rounded-xl border border-white/35 bg-[#10100f]">
       <button
@@ -70,7 +107,34 @@ const ExerciseDetails = ({ exercise, calories }: ExerciseDetailsProps) => {
             </p>
           </li>
         </ul>
-        <button type="button" className="btn-primary">
+        <label className="mb-2">
+          Duration
+            <input
+              type="text"
+              inputMode="numeric"
+              min={1}
+              max={1440}
+              className="w-15 pl-2 bg-transparent rounded-md border border-white/50 text-white outline-none focus:border focus:border-orange mr-1 ml-1"
+              value={draftTime}
+              onChange={(e) => setDraftTime(e.currentTarget.value)}
+          />{" "}
+          min
+        </label>
+        {isInvalidTime ? (
+          <p className="text-red-500 mb-3">Please enter valid time</p>
+        ) : (
+          <p className="mb-3">
+            Estimated burned calories{" "}
+            <span className="text-orange ">{burnedCalories}</span>
+          </p>
+        )}
+
+        <button
+          type="button"
+          className="btn-primary disabled:opacity-40"
+          disabled={isInvalidTime || isLoading}
+          onClick={handleAddExercise}
+        >
           Add to Diary
         </button>
       </div>
