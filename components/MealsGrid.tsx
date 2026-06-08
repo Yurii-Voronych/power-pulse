@@ -63,7 +63,7 @@ const MealsGrid = ({
                 </div>
 
                 {hasProducts ? (
-                  <div className="shrink-0 text-orange">
+                  <div className="shrink-0 text-orange flex gap-2">
                     Edit <NextIcon />
                   </div>
                 ) : (

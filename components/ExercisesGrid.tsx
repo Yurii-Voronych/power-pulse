@@ -3,6 +3,10 @@ import { DiaryExercise } from "@/lib/shared/types/diary";
 import { NextIcon } from "./icons/NextArrowIcon";
 import { useState } from "react";
 import AddExercisesDrawer from "./AddExercisesDrawer";
+import DiaryPageExerciseCard from "./DiaryPageExerciseCard";
+import { removeExercise } from "@/lib/client/api/diaryApi";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 interface ExercisesGridProps {
   initialExercises: DiaryExercise[];
@@ -15,12 +19,33 @@ const ExercisesGrid = ({
   date,
   userWeight,
 }: ExercisesGridProps) => {
+  const router = useRouter();
   const [exercises, setExercises] = useState(initialExercises);
   const hasExercises = exercises.length > 0;
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-
+  const [deletingExerciseId, setDeletingExerciseId] = useState<null | string>(
+    null,
+  );
   const handleExercisesAdded = (addedExercises: DiaryExercise[]) => {
     setExercises((prev) => [...prev, ...addedExercises]);
+    router.refresh();
+  };
+
+  const handleExercisesDeleted = async (deletedExercise: DiaryExercise) => {
+    try {
+      setDeletingExerciseId(deletedExercise.id);
+      const { deletedExerciseId } = await removeExercise({
+        date,
+        exerciseId: deletedExercise.id,
+      });
+      setExercises((prev) => prev.filter((e) => deletedExerciseId !== e.id));
+      router.refresh();
+      toast.success("Exercise deleted!");
+    } catch {
+      toast.error("Something went wrong");
+    } finally {
+      setDeletingExerciseId(null);
+    }
   };
 
   return (
@@ -43,18 +68,12 @@ const ExercisesGrid = ({
       {hasExercises ? (
         <ul className="flex flex-col gap-2">
           {exercises.map((exercise) => (
-            <li
+            <DiaryPageExerciseCard
+              exercise={exercise}
               key={exercise.id}
-              className="rounded-xl border border-white/10 bg-orange-500/10 px-3 py-2"
-            >
-              <p className="truncate text-[14px] font-medium text-orange-1">
-                {exercise.name}
-              </p>
-              <p className="text-[14px] text-white/65">
-                <span className="text-white">{exercise.burnedCalories}</span>{" "}
-                kcal - <span className="text-white">{exercise.time}</span> min
-              </p>
-            </li>
+              onExerciseDeleted={handleExercisesDeleted}
+              deletingExerciseId={deletingExerciseId}
+            />
           ))}
         </ul>
       ) : (

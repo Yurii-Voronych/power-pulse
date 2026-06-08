@@ -27,9 +27,9 @@ export const getExercisesByCategory = async ({
   ]);
 
   return {
-    exercises: exercises.map((e) => ({
-      ...e,
-      id: e._id.toString(),
+    exercises: exercises.map(({ _id, ...exercise }) => ({
+      ...exercise,
+      id: _id.toString(),
     })),
     total,
     page,
@@ -43,11 +43,7 @@ export const getExercises = async ({
 }: GetExercisesParams) => {
   await connectDB();
   const skip = (page - 1) * limit;
-  let filterQuery = {};
-  if (search)
-    filterQuery = {
-      name: search,
-    };
+  const filterQuery = search ? { name: { $regex: search, $options: "i" } } : {};
 
   const [exercises, total] = await Promise.all([
     Exercise.find(filterQuery).skip(skip).limit(limit).lean(),
@@ -55,9 +51,9 @@ export const getExercises = async ({
   ]);
 
   return {
-    exercises: exercises.map((e) => ({
-      ...e,
-      id: e._id.toString(),
+    exercises: exercises.map(({ _id, ...exercise }) => ({
+      ...exercise,
+      id: _id.toString(),
     })),
     total,
     page,

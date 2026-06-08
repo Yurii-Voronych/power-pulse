@@ -21,6 +21,10 @@ interface updateProductWeightFromMealProps {
   productId: string;
   weight: number;
 }
+interface removeExerciseProps {
+  date: string;
+  exerciseId: string;
+}
 export const addProductsToMeal = async ({
   date,
   mealType,
@@ -87,5 +91,15 @@ export const updateProductWeightFromMeal = async ({
     `/diary/${date}/meals/${mealType}/products/${productId}`,
     { weight },
   );
+  return data;
+};
+export const removeExercise = async ({
+  date,
+  exerciseId,
+}: removeExerciseProps): Promise<{
+  message: string;
+  deletedExerciseId: string;
+}> => {
+  const { data } = await api.delete(`/diary/${date}/exercises/${exerciseId}`);
   return data;
 };
