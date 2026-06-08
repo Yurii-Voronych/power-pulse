@@ -4,7 +4,7 @@ import { NextIcon } from "./icons/NextArrowIcon";
 import { useState } from "react";
 import AddExercisesDrawer from "./AddExercisesDrawer";
 import DiaryPageExerciseCard from "./DiaryPageExerciseCard";
-import { removeExercise } from "@/lib/client/api/diaryApi";
+import { removeExercise, updateExercise } from "@/lib/client/api/diaryApi";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -24,6 +24,12 @@ const ExercisesGrid = ({
   const hasExercises = exercises.length > 0;
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [deletingExerciseId, setDeletingExerciseId] = useState<null | string>(
+    null,
+  );
+  const [editingExerciseId, setEditingExerciseId] = useState<null | string>(
+    null,
+  );
+  const [updatingExerciseId, setUpdatingExerciseId] = useState<null | string>(
     null,
   );
   const handleExercisesAdded = (addedExercises: DiaryExercise[]) => {
@@ -47,7 +53,32 @@ const ExercisesGrid = ({
       setDeletingExerciseId(null);
     }
   };
+  const handleExerciseTimeUpdated = async (
+    exerciseId: string,
+    time: number,
+  ) => {
+    try {
+      setUpdatingExerciseId(exerciseId);
 
+      const { exercise } = await updateExercise({
+        date,
+        exerciseId,
+        time,
+      });
+
+      setExercises((prev) =>
+        prev.map((item) => (item.id === exercise.id ? exercise : item)),
+      );
+
+      setEditingExerciseId(null);
+      router.refresh();
+      toast.success("Exercise updated!");
+    } catch {
+      toast.error("Something went wrong");
+    } finally {
+      setUpdatingExerciseId(null);
+    }
+  };
   return (
     <div
       className={`w-full border border-white/20 p-4 rounded-xl mb-10 ${
@@ -67,14 +98,21 @@ const ExercisesGrid = ({
       </div>
       {hasExercises ? (
         <ul className="flex flex-col gap-2">
-          {exercises.map((exercise) => (
-            <DiaryPageExerciseCard
-              exercise={exercise}
-              key={exercise.id}
-              onExerciseDeleted={handleExercisesDeleted}
-              deletingExerciseId={deletingExerciseId}
-            />
-          ))}
+          {exercises.map((exercise) => {
+            const isEditing = exercise.id === editingExerciseId;
+            return (
+              <DiaryPageExerciseCard
+                exercise={exercise}
+                key={exercise.id}
+                onExerciseDeleted={handleExercisesDeleted}
+                deletingExerciseId={deletingExerciseId}
+                isEditing={isEditing}
+                setEditingExerciseId={setEditingExerciseId}
+                onExerciseTimeUpdated={handleExerciseTimeUpdated}
+                updatingExerciseId={updatingExerciseId}
+              />
+            );
+          })}
         </ul>
       ) : (
         <p className="py-8 text-center text-[14px] text-white/30">

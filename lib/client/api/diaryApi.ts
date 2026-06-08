@@ -25,6 +25,11 @@ interface removeExerciseProps {
   date: string;
   exerciseId: string;
 }
+interface updateExerciseTimeProps {
+  date: string;
+  exerciseId: string;
+  time: number;
+}
 export const addProductsToMeal = async ({
   date,
   mealType,
@@ -101,5 +106,18 @@ export const removeExercise = async ({
   deletedExerciseId: string;
 }> => {
   const { data } = await api.delete(`/diary/${date}/exercises/${exerciseId}`);
+  return data;
+};
+export const updateExercise = async ({
+  date,
+  exerciseId,
+  time,
+}: updateExerciseTimeProps): Promise<{
+  message: string;
+  exercise: DiaryExercise;
+}> => {
+  const { data } = await api.patch(`/diary/${date}/exercises/${exerciseId}`, {
+    time,
+  });
   return data;
 };

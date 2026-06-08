@@ -52,62 +52,60 @@ const RegistrationForm = () => {
         onSubmit={handleSubmit}
         validationSchema={registerSchema}
       >
-        {({ isValid, dirty }) => (
-          <Form className="flex flex-col">
-            <div className="relative">
-              <Field
-                id="title"
-                type="text"
-                name="name"
-                className="form-input mb-4.5 "
-                placeholder="Name"
-              />
-              <ErrorMessage name="name">
-                {(msg) => (
-                  <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                    <ErrorIcon /> {msg}
-                  </span>
-                )}
-              </ErrorMessage>
-            </div>
-            <div className="relative">
-              <Field
-                id="email"
-                name="email"
-                type="text"
-                className="form-input mb-4.5"
-                placeholder="Email"
-              />
-              <ErrorMessage name="email">
-                {(msg) => (
-                  <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                    <ErrorIcon /> {msg}
-                  </span>
-                )}
-              </ErrorMessage>
-            </div>
-            <div className="relative">
-              <Field
-                id="password"
-                name="password"
-                type="password"
-                className="form-input mb-7 md:mb-16"
-                placeholder="Password"
-              />
-              <ErrorMessage name="password">
-                {(msg) => (
-                  <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1 justify-center">
-                    <ErrorIcon /> {msg}
-                  </span>
-                )}
-              </ErrorMessage>
-            </div>
+        <Form className="flex flex-col">
+          <div className="relative">
+            <Field
+              id="title"
+              type="text"
+              name="name"
+              className="form-input mb-4.5 "
+              placeholder="Name"
+            />
+            <ErrorMessage name="name">
+              {(msg) => (
+                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                  <ErrorIcon /> {msg}
+                </span>
+              )}
+            </ErrorMessage>
+          </div>
+          <div className="relative">
+            <Field
+              id="email"
+              name="email"
+              type="text"
+              className="form-input mb-4.5"
+              placeholder="Email"
+            />
+            <ErrorMessage name="email">
+              {(msg) => (
+                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+                  <ErrorIcon /> {msg}
+                </span>
+              )}
+            </ErrorMessage>
+          </div>
+          <div className="relative">
+            <Field
+              id="password"
+              name="password"
+              type="password"
+              className="form-input mb-7 md:mb-16"
+              placeholder="Password"
+            />
+            <ErrorMessage name="password">
+              {(msg) => (
+                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1 justify-center">
+                  <ErrorIcon /> {msg}
+                </span>
+              )}
+            </ErrorMessage>
+          </div>
 
-            <button type="submit" className="btn-primary mb-3">
-              Sign-up
-            </button>
-          </Form>
-        )}
+          <button type="submit" className="btn-primary mb-3">
+            Sign-up
+          </button>
+        </Form>
       </Formik>
       <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal">
         Already have account?
