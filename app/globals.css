@@ -18,13 +18,14 @@
 
 @layer components {
   .btn-outline {
-    @apply inline-flex
+    @apply min-w-34
+      min-h-10.5
+      inline-flex
       items-center
       justify-center
       gap-2
-      w-34
-      h-10.5
       py-3
+      px-2
       rounded-xl
       border
       border-white/30
@@ -37,13 +38,14 @@
   }
 
   .btn-primary {
-    @apply inline-flex
+    @apply min-w-34
+      min-h-10.5
+      inline-flex
       items-center
       justify-center
       gap-2
-      w-34
-      h-10.5
       py-3
+      px-2
       rounded-xl
       bg-orange
       text-white
@@ -57,9 +59,8 @@
   @media (min-width: 768px) {
     .btn-outline,
     .btn-primary {
-      @apply w-47.5
-        h-14
-        px-15
+      @apply px-15
+      min-h-14
         py-4
         text-[20px];
     }
@@ -74,9 +75,7 @@
   }
 
   .form-input {
-    @apply w-83.75
-      h-11.5
-      rounded-xl
+    @apply rounded-xl
       border
       border-[#EFEDE8]/30
       px-3.5
@@ -90,9 +89,7 @@
   }
   @media (min-width: 768px) {
     .form-input {
-      @apply w-91
-        h-13
-         text-[16px]
+      @apply text-[16px]
       leading-normal;
     }
   }

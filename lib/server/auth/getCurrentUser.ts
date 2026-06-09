@@ -10,7 +10,7 @@ export const getCurrentUser = async () => {
 
   const accessToken = cookieStore.get("accessToken")?.value;
   const refreshToken = cookieStore.get("refreshToken")?.value;
-
+  if (!accessToken && !refreshToken) return null;
   await connectDB();
 
   if (accessToken) {

@@ -10,7 +10,7 @@ const Header = () => {
   return (
     <header className="absolute top-0 left-0 w-full z-50">
       <Container className="flex items-center justify-between h-15.25 md:h-21">
-        <Link href={"/diary"}>
+        <Link href={user ? "/diary" : "/"} aria-label="Power Pulse">
           <LogoIcon
             className="text-white w-31.5 h-3.25 md:w-37.75 md:h-4.25"
             dumbbellClassName="text-orange"
