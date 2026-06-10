@@ -123,7 +123,7 @@ const EditProfileForm = () => {
           onSubmit={handleSubmit}
           validationSchema={editProfileSchema}
         >
-          {(formik) => (
+          {({ validateForm, errors, touched, isSubmitting, setTouched }) => (
             <Form
               className={clsx(
                 step === 1 && "mb-28.75 md:mb-27.5 2xl:mb-37.25",
@@ -134,14 +134,14 @@ const EditProfileForm = () => {
               {step === 1 && (
                 <FirstStep
                   setStep={setStep}
-                  validateForm={formik.validateForm}
+                  validateForm={validateForm}
+                  errors={errors}
+                  touched={touched}
+                  setTouched={setTouched}
                 />
               )}
               {step === 2 && (
-                <SecondStep
-                  setStep={setStep}
-                  validateForm={formik.validateForm}
-                />
+                <SecondStep setStep={setStep} validateForm={validateForm} />
               )}
               {step === 3 && <ThirdStep setStep={setStep} />}
             </Form>

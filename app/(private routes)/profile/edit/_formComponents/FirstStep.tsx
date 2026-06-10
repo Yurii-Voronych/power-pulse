@@ -1,28 +1,79 @@
 import { ErrorIcon } from "@/components/icons/ErrorIcon";
-import { ErrorMessage, Field, FormikErrors } from "formik";
+import { ErrorMessage, Field, FormikErrors, FormikTouched } from "formik";
 
 import { NextIcon } from "@/components/icons/NextArrowIcon";
 import { Dispatch, SetStateAction } from "react";
-
-import toast from "react-hot-toast";
 import { EditProfileFormValues } from "../EditProfileForm";
 import BirthdayInput from "./BirthdayInput";
+
 interface FirstStepProps {
   setStep: Dispatch<SetStateAction<1 | 2 | 3>>;
   validateForm: () => Promise<FormikErrors<EditProfileFormValues>>;
+  errors: FormikErrors<{
+    height: string;
+    currentWeight: string;
+    desiredWeight: string;
+    birthday: string;
+    sex: string;
+    levelActivity: string;
+  }>;
+  touched: FormikTouched<{
+    height: string;
+    currentWeight: string;
+    desiredWeight: string;
+    birthday: string;
+    sex: string;
+    levelActivity: string;
+  }>;
+  setTouched: (
+    touched: FormikTouched<{
+      height: string;
+      currentWeight: string;
+      desiredWeight: string;
+      birthday: string;
+      sex: string;
+      levelActivity: string;
+    }>,
+    shouldValidate?: boolean,
+  ) => Promise<void | FormikErrors<{
+    height: string;
+    currentWeight: string;
+    desiredWeight: string;
+    birthday: string;
+    sex: string;
+    levelActivity: string;
+  }>>;
 }
-const FirstStep = ({ setStep, validateForm }: FirstStepProps) => {
-  const handleClick = async () => {
+
+const FirstStep = ({
+  setStep,
+  validateForm,
+  errors,
+  touched,
+  setTouched,
+}: FirstStepProps) => {
+  const hasHeightError = Boolean(touched.height && errors.height);
+  const handleNext = async () => {
+    await setTouched(
+      {
+        height: true,
+        currentWeight: true,
+        desiredWeight: true,
+        birthday: true,
+      },
+      false,
+    );
+
     const errors = await validateForm();
-    if (
-      !errors.height &&
-      !errors.currentWeight &&
-      !errors.desiredWeight &&
-      !errors.birthday
-    ) {
+
+    const hasErrors =
+      errors.height ||
+      errors.currentWeight ||
+      errors.desiredWeight ||
+      errors.birthday;
+
+    if (!hasErrors) {
       setStep(2);
-    } else {
-      toast.error("Please, fill all form fields");
     }
   };
   return (
@@ -41,13 +92,28 @@ const FirstStep = ({ setStep, validateForm }: FirstStepProps) => {
             id="height"
             name="height"
             type="text"
-            className="w-full h-11.5 2xl:h-12 p-3.5 border border-white/30 rounded-xl"
-            placeholder="Height"
+            className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
+              hasHeightError
+                ? "border-[#d80027] focus:border-[#d80027]"
+                : "border-white/30 focus:border-orange"
+            }`}
+            placeholder=" "
           />
+
+          <label
+            htmlFor="height"
+            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/60 transition-all duration-200
+              peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs
+              peer-not-placeholder-shown:top-2 peer-not-placeholder-shown:translate-y-0 peer-not-placeholder-shown:text-xs"
+          >
+            Height
+          </label>
+
           <ErrorMessage name="height">
             {(msg) => (
-              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                <ErrorIcon /> {msg}
+              <span className="absolute -bottom-5.5 left-0 flex gap-1 text-xs leading-normal text-[#d80027]">
+                <ErrorIcon />
+                {msg}
               </span>
             )}
           </ErrorMessage>
@@ -97,7 +163,7 @@ const FirstStep = ({ setStep, validateForm }: FirstStepProps) => {
       </div>
       <button
         className="flex items-center gap-2"
-        onClick={handleClick}
+        onClick={handleNext}
         type="button"
       >
         Next <NextIcon />
