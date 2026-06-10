@@ -8,7 +8,6 @@ import { registerUser } from "@/lib/client/api/authApi";
 import useAuthStore from "@/lib/client/store/authStore";
 import { registerSchema } from "@/lib/shared/validators/auth/registerSchema";
 import toast from "react-hot-toast";
-import { useState } from "react";
 
 interface RegistrationValues {
   name: string;
@@ -19,7 +18,6 @@ interface RegistrationValues {
 const initialValues: RegistrationValues = { name: "", email: "", password: "" };
 
 const RegistrationForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
   const handleSubmit = async (
@@ -27,20 +25,16 @@ const RegistrationForm = () => {
     actions: FormikHelpers<RegistrationValues>,
   ) => {
     try {
-      setIsLoading(true);
       const user = await registerUser(values);
       setUser(user);
       actions.resetForm();
-      router.push("/profile/edit");
-      router.refresh();
+      router.replace("/profile/edit");
     } catch (error) {
       if ((error as AxiosError).status === 409) {
         toast.error("Email is already in use");
       } else {
         toast.error("Something went wrong try again later");
       }
-    } finally {
-      setIsLoading(false);
     }
   };
   return (
@@ -48,7 +42,7 @@ const RegistrationForm = () => {
       <h1 className="text-2xl md:text-[32px] leading-[1.66] md:leading-[1.38] font-bold mb-3.5">
         Sign Up
       </h1>
-      <p className="text-[14px] md:text-[16px] leading- [1.29] md:leading-normal  text-white/30 mb-7 md:mb-8 md:w-124">
+      <p className="text-[14px] md:text-[16px] leading-[1.29] md:leading-normal text-white/30 mb-7 md:mb-8 md:w-124">
         Thank you for your interest in our platform. To complete the
         registration process, please provide us with the following information.
       </p>
@@ -57,13 +51,20 @@ const RegistrationForm = () => {
         onSubmit={handleSubmit}
         validationSchema={registerSchema}
       >
-        {({ errors, touched }) => (
-          <Form className="flex flex-col md:w-82.5">
+        {({ errors, touched, isSubmitting }) => (
+          <Form className="flex flex-col md:w-82.5" noValidate>
             <div className="relative">
               <Field
                 id="name"
                 type="text"
                 name="name"
+                autoComplete="name"
+                aria-invalid={Boolean(touched.name && errors.name)}
+                aria-describedby={
+                  touched.name && errors.name
+                    ? "registration-name-error"
+                    : undefined
+                }
                 placeholder="Name"
                 className={`peer form-input mb-4.5 max-md:w-full ${
                   touched.name && errors.name ? "border-[#d80027]" : ""
@@ -85,8 +86,13 @@ const RegistrationForm = () => {
 
               <ErrorMessage name="name">
                 {(msg) => (
-                  <span className="absolute right-0 top-12 flex gap-1 text-xs leading-normal text-[#d80027] md:top-13.5">
-                    <ErrorIcon />
+                  <span
+                    id="registration-name-error"
+                    className="absolute right-0 top-12 flex gap-1 text-xs leading-normal text-[#d80027] md:top-13.5"
+                  >
+                    <span aria-hidden="true">
+                      <ErrorIcon />
+                    </span>
                     {msg}
                   </span>
                 )}
@@ -96,7 +102,14 @@ const RegistrationForm = () => {
               <Field
                 id="email"
                 name="email"
-                type="text"
+                type="email"
+                autoComplete="email"
+                aria-invalid={Boolean(touched.email && errors.email)}
+                aria-describedby={
+                  touched.email && errors.email
+                    ? "registration-email-error"
+                    : undefined
+                }
                 className={`peer form-input mb-4.5 max-md:w-full ${
                   touched.email && errors.email ? "border-[#d80027]" : ""
                 }`}
@@ -116,8 +129,14 @@ const RegistrationForm = () => {
               </label>
               <ErrorMessage name="email">
                 {(msg) => (
-                  <span className="text-[12px] text-[#d80027] leading-normal absolute right-0 top-12 flex gap-1 md:top-13.5">
-                    <ErrorIcon /> {msg}
+                  <span
+                    id="registration-email-error"
+                    className="text-[12px] text-[#d80027] leading-normal absolute right-0 top-12 flex gap-1 md:top-13.5"
+                  >
+                    <span aria-hidden="true">
+                      <ErrorIcon />
+                    </span>
+                    {msg}
                   </span>
                 )}
               </ErrorMessage>
@@ -127,6 +146,13 @@ const RegistrationForm = () => {
                 id="password"
                 name="password"
                 type="password"
+                autoComplete="new-password"
+                aria-invalid={Boolean(touched.password && errors.password)}
+                aria-describedby={
+                  touched.password && errors.password
+                    ? "registration-password-error"
+                    : undefined
+                }
                 className={`peer form-input mb-4.5 max-md:w-full ${
                   touched.password && errors.password ? "border-[#d80027]" : ""
                 }`}
@@ -146,19 +172,25 @@ const RegistrationForm = () => {
               </label>
               <ErrorMessage name="password">
                 {(msg) => (
-                  <span className="text-[12px] text-[#d80027] leading-normal absolute right-0 top-12 flex gap-1 justify-center md:top-13.5">
-                    <ErrorIcon /> {msg}
+                  <span
+                    id="registration-password-error"
+                    className="text-[12px] text-[#d80027] leading-normal absolute right-0 top-12 flex gap-1 justify-center md:top-13.5"
+                  >
+                    <span aria-hidden="true">
+                      <ErrorIcon />
+                    </span>
+                    {msg}
                   </span>
                 )}
               </ErrorMessage>
             </div>
 
             <button
-              disabled={isLoading}
+              disabled={isSubmitting}
               type="submit"
-              className="btn-primary mb-3 md:w-60 2xl:w-full"
+              className="btn-primary mb-3 disabled:opacity-40"
             >
-              {isLoading ? "Loading..." : "Sign-up"}
+              {isSubmitting ? "Loading..." : "Sign-up"}
             </button>
           </Form>
         )}

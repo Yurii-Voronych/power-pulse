@@ -4,7 +4,7 @@ import RegistrationForm from "@/components/RegistrationForm";
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
 type AuthPageProps = {
@@ -35,9 +35,10 @@ export default async function AuthPage({ params }: AuthPageProps) {
   }
   const { authType } = await params;
   const validTypes = ["login", "register"];
-  if (!authType || !validTypes.includes(authType[0])) {
-    return notFound();
+  if (authType?.length !== 1 || !validTypes.includes(authType[0])) {
+    notFound();
   }
+  const authMode = authType[0];
 
   return (
     <section
@@ -55,14 +56,14 @@ export default async function AuthPage({ params }: AuthPageProps) {
   "
     >
       <Container className="relative ">
-        {authType[0] === "login" ? <LoginForm /> : <RegistrationForm />}
+        {authMode === "login" ? <LoginForm /> : <RegistrationForm />}
         <Video
           className={`
     absolute short-viewport:hidden
     ${
-      authType[0] === "login"
+      authMode === "login"
         ? "-bottom-25 left-35 md:-bottom-25 md:left-60 2xl:bottom-20 2xl:left-150"
-        : "-bottom-20 left-35 md:bottom-0 md:left-85 2xl:bottom-50 2xl:left-150"
+        : "-bottom-20 left-35 md:bottom-0 md:left-100 2xl:bottom-50 2xl:left-150"
     }`}
           aria-hidden="true"
         />
@@ -71,7 +72,7 @@ export default async function AuthPage({ params }: AuthPageProps) {
           className={`
     absolute short-viewport:hidden
     ${
-      authType[0] === "login"
+      authMode === "login"
         ? "-bottom-50 left-60 md:-bottom-55 md:left-95 2xl:-bottom-50 2xl:left-270"
         : "-bottom-45 left-58 md:-bottom-40 md:left-135 2xl:-bottom-50 2xl:left-270"
     } 

@@ -54,45 +54,103 @@ const LoginForm = () => {
         onSubmit={handleSubmit}
         validationSchema={loginSchema}
       >
-        <Form className="">
-          <div className="relative">
-            <Field
-              id="email"
-              name="email"
-              type="text"
-              className="form-input mb-4.5"
-              placeholder="Email"
-            />
-            <ErrorMessage name="email">
-              {(msg) => (
-                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                  <ErrorIcon /> {msg}
-                </span>
-              )}
-            </ErrorMessage>
-          </div>
+        {({ errors, touched, isSubmitting }) => (
+          <Form className="md:w-82.5" noValidate>
+            <div className="relative">
+              <Field
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                aria-invalid={Boolean(touched.email && errors.email)}
+                aria-describedby={
+                  touched.email && errors.email ? "login-email-error" : undefined
+                }
+                className={`peer form-input mb-4.5 max-md:w-full ${
+                  touched.email && errors.email ? "border-[#d80027]" : ""
+                }`}
+                placeholder="Email"
+              />
+              <label
+                htmlFor="email"
+                className="
+                  absolute -top-5 left-0
+                  text-[14px] text-white/70
+                  opacity-100 transition-opacity
+                  peer-placeholder-shown:pointer-events-none
+                  peer-placeholder-shown:opacity-0
+                  "
+              >
+                Email
+              </label>
+              <ErrorMessage name="email">
+                {(msg) => (
+                  <span
+                    id="login-email-error"
+                    className="text-[12px] text-[#d80027] leading-normal absolute right-0 top-12 flex gap-1 md:top-13.5"
+                  >
+                    <span aria-hidden="true">
+                      <ErrorIcon />
+                    </span>
+                    {msg}
+                  </span>
+                )}
+              </ErrorMessage>
+            </div>
 
-          <div className="relative">
-            <Field
-              id="password"
-              name="password"
-              type="password"
-              className="form-input mb-7"
-              placeholder="Password"
-            />
-            <ErrorMessage name="password">
-              {(msg) => (
-                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1 justify-center">
-                  <ErrorIcon /> {msg}
-                </span>
-              )}
-            </ErrorMessage>
-          </div>
+            <div className="relative">
+              <Field
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                aria-invalid={Boolean(touched.password && errors.password)}
+                aria-describedby={
+                  touched.password && errors.password
+                    ? "login-password-error"
+                    : undefined
+                }
+                className={`peer form-input mb-4.5 max-md:w-full ${
+                  touched.password && errors.password ? "border-[#d80027]" : ""
+                }`}
+                placeholder="Password"
+              />
+              <label
+                htmlFor="password"
+                className="
+                  absolute -top-5 left-0
+                  text-[14px] text-white/70
+                  opacity-100 transition-opacity
+                  peer-placeholder-shown:pointer-events-none
+                  peer-placeholder-shown:opacity-0
+                  "
+              >
+                Password
+              </label>
+              <ErrorMessage name="password">
+                {(msg) => (
+                  <span
+                    id="login-password-error"
+                    className="text-[12px] text-[#d80027] leading-normal absolute right-0 top-12 flex gap-1 justify-center md:top-13.5"
+                  >
+                    <span aria-hidden="true">
+                      <ErrorIcon />
+                    </span>
+                    {msg}
+                  </span>
+                )}
+              </ErrorMessage>
+            </div>
 
-          <button type="submit" className="btn-primary mb-3">
-            Sign-In
-          </button>
-        </Form>
+            <button
+              type="submit"
+              className="btn-primary mb-3 disabled:opacity-40 w-full"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Loading..." : "Sign-In"}
+            </button>
+          </Form>
+        )}
       </Formik>
       <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal ">
         Don’t have an account?
