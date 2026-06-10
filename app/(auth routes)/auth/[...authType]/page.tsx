@@ -4,12 +4,30 @@ import RegistrationForm from "@/components/RegistrationForm";
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
+import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
 type AuthPageProps = {
   params: Promise<{ authType?: string[] }>;
 };
+export async function generateMetadata({
+  params,
+}: AuthPageProps): Promise<Metadata> {
+  const { authType } = await params;
+  const type = authType?.[0];
 
+  const title =
+    type === "login"
+      ? "Login | Power Pulse"
+      : type === "register"
+        ? "Registration | Power Pulse"
+        : "Power Pulse";
+
+  return {
+    title,
+    description: "Training App",
+  };
+}
 export default async function AuthPage({ params }: AuthPageProps) {
   const user = await getCurrentUser();
   if (user) {
@@ -46,6 +64,7 @@ export default async function AuthPage({ params }: AuthPageProps) {
         ? "-bottom-25 left-35 md:-bottom-25 md:left-60 2xl:bottom-20 2xl:left-150"
         : "-bottom-20 left-35 md:bottom-0 md:left-85 2xl:bottom-50 2xl:left-150"
     }`}
+          aria-hidden="true"
         />
 
         <Calories
@@ -55,8 +74,9 @@ export default async function AuthPage({ params }: AuthPageProps) {
       authType[0] === "login"
         ? "-bottom-50 left-60 md:-bottom-55 md:left-95 2xl:-bottom-50 2xl:left-270"
         : "-bottom-45 left-58 md:-bottom-40 md:left-135 2xl:-bottom-50 2xl:left-270"
-    }
+    } 
   `}
+          aria-hidden="true"
         />
       </Container>
     </section>

@@ -41,8 +41,14 @@ export default async function Home() {
           </Link>
         </div>
       </Container>
-      <Video className="absolute bottom-50 left-25 md:left-95 2xl:bottom-130 2xl:left-155 short-viewport:hidden md:[@media(max-height:830px)]:hidden" />
-      <Calories className="absolute bottom-20 left-60 md:bottom-10 md:left-140 2xl:bottom-45 2xl:left-300 short-viewport:hidden md:[@media(max-height:830px)]:hidden" />
+      <Video
+        className="absolute bottom-50 left-25 md:left-95 2xl:bottom-130 2xl:left-175 short-viewport:hidden md:[@media(max-height:830px)]:hidden"
+        aria-hidden="true"
+      />
+      <Calories
+        className="absolute bottom-20 left-60 md:bottom-10 md:left-140 2xl:bottom-45 2xl:left-300 short-viewport:hidden md:[@media(max-height:830px)]:hidden"
+        aria-hidden="true"
+      />
     </section>
   );
 }

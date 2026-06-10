@@ -8,6 +8,7 @@ import { registerUser } from "@/lib/client/api/authApi";
 import useAuthStore from "@/lib/client/store/authStore";
 import { registerSchema } from "@/lib/shared/validators/auth/registerSchema";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 interface RegistrationValues {
   name: string;
@@ -18,6 +19,7 @@ interface RegistrationValues {
 const initialValues: RegistrationValues = { name: "", email: "", password: "" };
 
 const RegistrationForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
   const handleSubmit = async (
@@ -25,6 +27,7 @@ const RegistrationForm = () => {
     actions: FormikHelpers<RegistrationValues>,
   ) => {
     try {
+      setIsLoading(true);
       const user = await registerUser(values);
       setUser(user);
       actions.resetForm();
@@ -36,6 +39,8 @@ const RegistrationForm = () => {
       } else {
         toast.error("Something went wrong try again later");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
@@ -52,60 +57,111 @@ const RegistrationForm = () => {
         onSubmit={handleSubmit}
         validationSchema={registerSchema}
       >
-        <Form className="flex flex-col">
-          <div className="relative">
-            <Field
-              id="title"
-              type="text"
-              name="name"
-              className="form-input mb-4.5 "
-              placeholder="Name"
-            />
-            <ErrorMessage name="name">
-              {(msg) => (
-                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                  <ErrorIcon /> {msg}
-                </span>
-              )}
-            </ErrorMessage>
-          </div>
-          <div className="relative">
-            <Field
-              id="email"
-              name="email"
-              type="text"
-              className="form-input mb-4.5"
-              placeholder="Email"
-            />
-            <ErrorMessage name="email">
-              {(msg) => (
-                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
-                  <ErrorIcon /> {msg}
-                </span>
-              )}
-            </ErrorMessage>
-          </div>
-          <div className="relative">
-            <Field
-              id="password"
-              name="password"
-              type="password"
-              className="form-input mb-7 md:mb-16"
-              placeholder="Password"
-            />
-            <ErrorMessage name="password">
-              {(msg) => (
-                <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1 justify-center">
-                  <ErrorIcon /> {msg}
-                </span>
-              )}
-            </ErrorMessage>
-          </div>
+        {({ errors, touched }) => (
+          <Form className="flex flex-col md:w-82.5">
+            <div className="relative">
+              <Field
+                id="name"
+                type="text"
+                name="name"
+                placeholder="Name"
+                className={`peer form-input mb-4.5 max-md:w-full ${
+                  touched.name && errors.name ? "border-[#d80027]" : ""
+                }`}
+              />
 
-          <button type="submit" className="btn-primary mb-3">
-            Sign-up
-          </button>
-        </Form>
+              <label
+                htmlFor="name"
+                className="
+                  absolute -top-5 left-0
+                  text-[14px] text-white/70
+                  opacity-100 transition-opacity
+                  peer-placeholder-shown:pointer-events-none
+                  peer-placeholder-shown:opacity-0
+                  "
+              >
+                Name
+              </label>
+
+              <ErrorMessage name="name">
+                {(msg) => (
+                  <span className="absolute right-0 top-12 flex gap-1 text-xs leading-normal text-[#d80027] md:top-13.5">
+                    <ErrorIcon />
+                    {msg}
+                  </span>
+                )}
+              </ErrorMessage>
+            </div>
+            <div className="relative">
+              <Field
+                id="email"
+                name="email"
+                type="text"
+                className={`peer form-input mb-4.5 max-md:w-full ${
+                  touched.email && errors.email ? "border-[#d80027]" : ""
+                }`}
+                placeholder="Email"
+              />
+              <label
+                htmlFor="email"
+                className="
+                  absolute -top-5 left-0
+                  text-[14px] text-white/70
+                  opacity-100 transition-opacity
+                  peer-placeholder-shown:pointer-events-none
+                  peer-placeholder-shown:opacity-0
+                  "
+              >
+                Email
+              </label>
+              <ErrorMessage name="email">
+                {(msg) => (
+                  <span className="text-[12px] text-[#d80027] leading-normal absolute right-0 top-12 flex gap-1 md:top-13.5">
+                    <ErrorIcon /> {msg}
+                  </span>
+                )}
+              </ErrorMessage>
+            </div>
+            <div className="relative">
+              <Field
+                id="password"
+                name="password"
+                type="password"
+                className={`peer form-input mb-4.5 max-md:w-full ${
+                  touched.password && errors.password ? "border-[#d80027]" : ""
+                }`}
+                placeholder="Password"
+              />
+              <label
+                htmlFor="password"
+                className="
+                  absolute -top-5 left-0
+                  text-[14px] text-white/70
+                  opacity-100 transition-opacity
+                  peer-placeholder-shown:pointer-events-none
+                  peer-placeholder-shown:opacity-0
+                  "
+              >
+                Password
+              </label>
+              <ErrorMessage name="password">
+                {(msg) => (
+                  <span className="text-[12px] text-[#d80027] leading-normal absolute right-0 top-12 flex gap-1 justify-center md:top-13.5">
+                    <ErrorIcon /> {msg}
+                  </span>
+                )}
+              </ErrorMessage>
+            </div>
+
+            <button
+              disabled={isLoading}
+              type="submit"
+              className="btn-primary mb-3 md:w-60 2xl:w-full"
+            >
+              {isLoading ? "Loading..." : "Sign-up"}
+            </button>
+          </Form>
+        )}
       </Formik>
       <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal">
         Already have account?

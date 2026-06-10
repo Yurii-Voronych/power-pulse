@@ -32,9 +32,11 @@
       bg-transparent
       text-white
       text-[16px]
+       leading-[1.1]
       font-medium
       transition
-      duration-200;
+      duration-200
+      disabled:opacity-40;
   }
 
   .btn-primary {
@@ -53,6 +55,7 @@
       font-medium
       leading-[1.1]
       transition
+      disabled:opacity-40
       duration-200;
   }
 
@@ -73,9 +76,19 @@
   .btn-primary:hover {
     @apply opacity-90;
   }
+  .btn-outline:focus {
+    @apply outline-1 outline-orange
+    border-0;
+  }
+
+  .btn-primary:focus {
+    @apply outline-1 outline-white
+    border-0;
+  }
 
   .form-input {
-    @apply rounded-xl
+    @apply min-w-82.5
+      rounded-xl
       border
       border-[#EFEDE8]/30
       px-3.5
@@ -85,7 +98,8 @@
       font-normal
       text-sm
       leading-[1.28571]
-      text-[#EFEDE8]/60;
+      text-[#EFEDE8]/60
+      focus:border-orange;
   }
   @media (min-width: 768px) {
     .form-input {
@@ -130,4 +144,14 @@
 
 .meals-scrollbar::-webkit-scrollbar-thumb:hover {
   background: rgba(239, 237, 232, 0.42);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: #f4f4f4;
+  caret-color: #f4f4f4;
+  box-shadow: 0 0 0 1000px #040404 inset;
+  transition: background-color 9999s ease-out;
 }
