@@ -1,5 +1,12 @@
 import * as Yup from "yup";
 import { parse, isValid, subYears } from "date-fns";
+import {
+  ACTIVITY_LEVEL_VALUES,
+  MIN_AGE,
+  MIN_HEIGHT,
+  MIN_WEIGHT,
+  SEX_OPTIONS,
+} from "@/lib/shared/constants/constants";
 
 export const editProfileSchema = Yup.object({
   name: Yup.string()
@@ -10,17 +17,17 @@ export const editProfileSchema = Yup.object({
 
   height: Yup.number()
     .typeError("Height must be a number")
-    .min(150, "Minimum height is 150 cm")
+    .min(MIN_HEIGHT, `Minimum height is ${MIN_HEIGHT} cm`)
     .required("Height is required"),
 
   currentWeight: Yup.number()
     .typeError("Current weight must be a number")
-    .min(35, "Minimum weight is 35 kg")
+    .min(MIN_WEIGHT, `Minimum weight is ${MIN_WEIGHT} kg`)
     .required("Current weight is required"),
 
   desiredWeight: Yup.number()
     .typeError("Desired weight must be a number")
-    .min(35, "Minimum weight is 35 kg")
+    .min(MIN_WEIGHT, `Minimum weight is ${MIN_WEIGHT} kg`)
     .required("Desired weight is required"),
 
   birthday: Yup.string()
@@ -32,21 +39,21 @@ export const editProfileSchema = Yup.object({
 
       return isValid(parsed);
     })
-    .test("age", "You must be at least 18 years old", (value) => {
+    .test("age", `You must be at least ${MIN_AGE} years old`, (value) => {
       if (!value) return false;
 
       const parsed = parse(value, "dd.MM.yyyy", new Date());
 
       if (!isValid(parsed)) return false;
 
-      return parsed <= subYears(new Date(), 18);
+      return parsed <= subYears(new Date(), MIN_AGE);
     }),
 
   sex: Yup.string()
-    .oneOf(["male", "female"], "Invalid sex value")
+    .oneOf(SEX_OPTIONS, "Invalid sex value")
     .required("Sex is required"),
 
   levelActivity: Yup.number()
-    .oneOf([1, 2, 3, 4, 5], "Invalid activity level")
+    .oneOf(ACTIVITY_LEVEL_VALUES, "Invalid activity level")
     .required("Activity level is required"),
 });

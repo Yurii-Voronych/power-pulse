@@ -6,6 +6,7 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { parse, isValid, format } from "date-fns";
 import { Calendar1Icon } from "lucide-react";
+import { MAX_AGE, MIN_AGE } from "@/lib/shared/constants/constants";
 
 type Props = {
   name: string;
@@ -19,9 +20,9 @@ export default function BirthdayInput({ name, error, touched }: Props) {
   const { setValue } = helpers;
   const [open, setOpen] = useState(false);
   const eighteenYearsAgo = new Date();
-  eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18);
+  eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - MIN_AGE);
   const hundredYearsAgo = new Date();
-  hundredYearsAgo.setFullYear(hundredYearsAgo.getFullYear() - 100);
+  hundredYearsAgo.setFullYear(hundredYearsAgo.getFullYear() - MAX_AGE);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setOpen(false);
@@ -129,7 +130,7 @@ export default function BirthdayInput({ name, error, touched }: Props) {
           id={`${name}-calendar`}
           role="dialog"
           aria-label="Choose birthday"
-          className="absolute top-full right-0 mt-2 z-50"
+          className="absolute top-full max-md:right-0 mt-2 z-50 md:left-45.5 md:-top-2"
         >
           <div className="w-53.75 h-59 bg-orange-1 rounded-[30px] p-3 text-white flex items-center justify-center">
             <DayPicker

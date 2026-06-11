@@ -1,33 +1,61 @@
-import { Field, FormikErrors } from "formik";
+import { ErrorMessage, Field } from "formik";
+import type { FormikErrors, FormikTouched } from "formik";
 import { NextIcon } from "@/components/icons/NextArrowIcon";
-import { Dispatch, SetStateAction } from "react";
-import toast from "react-hot-toast";
-import { EditProfileFormValues } from "../EditProfileForm";
+import type { Dispatch, SetStateAction } from "react";
+import type {
+  EditProfileFormValues,
+  ProfileSetupStep,
+} from "../EditProfileForm";
+import { ErrorIcon } from "@/components/icons/ErrorIcon";
+import {
+  ACTIVITY_LEVELS,
+  SEX_OPTIONS,
+} from "@/lib/shared/constants/constants";
 
 interface SecondStepProps {
-  setStep: Dispatch<SetStateAction<1 | 2 | 3>>;
+  setStep: Dispatch<SetStateAction<ProfileSetupStep>>;
   validateForm: () => Promise<FormikErrors<EditProfileFormValues>>;
+  errors: FormikErrors<EditProfileFormValues>;
+  touched: FormikTouched<EditProfileFormValues>;
+  setTouched: (
+    touched: FormikTouched<EditProfileFormValues>,
+    shouldValidate?: boolean,
+  ) => Promise<void | FormikErrors<EditProfileFormValues>>;
 }
-const SecondStep = ({ setStep, validateForm }: SecondStepProps) => {
+const SecondStep = ({
+  setStep,
+  validateForm,
+  errors,
+  touched,
+  setTouched,
+}: SecondStepProps) => {
   const handleClick = async () => {
+    await setTouched(
+      {
+        sex: true,
+        levelActivity: true,
+      },
+      false,
+    );
     const errors = await validateForm();
     if (!errors.sex && !errors.levelActivity) {
       setStep(3);
-    } else {
-      console.log(errors);
-      toast.error("Please, fill all form fields");
     }
   };
   return (
     <>
-      <p className="text-2xl leading-[1.67] md:text-[32px] md:leading-[1.38] font-bold pt-31.75 2xl:pt-50 mb-7">
+      <h1 className="text-2xl leading-[1.67] md:text-[32px] md:leading-[1.38] font-bold pt-31.75 2xl:pt-50 mb-7">
         Get Closer To Your Goals
-      </p>
-      <div className="grid grid-cols-2 gap-3.5  2xl:w-48.75 mb-7 text-white text-[14px] leading-[1.28]">
-        <div className="text-white text-[14px]">
-          <p className="mb-4">Sex:</p>
+      </h1>
+      <div className="2xl:w-48.75 mb-7 text-white text-[14px] leading-[1.28]">
+        <fieldset
+          aria-invalid={Boolean(touched.sex && errors.sex)}
+          aria-describedby={touched.sex && errors.sex ? "sex-error" : undefined}
+          className="text-white text-[14px]"
+        >
+          <legend className="mb-4">Sex:</legend>
           <div className="space-y-2">
-            {["male", "female"].map((sex) => (
+            {SEX_OPTIONS.map((sex) => (
               <label
                 key={sex}
                 className="flex items-center gap-3 cursor-pointer"
@@ -42,72 +70,62 @@ const SecondStep = ({ setStep, validateForm }: SecondStepProps) => {
                 <span className="capitalize">{sex}</span>
               </label>
             ))}
+            <div className="min-h-4">
+              <ErrorMessage name="sex">
+                {(msg) => (
+                  <span
+                    id="sex-error"
+                    className="flex gap-1 text-xs text-[#d80027]"
+                  >
+                    <ErrorIcon />
+                    {msg}
+                  </span>
+                )}
+              </ErrorMessage>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <fieldset
+        aria-invalid={Boolean(touched.levelActivity && errors.levelActivity)}
+        aria-describedby={
+          touched.levelActivity && errors.levelActivity
+            ? "level-activity-error"
+            : undefined
+        }
+        className="text-white text-[14px] mb-7 leading-[1.28]"
+      >
+        <legend className="mb-3.5 ">Level Activity:</legend>
+        <div className="space-y-2">
+          {ACTIVITY_LEVELS.map((a) => (
+            <label
+              className="flex items-center gap-2 cursor-pointer"
+              key={a.value}
+            >
+              <Field
+                type="radio"
+                name="levelActivity"
+                value={String(a.value)}
+                className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1 shrink-0"
+              />
+              <span>{a.label}</span>
+            </label>
+          ))}
+          <div className="min-h-4">
+            <ErrorMessage name="levelActivity">
+              {(msg) => (
+                <span
+                  id="level-activity-error"
+                  className="flex gap-1 text-xs text-[#d80027]"
+                >
+                  <ErrorIcon />
+                  {msg}
+                </span>
+              )}
+            </ErrorMessage>
           </div>
         </div>
-      </div>
-      <div className="text-white text-[14px] mb-7 leading-[1.28]">
-        <p className="mb-3.5 ">Level Activity:</p>
-        <div className="space-y-2">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <Field
-              type="radio"
-              name="levelActivity"
-              value="1"
-              className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1 shrink-0"
-            />
-            <span>Sedentary lifestyle (little or no physical activity)</span>
-          </label>
-
-          <label className="flex items-center gap-2 cursor-pointer">
-            <Field
-              type="radio"
-              name="levelActivity"
-              value="2"
-              className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1 shrink-0"
-            />
-            <span>
-              Light activity (light exercises/sports 1-3 days per week)
-            </span>
-          </label>
-
-          <label className="flex items-center gap-2 cursor-pointer">
-            <Field
-              type="radio"
-              name="levelActivity"
-              value="3"
-              className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1 shrink-0"
-            />
-            <span>
-              Moderately active (moderate exercises/sports 3-5 days per week)
-            </span>
-          </label>
-
-          <label className="flex items-center gap-2 cursor-pointer">
-            <Field
-              type="radio"
-              name="levelActivity"
-              value="4"
-              className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1 shrink-0"
-            />
-            <span>
-              Very active (intense exercises/sports 6-7 days per week)
-            </span>
-          </label>
-
-          <label className="flex items-center gap-2 cursor-pointer">
-            <Field
-              type="radio"
-              name="levelActivity"
-              value="5"
-              className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1 shrink-0"
-            />
-            <span>
-              Extremely active (very strenuous exercises/sports and physical
-              work)
-            </span>
-          </label>
-        </div>
-      </div>
+      </fieldset>
       <div className="flex gap-4 w-fit">
         <button
           className="flex items-center gap-2"

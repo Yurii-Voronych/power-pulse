@@ -2,7 +2,8 @@
 
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
-import { Form, Formik, FormikHelpers } from "formik";
+import { Form, Formik } from "formik";
+import type { FormikHelpers } from "formik";
 import FirstStep from "./_formComponents/FirstStep";
 import SecondStep from "./_formComponents/SecondStep";
 import { useState } from "react";
@@ -18,6 +19,7 @@ import useAuthStore from "@/lib/client/store/authStore";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
+export type ProfileSetupStep = 1 | 2 | 3;
 export interface EditProfileFormValues {
   height: string;
   currentWeight: string;
@@ -55,8 +57,8 @@ const bgImage = {
 };
 
 const EditProfileForm = () => {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
-  const steps: Array<1 | 2 | 3> = [1, 2, 3];
+  const [step, setStep] = useState<ProfileSetupStep>(1);
+  const steps: Array<ProfileSetupStep> = [1, 2, 3];
   const currentBg = bgImage[step];
   const router = useRouter();
   const setUser = useAuthStore((state) => state.setUser);
@@ -117,20 +119,14 @@ const EditProfileForm = () => {
         priority
         className="hidden 2xl:block object-contain object-right"
       />
-      <Container className="relative z-10">
+      <Container className="relative z-20">
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
           validationSchema={editProfileSchema}
         >
           {({ validateForm, errors, touched, isSubmitting, setTouched }) => (
-            <Form
-              className={clsx(
-                step === 1 && "mb-28.75 md:mb-27.5 2xl:mb-37.25",
-                step === 2 && "mb-16.75 md:mb-2.25 2xl:mb-12.5",
-                step === 3 && "mb-69 md:mb-62.25 2xl:mb-71.25",
-              )}
-            >
+            <Form noValidate>
               {step === 1 && (
                 <FirstStep
                   setStep={setStep}
@@ -141,24 +137,40 @@ const EditProfileForm = () => {
                 />
               )}
               {step === 2 && (
-                <SecondStep setStep={setStep} validateForm={validateForm} />
+                <SecondStep
+                  setStep={setStep}
+                  validateForm={validateForm}
+                  errors={errors}
+                  touched={touched}
+                  setTouched={setTouched}
+                />
               )}
-              {step === 3 && <ThirdStep setStep={setStep} />}
+              {step === 3 && (
+                <ThirdStep setStep={setStep} isSubmitting={isSubmitting} />
+              )}
             </Form>
           )}
         </Formik>
+      </Container>
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-10 mx-auto w-full max-w-312 px-5 md:px-8 xl:px-0"
+      >
         <Video
           className={clsx(
-            step === 1 &&
-              "ml-25.25 md:ml-80.25 mb-17.5 md:mb-14 2xl:absolute 2xl:left-[30%] 2xl:top-[50%]",
-            step === 2 &&
-              "absolute top-153.5 left-43.5 md:static md:ml-80.25  md:mb-14 2xl:absolute 2xl:left-[30%] 2xl:top-[50%]",
-            step === 3 &&
-              "ml-25.25 mb-6.25 md:ml-80.25  md:mb-14 2xl:absolute 2xl:left-[30%] 2xl:top-[50%]",
+            "absolute bottom-36 left-25.25 short-viewport:hidden md:bottom-40 md:left-80.25 2xl:bottom-auto 2xl:left-[60%] 2xl:top-1/2",
+            step === 2 && "max-md:hidden",
           )}
         />
-        <Calories className="mb-4 md:mb-3 ml-auto 2xl:absolute 2xl:left-[90%] 2xl:top-[80%]" />
-        <div className="flex gap-3.5 mb-3">
+        <Calories
+          className={clsx(
+            "absolute bottom-12 right-5 short-viewport:hidden md:bottom-14 md:right-8 2xl:bottom-auto 2xl:left-[90%] 2xl:right-auto 2xl:top-[80%]",
+            step === 2 && "max-md:hidden",
+          )}
+        />
+
+        <div className="absolute bottom-3 left-5 flex gap-3.5 md:left-8 xl:left-0">
           {steps.map((s) => (
             <div
               key={s}
@@ -171,7 +183,10 @@ const EditProfileForm = () => {
             />
           ))}
         </div>
-      </Container>
+      </div>
+      <span aria-live="polite" className="sr-only">
+        Step {step} of 3
+      </span>
     </section>
   );
 };

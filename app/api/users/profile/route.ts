@@ -37,8 +37,8 @@ export async function PATCH(req: Request) {
     const updatedUser = await User.findByIdAndUpdate(
       payload.userId,
       {
-        name: data.name,
-        email: data.email,
+        ...(data.name !== undefined && { name: data.name }),
+        ...(data.email !== undefined && { email: data.email }),
         profile: {
           height: data.height,
           currentWeight: data.currentWeight,
