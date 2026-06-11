@@ -9,40 +9,12 @@ import BirthdayInput from "./BirthdayInput";
 interface FirstStepProps {
   setStep: Dispatch<SetStateAction<1 | 2 | 3>>;
   validateForm: () => Promise<FormikErrors<EditProfileFormValues>>;
-  errors: FormikErrors<{
-    height: string;
-    currentWeight: string;
-    desiredWeight: string;
-    birthday: string;
-    sex: string;
-    levelActivity: string;
-  }>;
-  touched: FormikTouched<{
-    height: string;
-    currentWeight: string;
-    desiredWeight: string;
-    birthday: string;
-    sex: string;
-    levelActivity: string;
-  }>;
+  errors: FormikErrors<EditProfileFormValues>;
+  touched: FormikTouched<EditProfileFormValues>;
   setTouched: (
-    touched: FormikTouched<{
-      height: string;
-      currentWeight: string;
-      desiredWeight: string;
-      birthday: string;
-      sex: string;
-      levelActivity: string;
-    }>,
+    touched: FormikTouched<EditProfileFormValues>,
     shouldValidate?: boolean,
-  ) => Promise<void | FormikErrors<{
-    height: string;
-    currentWeight: string;
-    desiredWeight: string;
-    birthday: string;
-    sex: string;
-    levelActivity: string;
-  }>>;
+  ) => Promise<void | FormikErrors<EditProfileFormValues>>;
 }
 
 const FirstStep = ({
@@ -52,7 +24,6 @@ const FirstStep = ({
   touched,
   setTouched,
 }: FirstStepProps) => {
-  const hasHeightError = Boolean(touched.height && errors.height);
   const handleNext = async () => {
     await setTouched(
       {
@@ -92,8 +63,13 @@ const FirstStep = ({
             id="height"
             name="height"
             type="text"
+            inputMode="decimal"
+            aria-invalid={Boolean(touched.height && errors.height)}
+            aria-describedby={
+              touched.height && errors.height ? "height-error" : undefined
+            }
             className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
-              hasHeightError
+              Boolean(touched.height && errors.height)
                 ? "border-[#d80027] focus:border-[#d80027]"
                 : "border-white/30 focus:border-orange"
             }`}
@@ -111,7 +87,10 @@ const FirstStep = ({
 
           <ErrorMessage name="height">
             {(msg) => (
-              <span className="absolute -bottom-5.5 left-0 flex gap-1 text-xs leading-normal text-[#d80027]">
+              <span
+                id="height-error"
+                className="absolute -bottom-5.5 left-0 flex gap-1 text-xs leading-normal text-[#d80027]"
+              >
                 <ErrorIcon />
                 {msg}
               </span>
@@ -123,12 +102,37 @@ const FirstStep = ({
             id="currentWeight"
             name="currentWeight"
             type="text"
-            className="w-full h-11.5 2xl:h-12 p-3.5 border border-white/30 rounded-xl "
-            placeholder="Current Weight"
+            inputMode="decimal"
+            aria-invalid={Boolean(
+              touched.currentWeight && errors.currentWeight,
+            )}
+            aria-describedby={
+              touched.currentWeight && errors.currentWeight
+                ? "current-weight-error"
+                : undefined
+            }
+            className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
+              Boolean(touched.currentWeight && errors.currentWeight)
+                ? "border-[#d80027] focus:border-[#d80027]"
+                : "border-white/30 focus:border-orange"
+            }`}
+            placeholder=" "
           />
+          <label
+            htmlFor="currentWeight"
+            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/60 transition-all duration-200
+              peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs
+              peer-not-placeholder-shown:top-2 peer-not-placeholder-shown:translate-y-0 peer-not-placeholder-shown:text-xs"
+          >
+            Current Weight
+          </label>
+
           <ErrorMessage name="currentWeight">
             {(msg) => (
-              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+              <span
+                id="current-weight-error"
+                className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1"
+              >
                 <ErrorIcon /> {msg}
               </span>
             )}
@@ -139,22 +143,53 @@ const FirstStep = ({
             id="desiredWeight"
             name="desiredWeight"
             type="text"
-            className="w-full h-11.5 2xl:h-13 p-3.5 border border-white/30 rounded-xl"
-            placeholder="Desired Weight"
+            inputMode="decimal"
+            aria-invalid={Boolean(
+              touched.desiredWeight && errors.desiredWeight,
+            )}
+            aria-describedby={
+              touched.desiredWeight && errors.desiredWeight
+                ? "desired-weight-error"
+                : undefined
+            }
+            className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
+              Boolean(touched.desiredWeight && errors.desiredWeight)
+                ? "border-[#d80027] focus:border-[#d80027]"
+                : "border-white/30 focus:border-orange"
+            }`}
+            placeholder=" "
           />
+          <label
+            htmlFor="desiredWeight"
+            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/60 transition-all duration-200
+              peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs
+              peer-not-placeholder-shown:top-2 peer-not-placeholder-shown:translate-y-0 peer-not-placeholder-shown:text-xs"
+          >
+            Desired Weight
+          </label>
           <ErrorMessage name="desiredWeight">
             {(msg) => (
-              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+              <span
+                id="desired-weight-error"
+                className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1"
+              >
                 <ErrorIcon /> {msg}
               </span>
             )}
           </ErrorMessage>
         </div>
         <div className="relative">
-          <BirthdayInput name="birthday" />
+          <BirthdayInput
+            name="birthday"
+            error={errors.birthday}
+            touched={touched.birthday}
+          />
           <ErrorMessage name="birthday">
             {(msg) => (
-              <span className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1">
+              <span
+                id="birthday-error"
+                className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1"
+              >
                 <ErrorIcon /> {msg}
               </span>
             )}

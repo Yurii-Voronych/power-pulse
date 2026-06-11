@@ -9,15 +9,22 @@ import { Calendar1Icon } from "lucide-react";
 
 type Props = {
   name: string;
+  error?: string;
+  touched?: boolean;
 };
 
-export default function BirthdayInput({ name }: Props) {
+export default function BirthdayInput({ name, error, touched }: Props) {
   const [field, , helpers] = useField<string>(name);
   const { value } = field;
   const { setValue } = helpers;
   const [open, setOpen] = useState(false);
+  const eighteenYearsAgo = new Date();
+  eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18);
+  const hundredYearsAgo = new Date();
+  hundredYearsAgo.setFullYear(hundredYearsAgo.getFullYear() - 100);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOpen(false);
     const v = e.target.value.replace(/\D/g, "");
     let out = "";
     if (v.length >= 1) out = v.substring(0, 2);
@@ -40,10 +47,20 @@ export default function BirthdayInput({ name }: Props) {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [open]);
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+      }
+    };
 
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEsc);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEsc);
+    };
+  }, [open]);
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Backspace" && field.value.endsWith(".")) {
       e.preventDefault();
@@ -51,10 +68,14 @@ export default function BirthdayInput({ name }: Props) {
     }
   };
 
-  const handleSelect = (date: Date | undefined) => {
+  const handleSelect = async (date: Date | undefined) => {
     if (!date) return;
+
     const formatted = format(date, "dd.MM.yyyy");
-    setValue(formatted);
+
+    await helpers.setValue(formatted, true);
+    await helpers.setTouched(true, false);
+
     setOpen(false);
   };
 
@@ -64,38 +85,63 @@ export default function BirthdayInput({ name }: Props) {
   })();
 
   return (
-    <div className="relative w-full">
+    <div className="relative w-full" ref={containerRef}>
       <input
         type="text"
-        placeholder="Birthday"
+        inputMode="numeric"
+        maxLength={10}
+        placeholder=" "
         value={value}
         name={name}
+        id={name}
+        autoComplete="bday"
+        aria-invalid={Boolean(touched && error)}
+        aria-describedby={touched && error ? "birthday-error" : undefined}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onBlur={field.onBlur}
-        className="w-full h-11.5 2xl:h-12 p-3.5 border border-white/30 rounded-xl bg-transparent"
+        className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
+          Boolean(touched && error)
+            ? "border-[#d80027] focus:border-[#d80027]"
+            : "border-white/30 focus:border-orange"
+        }`}
       />
-
+      <label
+        htmlFor={name}
+        className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/60 transition-all duration-200
+              peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs
+              peer-not-placeholder-shown:top-2 peer-not-placeholder-shown:translate-y-0 peer-not-placeholder-shown:text-xs"
+      >
+        Birthday
+      </label>
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
+        aria-label={open ? "Close birthday calendar" : "Open birthday calendar"}
+        aria-expanded={open}
+        aria-controls={`${name}-calendar`}
         className="absolute right-3 top-1/2 -translate-y-1/2"
       >
-        <Calendar1Icon />
+        <Calendar1Icon aria-hidden="true" />
       </button>
       {open && (
-        <div className="absolute top-full right-0 mt-2 z-50 ">
-          <div
-            ref={containerRef}
-            className="w-53.75 h-59 bg-orange-1 rounded-[30px] p-3 text-white flex items-center justify-center"
-          >
+        <div
+          id={`${name}-calendar`}
+          role="dialog"
+          aria-label="Choose birthday"
+          className="absolute top-full right-0 mt-2 z-50"
+        >
+          <div className="w-53.75 h-59 bg-orange-1 rounded-[30px] p-3 text-white flex items-center justify-center">
             <DayPicker
               mode="single"
               selected={parsedDate}
-              defaultMonth={parsedDate ?? new Date()}
+              defaultMonth={parsedDate ?? eighteenYearsAgo}
               onSelect={handleSelect}
+              startMonth={hundredYearsAgo}
+              endMonth={eighteenYearsAgo}
               showOutsideDays
               weekStartsOn={1}
+              disabled={{ after: eighteenYearsAgo }}
               styles={{
                 root: {
                   "--rdp-accent-color": "#efede8",
@@ -112,12 +158,13 @@ export default function BirthdayInput({ name }: Props) {
               }}
               classNames={{
                 root: "relative w-full h-full text-white",
+
                 month: "w-full",
                 month_caption:
                   "relative mb-3 flex h-[38px] items-center justify-center border-b border-white/20 pb-3",
                 caption_label:
                   "text-[20px] font-medium leading-none text-white",
-                nav: "absolute left-0 right-0 top-0 flex h-[38px] items-start justify-between",
+                nav: "absolute left-0 right-0 top-0 z-10 flex h-[38px] items-start justify-between",
                 button_previous:
                   "flex size-6 items-center justify-center text-white/70 hover:text-white",
                 button_next:
@@ -133,8 +180,9 @@ export default function BirthdayInput({ name }: Props) {
                   "mx-auto flex size-6 items-center justify-center rounded-full text-[14px] font-normal leading-none hover:bg-black/15",
                 selected:
                   "font-normal text-white [&>button]:bg-black [&>button]:text-white",
-                today: "text-white",
+                today: "[&>button]:ring-2 [&>button]:ring-red-500 text-red-500",
                 outside: "text-white/30",
+                disabled: "text-white/20 pointer-events-none",
               }}
             />
           </div>
