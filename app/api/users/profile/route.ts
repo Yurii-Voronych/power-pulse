@@ -5,6 +5,7 @@ import { requireAuth } from "@/lib/server/auth/requireAuth";
 import { editProfileSchemaServer } from "@/lib/shared/validators/profile/editProfileSchema.server";
 import { calculateDailyNorm } from "@/lib/shared/calculations/calculateDailyNorm";
 import { mapUserToDTO } from "@/lib/shared/mappers/mapUserToDTO";
+import { jsonWithAuthCookie } from "@/lib/server/api/jsonWithAuthCookie";
 
 export async function PATCH(req: Request) {
   try {
@@ -19,7 +20,11 @@ export async function PATCH(req: Request) {
     const parsed = editProfileSchemaServer.safeParse(body);
 
     if (!parsed.success) {
-      return NextResponse.json({ errors: parsed.error }, { status: 400 });
+      return jsonWithAuthCookie(
+        { errors: parsed.error },
+        { status: 400 },
+        payload.accessToken,
+      );
     }
 
     const data = parsed.data;
@@ -57,14 +62,19 @@ export async function PATCH(req: Request) {
     );
 
     if (!updatedUser) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+      return jsonWithAuthCookie(
+        { message: "User not found" },
+        { status: 404 },
+        payload.accessToken,
+      );
     }
 
-    return NextResponse.json(
+    return jsonWithAuthCookie(
       {
         user: mapUserToDTO(updatedUser),
       },
       { status: 200 },
+      payload.accessToken,
     );
   } catch (error) {
     console.error("Profile update error", error);

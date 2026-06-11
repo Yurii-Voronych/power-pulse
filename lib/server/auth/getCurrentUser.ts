@@ -4,8 +4,9 @@ import { connectDB } from "@/lib/server/db/mongodb";
 import User from "@/models/User";
 import { refreshSession } from "./sessions";
 import { mapUserToDTO } from "@/lib/shared/mappers/mapUserToDTO";
+import { cache } from "react";
 
-export const getCurrentUser = async () => {
+const getCurrentUserUncached = async () => {
   const cookieStore = await cookies();
 
   const accessToken = cookieStore.get("accessToken")?.value;
@@ -35,3 +36,5 @@ export const getCurrentUser = async () => {
 
   return null;
 };
+
+export const getCurrentUser = cache(getCurrentUserUncached);

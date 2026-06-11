@@ -1,25 +1,34 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 import { getCurrentUser } from "@/lib/client/api/userApi";
 import useAuthStore from "@/lib/client/store/authStore";
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
 
 interface AuthProviderProps {
   children: React.ReactNode;
 }
-const skipAuthInitRoutes = ["/", "/auth/login", "/auth/register"];
+
+const publicRoutes = ["/", "/auth/login", "/auth/register"];
+
 const AuthProvider = ({ children }: AuthProviderProps) => {
+  const initialized = useRef(false);
+  const pathname = usePathname();
+
   const setUser = useAuthStore((state) => state.setUser);
   const clearAuth = useAuthStore((state) => state.clearAuth);
-  const path = usePathname();
-  useEffect(() => {
-    const initAuth = async () => {
-      if (skipAuthInitRoutes.includes(path)) {
-        clearAuth();
-        return;
-      }
 
+  useEffect(() => {
+    if (initialized.current) return;
+
+    initialized.current = true;
+
+    if (publicRoutes.includes(pathname)) {
+      clearAuth();
+      return;
+    }
+
+    const initializeAuth = async () => {
       try {
         const user = await getCurrentUser();
         setUser(user);
@@ -28,10 +37,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       }
     };
 
-    initAuth();
-  }, [setUser, clearAuth, path]);
+    initializeAuth();
+  }, [pathname, setUser, clearAuth]);
 
-  return <>{children}</>;
+  return children;
 };
 
 export default AuthProvider;

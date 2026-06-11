@@ -3,6 +3,7 @@ import { getProducts } from "@/lib/server/data/products/getProducts";
 import { connectDB } from "@/lib/server/db/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { jsonWithAuthCookie } from "@/lib/server/api/jsonWithAuthCookie";
 
 const schema = z.object({
   page: z.coerce
@@ -36,7 +37,7 @@ export async function GET(req: NextRequest) {
     });
 
     if (!parsed.success) {
-      return NextResponse.json(
+      return jsonWithAuthCookie(
         {
           message: "Invalid query params",
           issues: parsed.error.issues.map((issue) => ({
@@ -45,23 +46,12 @@ export async function GET(req: NextRequest) {
           })),
         },
         { status: 400 },
+        payload.accessToken,
       );
     }
 
     const products = await getProducts(parsed.data);
-    const res = NextResponse.json(products);
-
-    if (payload.accessToken) {
-      res.cookies.set("accessToken", payload.accessToken, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "lax",
-        path: "/",
-        maxAge: 60 * 15,
-      });
-    }
-
-    return res;
+    return jsonWithAuthCookie(products, { status: 200 }, payload.accessToken);
   } catch {
     return NextResponse.json({ message: "Server error" }, { status: 500 });
   }
