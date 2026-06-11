@@ -9,6 +9,7 @@ import useAuthStore from "@/lib/client/store/authStore";
 import toast from "react-hot-toast";
 import { editProfileSchema } from "@/lib/shared/validators/profile/editProfileSchema";
 import { mapUserToFormValues } from "@/lib/shared/mappers/mapUserToFormValues";
+import { User } from "@/lib/shared/types/user";
 
 export interface SettingsFormValues {
   height: string;
@@ -20,10 +21,10 @@ export interface SettingsFormValues {
   name: string;
   email: string;
 }
-
-const ProfileForm = () => {
-  const user = useAuthStore((state) => state.user);
-
+interface ProfileFormProps {
+  user: User;
+}
+const ProfileForm = ({ user }: ProfileFormProps) => {
   const initialValues = user
     ? mapUserToFormValues(user)
     : {
