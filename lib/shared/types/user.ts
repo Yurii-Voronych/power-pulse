@@ -1,3 +1,5 @@
+import type { ActivityLevel, Sex } from "./profile";
+
 export interface User {
   id: string;
   email: string;
@@ -8,8 +10,8 @@ export interface User {
     currentWeight?: number;
     desiredWeight?: number;
     birthday?: string;
-    sex?: string;
-    levelActivity?: number;
+    sex?: Sex;
+    levelActivity?: ActivityLevel;
   };
   dailyNorm?: {
     calories?: number;

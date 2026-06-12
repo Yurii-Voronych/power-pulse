@@ -5,8 +5,10 @@ export const MEAL_TYPES = [
   { value: "snack", label: "Snack" },
 ];
 
-export const MIN_HEIGHT = 150;
+export const MIN_HEIGHT = 70;
+export const MAX_HEIGHT = 220;
 export const MIN_WEIGHT = 35;
+export const MAX_WEIGHT = 170;
 export const MIN_AGE = 18;
 export const MAX_AGE = 100;
 

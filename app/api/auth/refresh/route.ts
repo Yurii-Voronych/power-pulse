@@ -1,3 +1,4 @@
+import { clearAuthCookies } from "@/lib/server/api/jsonWithAuthCookie";
 import { refreshSession } from "@/lib/server/auth/sessions";
 import { connectDB } from "@/lib/server/db/mongodb";
 import { cookies } from "next/headers";
@@ -11,12 +12,16 @@ export async function POST() {
     const refreshToken = cookieStore.get("refreshToken")?.value;
 
     if (!refreshToken) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
+      );
     }
 
     const result = await refreshSession(refreshToken, true);
     if (!result || !result.refreshToken) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
+      );
     }
 
     const response = NextResponse.json(

@@ -9,27 +9,21 @@ import SecondStep from "./_formComponents/SecondStep";
 import { useState } from "react";
 import clsx from "clsx";
 import ThirdStep from "./_formComponents/ThirdStep";
-import { editProfileSchema } from "@/lib/shared/validators/profile/editProfileSchema";
+import { profileSetupSchema } from "@/lib/shared/validators/profile/editProfileSchema";
 import Container from "@/components/Container";
 import { parse } from "date-fns";
 import Image from "next/image";
 import { updateProfile } from "@/lib/client/api/userApi";
-import { editProfileSchemaServer } from "@/lib/shared/validators/profile/editProfileSchema.server";
+import { profileSetupSchemaServer } from "@/lib/shared/validators/profile/editProfileSchema.server";
 import useAuthStore from "@/lib/client/store/authStore";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import type { ProfileDetailsFormValues } from "@/lib/shared/types/profile";
 
 export type ProfileSetupStep = 1 | 2 | 3;
-export interface EditProfileFormValues {
-  height: string;
-  currentWeight: string;
-  desiredWeight: string;
-  birthday: string;
-  sex: string;
-  levelActivity: string;
-}
+export type EditProfileFormValues = ProfileDetailsFormValues;
 
-const initialValues = {
+const initialValues: EditProfileFormValues = {
   height: "",
   currentWeight: "",
   desiredWeight: "",
@@ -76,7 +70,7 @@ const EditProfileForm = () => {
       birthday: parse(values.birthday, "dd.MM.yyyy", new Date()),
     };
 
-    const parsed = editProfileSchemaServer.safeParse(raw);
+    const parsed = profileSetupSchemaServer.safeParse(raw);
 
     if (!parsed.success) {
       return;
@@ -123,7 +117,7 @@ const EditProfileForm = () => {
         <Formik
           initialValues={initialValues}
           onSubmit={handleSubmit}
-          validationSchema={editProfileSchema}
+          validationSchema={profileSetupSchema}
         >
           {({ validateForm, errors, touched, isSubmitting, setTouched }) => (
             <Form noValidate>

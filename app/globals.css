@@ -69,23 +69,23 @@
     }
   }
 
-  .btn-outline:hover {
-    @apply bg-beige/10;
-  }
-
-  .btn-primary:hover {
+  .btn-primary:not(:disabled):hover {
     @apply opacity-90;
   }
-  .btn-outline:focus {
-    @apply outline-1 outline-orange
-    border-0;
+
+  .btn-outline:not(:disabled):hover {
+    @apply bg-beige/10;
+  }
+  .btn-primary:not(:disabled):focus-visible {
+    @apply outline-1 outline-white;
   }
 
-  .btn-primary:focus {
-    @apply outline-1 outline-white
-    border-0;
+  .btn-outline:not(:disabled):focus-visible {
+    @apply outline-1 outline-orange;
   }
-
+  button:disabled {
+    cursor: not-allowed;
+  }
   .form-input {
     @apply min-w-82.5
       rounded-xl

@@ -2,24 +2,29 @@ import { z } from "zod";
 import { differenceInYears } from "date-fns";
 import {
   ACTIVITY_LEVEL_VALUES,
+  MAX_HEIGHT,
+  MAX_WEIGHT,
   MIN_AGE,
   MIN_HEIGHT,
   MIN_WEIGHT,
   SEX_OPTIONS,
 } from "@/lib/shared/constants/constants";
 
-export const editProfileSchemaServer = z.object({
+const profileDetailsSchemaServer = z.object({
   height: z
     .number()
-    .min(MIN_HEIGHT, `Minimum height is ${MIN_HEIGHT} cm`),
+    .min(MIN_HEIGHT, `Minimum height is ${MIN_HEIGHT} cm`)
+    .max(MAX_HEIGHT, `Maximum height is ${MAX_HEIGHT}`),
 
   currentWeight: z
     .number()
-    .min(MIN_WEIGHT, `Minimum weight is ${MIN_WEIGHT} kg`),
+    .min(MIN_WEIGHT, `Minimum weight is ${MIN_WEIGHT} kg`)
+    .max(MAX_WEIGHT, `Maximum weight is ${MAX_WEIGHT} kg`),
 
   desiredWeight: z
     .number()
-    .min(MIN_WEIGHT, `Minimum weight is ${MIN_WEIGHT} kg`),
+    .min(MIN_WEIGHT, `Minimum weight is ${MIN_WEIGHT} kg`)
+    .max(MAX_WEIGHT, `Maximum weight is ${MAX_WEIGHT} kg`),
 
   birthday: z.coerce
     .date()
@@ -37,11 +42,37 @@ export const editProfileSchemaServer = z.object({
     z.literal(ACTIVITY_LEVEL_VALUES[3]),
     z.literal(ACTIVITY_LEVEL_VALUES[4]),
   ]),
-  email: z.email("Incorrect email").optional(),
+});
+
+export const profileSetupSchemaServer = profileDetailsSchemaServer;
+
+export const profileSettingsSchemaServer = profileDetailsSchemaServer.extend({
+  email: z.email("Incorrect email").trim().toLowerCase(),
   name: z
     .string()
+    .trim()
     .min(2, "Minimal length 2 symbols")
-    .max(20, "Maximal length 20 symbols")
-    .optional(),
+    .max(20, "Maximal length 20 symbols"),
 });
-export type ProfileInput = z.infer<typeof editProfileSchemaServer>;
+
+export const profileUpdateSchemaServer = profileDetailsSchemaServer
+  .extend({
+    email: z.email("Incorrect email").optional(),
+    name: z
+      .string()
+      .trim()
+      .min(2, "Minimal length 2 symbols")
+      .max(20, "Maximal length 20 symbols")
+      .optional(),
+  })
+  .refine(
+    (data) =>
+      (data.name === undefined && data.email === undefined) ||
+      (data.name !== undefined && data.email !== undefined),
+    {
+      message: "Name and email must be provided together",
+      path: ["name"],
+    },
+  );
+
+export type ProfileInput = z.infer<typeof profileUpdateSchemaServer>;

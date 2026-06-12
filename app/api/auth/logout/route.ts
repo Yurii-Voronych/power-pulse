@@ -3,6 +3,7 @@ import Session from "@/models/Session";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { hashToken } from "@/lib/server/auth/sessions";
+import { clearAuthCookies } from "@/lib/server/api/jsonWithAuthCookie";
 
 export async function POST() {
   try {
@@ -17,18 +18,13 @@ export async function POST() {
       await Session.deleteOne({ refreshTokenHash });
     }
 
-    const response = NextResponse.json(
-      { message: "Logged out" },
-      { status: 200 },
+    const response = clearAuthCookies(
+      NextResponse.json({ message: "Logged out" }, { status: 200 }),
     );
-
-    response.cookies.set("accessToken", "", { maxAge: 0, path: "/" });
-    response.cookies.set("refreshToken", "", { maxAge: 0, path: "/" });
-
     return response;
-  } catch (error) {
-    console.error("Logout error", error);
-
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+  } catch {
+    return clearAuthCookies(
+      NextResponse.json({ message: "Server error" }, { status: 500 }),
+    );
   }
 }

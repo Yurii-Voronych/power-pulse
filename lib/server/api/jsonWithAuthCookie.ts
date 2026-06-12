@@ -19,3 +19,17 @@ export const jsonWithAuthCookie = (
 
   return res;
 };
+
+export const clearAuthCookies = (response: NextResponse) => {
+  response.cookies.set("accessToken", "", {
+    maxAge: 0,
+    path: "/",
+  });
+
+  response.cookies.set("refreshToken", "", {
+    maxAge: 0,
+    path: "/",
+  });
+
+  return response;
+};

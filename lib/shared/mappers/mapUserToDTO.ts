@@ -1,4 +1,5 @@
 import { User } from "../types/user";
+import type { ActivityLevel, Sex } from "../types/profile";
 
 type UserDTOInput = {
   _id: { toString: () => string };
@@ -10,8 +11,8 @@ type UserDTOInput = {
     currentWeight?: number;
     desiredWeight?: number;
     birthday?: Date;
-    sex?: string;
-    levelActivity?: number;
+    sex?: Sex;
+    levelActivity?: ActivityLevel;
   };
   dailyNorm?: {
     calories?: number;
