@@ -4,9 +4,13 @@ import ProductsFilters from "@/components/ProductsFilters";
 import ProductsList from "@/components/ProductsList";
 import { getCategories } from "@/lib/server/data/categories/getCategories";
 import { getProducts } from "@/lib/server/data/products/getProducts";
+import { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-
+export const metadata: Metadata = {
+  title: "Products | Power Pulse",
+  description: "Training App",
+};
 const ProductsPage = async ({
   searchParams,
 }: {
@@ -15,17 +19,18 @@ const ProductsPage = async ({
   const categoriesList = await getCategories();
   const categoriesValidationArr = categoriesList.map((c) => c.value);
   const rawParams = await searchParams;
+
   const searchParamsSchema = z.object({
-    page: z.string().transform(Number).default(1),
-    limit: z.string().transform(Number).default(12),
+    page: z.coerce.number().int().positive().default(1),
+    limit: z.coerce.number().int().positive().max(50).default(12),
     category: z.enum(categoriesValidationArr).optional(),
-    search: z.string().optional(),
+    search: z.string().trim().max(35).optional(),
   });
 
   const parsed = searchParamsSchema.safeParse(rawParams);
 
   if (!parsed.success) {
-    redirect("/products?page=1");
+    redirect("/products");
   }
 
   const { page, limit, category, search } = parsed.data;
@@ -37,6 +42,17 @@ const ProductsPage = async ({
     search,
   });
 
+  if (products.totalPages > 0 && page > products.totalPages) {
+    const params = new URLSearchParams({
+      page: String(products.totalPages),
+    });
+
+    if (search) params.set("search", search);
+    if (category) params.set("category", category);
+    if (limit !== 12) params.set("limit", String(limit));
+
+    redirect(`/products?${params.toString()}`);
+  }
   return (
     <section
       className="relative max-w-360 mx-auto min-h-screen 2xl:bg-[url('/products_desk.jpg')]

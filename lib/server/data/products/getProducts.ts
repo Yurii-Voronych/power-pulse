@@ -20,7 +20,16 @@ export const getProducts = async ({
   const filter: Record<string, unknown> = {};
 
   if (search) {
-    filter.title = { $regex: search, $options: "i" };
+    const normalizedSearch = search?.trim();
+    const escapeRegex = (value: string) =>
+      value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    if (normalizedSearch) {
+      filter.title = {
+        $regex: escapeRegex(normalizedSearch),
+        $options: "i",
+      };
+    }
   }
 
   if (category) {
@@ -28,7 +37,11 @@ export const getProducts = async ({
   }
 
   const [products, total] = await Promise.all([
-    Product.find(filter).skip(skip).limit(limit).lean(),
+    Product.find(filter)
+      .sort({ title: 1, _id: 1 })
+      .skip(skip)
+      .limit(limit)
+      .lean(),
     Product.countDocuments(filter),
   ]);
 

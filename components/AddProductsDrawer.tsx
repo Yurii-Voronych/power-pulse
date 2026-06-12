@@ -93,24 +93,39 @@ const AddProductsDrawer = ({
   useEffect(() => {
     if (!isDrawerOpen) return;
 
+    let ignore = false;
+
     const fetchProducts = async () => {
       try {
         setIsLoading(true);
-        const { products, page, totalPages } = await getProducts({
+
+        const result = await getProducts({
           page: currentPage,
           limit: 10,
           search: debouncedSearch,
         });
-        setCurrentPage(page);
-        setProducts(products);
-        setTotalPages(totalPages);
+
+        if (ignore) return;
+
+        setCurrentPage(result.page);
+        setProducts(result.products);
+        setTotalPages(result.totalPages);
       } catch {
-        toast.error("Something went wrong, please try again later");
+        if (!ignore) {
+          toast.error("Something went wrong, please try again later");
+        }
       } finally {
-        setIsLoading(false);
+        if (!ignore) {
+          setIsLoading(false);
+        }
       }
     };
+
     fetchProducts();
+
+    return () => {
+      ignore = true;
+    };
   }, [currentPage, debouncedSearch, isDrawerOpen]);
 
   const handleClick = () => {
@@ -173,6 +188,7 @@ const AddProductsDrawer = ({
             <input
               type="text"
               value={search}
+              maxLength={35}
               onChange={onChangeHandler}
               placeholder="Search products"
               className="form-input mb-4"

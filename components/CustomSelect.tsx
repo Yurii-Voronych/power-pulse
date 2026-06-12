@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 interface Options {
@@ -18,16 +18,39 @@ type Props = {
 
 export const CustomSelect = ({ options, onChange, param, chosen }: Props) => {
   const [open, setOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const selected = options.find((o) => o.value === chosen);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const optionRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const listboxId = useId();
+  const selected = options.find((option) => option.value === chosen);
+
+  const focusOption = (index: number) => {
+    const nextIndex = Math.max(0, Math.min(index, options.length - 1));
+
+    setActiveIndex(nextIndex);
+    optionRefs.current[nextIndex]?.focus();
+  };
+
+  const openAndFocus = (index: number) => {
+    setOpen(true);
+    setActiveIndex(index);
+
+    requestAnimationFrame(() => {
+      optionRefs.current[index]?.focus();
+    });
+  };
+
+  const closeAndFocusTrigger = () => {
+    setOpen(false);
+    triggerRef.current?.focus();
+  };
 
   useEffect(() => {
     if (!open) return;
 
-    const handleClick = (e: MouseEvent) => {
-      if (!ref.current) return;
-
-      if (!ref.current.contains(e.target as Node)) {
+    const handleClick = (event: MouseEvent) => {
+      if (!ref.current?.contains(event.target as Node)) {
         setOpen(false);
       }
     };
@@ -38,30 +61,85 @@ export const CustomSelect = ({ options, onChange, param, chosen }: Props) => {
       document.removeEventListener("mousedown", handleClick);
     };
   }, [open]);
+
   return (
-    <div className="relative text-[14px] w-full" ref={ref}>
+    <div className="relative w-full text-[14px]" ref={ref}>
       <button
-        onClick={() => setOpen((p) => !p)}
-        className="flex items-center justify-between form-input text-white capitalize w-full"
+        ref={triggerRef}
+        type="button"
+        aria-label={param === "category" ? "Product category" : param}
+        aria-expanded={open}
+        aria-controls={listboxId}
+        aria-haspopup="listbox"
+        onClick={() => setOpen((previous) => !previous)}
+        onKeyDown={(event) => {
+          const selectedIndex = Math.max(
+            0,
+            options.findIndex((option) => option.value === chosen),
+          );
+
+          if (event.key === "ArrowDown") {
+            event.preventDefault();
+            openAndFocus(selectedIndex);
+          } else if (event.key === "ArrowUp") {
+            event.preventDefault();
+            openAndFocus(
+              selectedIndex === 0 ? options.length - 1 : selectedIndex,
+            );
+          }
+        }}
+        className="form-input flex w-full items-center justify-between capitalize text-white"
       >
-        {selected?.name || (param === "category" ? "category" : "all")}
-        <ChevronDown size={16} />
+        {selected?.name || (param === "category" ? "Category" : "All")}
+        <ChevronDown aria-hidden="true" size={16} />
       </button>
 
       {open && (
-        <div className="absolute top-full mt-2  bg-[#1c1c1c] rounded-xl max-h-50 overflow-hidden z-50  pr-2">
-          <div className="max-h-50 overflow-y-auto custom-scrollbar pt-1 pb-1.5">
-            {options.map((o) => (
-              <div
-                key={o.id}
-                onClick={() => {
-                  onChange(param, o.value);
-                  setOpen(false);
+        <div
+          id={listboxId}
+          role="listbox"
+          aria-label={param === "category" ? "Product categories" : param}
+          className="absolute top-full z-50 mt-2 max-h-50 overflow-hidden rounded-xl bg-[#1c1c1c] pr-2"
+        >
+          <div className="custom-scrollbar max-h-50 overflow-y-auto py-1">
+            {options.map((option, index) => (
+              <button
+                key={option.id}
+                ref={(element) => {
+                  optionRefs.current[index] = element;
                 }}
-                className="cursor-pointer capitalize pl-3.5 pt-2 pb-2"
+                type="button"
+                role="option"
+                aria-selected={option.value === chosen}
+                tabIndex={index === activeIndex ? 0 : -1}
+                onClick={() => {
+                  onChange(param, option.value);
+                  closeAndFocusTrigger();
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "ArrowDown") {
+                    event.preventDefault();
+                    focusOption((index + 1) % options.length);
+                  } else if (event.key === "ArrowUp") {
+                    event.preventDefault();
+                    focusOption(
+                      (index - 1 + options.length) % options.length,
+                    );
+                  } else if (event.key === "Home") {
+                    event.preventDefault();
+                    focusOption(0);
+                  } else if (event.key === "End") {
+                    event.preventDefault();
+                    focusOption(options.length - 1);
+                  } else if (event.key === "Escape") {
+                    event.preventDefault();
+                    closeAndFocusTrigger();
+                  }
+                }}
+                className="block w-full cursor-pointer px-3.5 py-2 text-left capitalize"
               >
-                {o.name}
-              </div>
+                {option.name}
+              </button>
             ))}
           </div>
         </div>

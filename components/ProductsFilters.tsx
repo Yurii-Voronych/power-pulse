@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import CloseIcon from "./icons/CloseIcon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomSelect } from "./CustomSelect";
 import { useDebouncedCallback } from "use-debounce";
 interface ProductsFiltersProps {
@@ -19,6 +19,10 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
   const category = params.get("category") || "";
 
   const [search, setSearch] = useState(searchFromUrl);
+
+  useEffect(() => {
+    setSearch(searchFromUrl);
+  }, [searchFromUrl]);
 
   const handleClear = () => {
     setSearch("");
@@ -45,6 +49,7 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
       <div className="relative">
         <input
           value={search}
+          maxLength={35}
           type="text"
           className="form-input w-full placeholder:text-white"
           placeholder="Search"
