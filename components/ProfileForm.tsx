@@ -73,8 +73,8 @@ const ProfileForm = ({ user, onUpdated }: ProfileFormProps) => {
     >
       {({ errors, touched, isSubmitting, dirty }) => (
         <Form>
-          <div className="flex flex-col gap-5 mb-9 md:flex-row">
-            <div className="relative">
+          <div className="flex flex-col gap-5 mb-9 md:flex-row ">
+            <div className="relative min-w-0 flex-1">
               <Field
                 id="name"
                 name="name"
@@ -103,14 +103,14 @@ const ProfileForm = ({ user, onUpdated }: ProfileFormProps) => {
                 {(msg) => (
                   <span
                     id="name-error"
-                    className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1"
+                    className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-12 mt-1 flex gap-1"
                   >
                     <ErrorIcon /> {msg}
                   </span>
                 )}
               </ErrorMessage>
             </div>
-            <div className="relative">
+            <div className="relative min-w-0 flex-1">
               <Field
                 id="email"
                 name="email"
@@ -139,7 +139,7 @@ const ProfileForm = ({ user, onUpdated }: ProfileFormProps) => {
                 {(msg) => (
                   <span
                     id="email-error"
-                    className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-10.5 mt-1 flex gap-1"
+                    className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-12 mt-1 flex gap-1"
                   >
                     <ErrorIcon /> {msg}
                   </span>
@@ -357,7 +357,7 @@ const ProfileForm = ({ user, onUpdated }: ProfileFormProps) => {
               {(msg) => (
                 <span
                   id="level-activity-error"
-                  className="absolute -bottom-5 left-0 flex gap-1 text-xs text-[#d80027]"
+                  className="absolute -bottom-8 left-0 flex gap-1 text-xs text-[#d80027]"
                 >
                   <ErrorIcon />
                   {msg}

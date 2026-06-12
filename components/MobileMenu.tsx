@@ -19,14 +19,20 @@ const MobileMenu = () => {
       </button>
       <nav>
         <ul className="flex flex-col gap-4">
-          <li className="btn-outline" onClick={() => close()}>
-            <Link href="/diary">Diary</Link>
+          <li onClick={() => close()}>
+            <Link href="/diary" className="btn-outline">
+              Diary
+            </Link>
           </li>
-          <li className="btn-outline" onClick={() => close()}>
-            <Link href="/products">Products</Link>
+          <li onClick={() => close()}>
+            <Link href="/products" className="btn-outline">
+              Products
+            </Link>
           </li>
-          <li className="btn-outline" onClick={() => close()}>
-            <Link href="/exercises">Exercises</Link>
+          <li onClick={() => close()}>
+            <Link href="/exercises" className="btn-outline">
+              Exercises
+            </Link>
           </li>
         </ul>
       </nav>
