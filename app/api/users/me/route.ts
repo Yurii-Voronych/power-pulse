@@ -3,7 +3,10 @@ import User from "@/models/User";
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/server/auth/requireAuth";
 import { mapUserToDTO } from "@/lib/shared/mappers/mapUserToDTO";
-import { jsonWithAuthCookie } from "@/lib/server/api/jsonWithAuthCookie";
+import {
+  clearAuthCookies,
+  jsonWithAuthCookie,
+} from "@/lib/server/api/jsonWithAuthCookie";
 
 export async function GET() {
   try {
@@ -12,16 +15,16 @@ export async function GET() {
     const payload = await requireAuth();
 
     if (!payload) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
+      );
     }
 
     const user = await User.findById(payload.userId).select("-password");
 
     if (!user) {
-      return jsonWithAuthCookie(
-        { message: "User not found" },
-        { status: 404 },
-        payload.accessToken,
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
       );
     }
 

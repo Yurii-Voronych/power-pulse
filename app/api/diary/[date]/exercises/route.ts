@@ -1,4 +1,7 @@
-import { jsonWithAuthCookie } from "@/lib/server/api/jsonWithAuthCookie";
+import {
+  clearAuthCookies,
+  jsonWithAuthCookie,
+} from "@/lib/server/api/jsonWithAuthCookie";
 import { requireAuth } from "@/lib/server/auth/requireAuth";
 import { connectDB } from "@/lib/server/db/mongodb";
 import {
@@ -38,16 +41,16 @@ export async function POST(
     const { date } = await params;
     const payload = await requireAuth();
     if (!payload) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
+      );
     }
     const user = await User.findById(payload.userId).select(
       "createdAt profile.currentWeight",
     );
     if (!user) {
-      return jsonWithAuthCookie(
-        { message: "User not Found" },
-        { status: 404 },
-        payload.accessToken,
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
       );
     }
     const userWeight = user.profile?.currentWeight;

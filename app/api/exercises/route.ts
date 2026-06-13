@@ -3,7 +3,10 @@ import { getExercises } from "@/lib/server/data/exercises/getExercisesByCategory
 import { connectDB } from "@/lib/server/db/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { jsonWithAuthCookie } from "@/lib/server/api/jsonWithAuthCookie";
+import {
+  clearAuthCookies,
+  jsonWithAuthCookie,
+} from "@/lib/server/api/jsonWithAuthCookie";
 
 const schema = z.object({
   page: z.coerce
@@ -25,7 +28,9 @@ export async function GET(req: NextRequest) {
     const payload = await requireAuth();
 
     if (!payload) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
+      );
     }
 
     const searchParams = req.nextUrl.searchParams;

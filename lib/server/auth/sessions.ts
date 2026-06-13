@@ -2,6 +2,7 @@ import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import Session from "@/models/Session";
 import { signAccessToken } from "./jwt";
+import User from "@/models/User";
 
 export const generateRefreshToken = () => {
   return crypto.randomBytes(40).toString("hex");
@@ -40,6 +41,13 @@ export const refreshSession = async (refreshToken: string, rotate = false) => {
   if (!session) return null;
 
   if (session.expiresAt < new Date()) {
+    await Session.deleteOne({ _id: session._id });
+    return null;
+  }
+
+  const userExists = await User.exists({ _id: session.userId });
+
+  if (!userExists) {
     await Session.deleteOne({ _id: session._id });
     return null;
   }

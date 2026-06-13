@@ -5,7 +5,10 @@ import { requireAuth } from "@/lib/server/auth/requireAuth";
 import { profileUpdateSchemaServer } from "@/lib/shared/validators/profile/editProfileSchema.server";
 import { calculateDailyNorm } from "@/lib/shared/calculations/calculateDailyNorm";
 import { mapUserToDTO } from "@/lib/shared/mappers/mapUserToDTO";
-import { jsonWithAuthCookie } from "@/lib/server/api/jsonWithAuthCookie";
+import {
+  clearAuthCookies,
+  jsonWithAuthCookie,
+} from "@/lib/server/api/jsonWithAuthCookie";
 
 type MongoDuplicateKeyError = {
   code: number;
@@ -31,7 +34,9 @@ export async function PATCH(req: Request) {
     const payload = await requireAuth();
 
     if (!payload) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
+      );
     }
     let body;
     try {
@@ -107,17 +112,13 @@ export async function PATCH(req: Request) {
     }
 
     if (!updatedUser) {
-      return jsonWithAuthCookie(
-        { message: "User not found" },
-        { status: 404 },
-        payload.accessToken,
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
       );
     }
 
     return jsonWithAuthCookie(
-      {
-        user: mapUserToDTO(updatedUser),
-      },
+      { user: mapUserToDTO(updatedUser) },
       { status: 200 },
       payload.accessToken,
     );

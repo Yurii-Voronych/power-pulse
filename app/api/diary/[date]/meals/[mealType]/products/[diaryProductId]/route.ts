@@ -1,4 +1,7 @@
-import { jsonWithAuthCookie } from "@/lib/server/api/jsonWithAuthCookie";
+import {
+  clearAuthCookies,
+  jsonWithAuthCookie,
+} from "@/lib/server/api/jsonWithAuthCookie";
 import { requireAuth } from "@/lib/server/auth/requireAuth";
 import { connectDB } from "@/lib/server/db/mongodb";
 import { MEAL_TYPES } from "@/lib/shared/constants/constants";
@@ -34,14 +37,14 @@ export async function PATCH(
 
     const payload = await requireAuth();
     if (!payload) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
+      );
     }
     const user = await User.findById(payload.userId).select("createdAt");
     if (!user) {
-      return jsonWithAuthCookie(
-        { message: "User not Found" },
-        { status: 404 },
-        payload.accessToken,
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
       );
     }
     const parsedDiaryProductId = objectIdSchema.safeParse(diaryProductId);
@@ -165,14 +168,14 @@ export async function DELETE(
 
     const payload = await requireAuth();
     if (!payload) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
+      );
     }
     const user = await User.findById(payload.userId).select("createdAt");
     if (!user) {
-      return jsonWithAuthCookie(
-        { message: "User not Found" },
-        { status: 404 },
-        payload.accessToken,
+      return clearAuthCookies(
+        NextResponse.json({ message: "Unauthorized" }, { status: 401 }),
       );
     }
     const parsedDiaryProductId = objectIdSchema.safeParse(diaryProductId);
