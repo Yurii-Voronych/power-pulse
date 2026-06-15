@@ -99,9 +99,9 @@ export const CustomSelect = ({ options, onChange, param, chosen }: Props) => {
           id={listboxId}
           role="listbox"
           aria-label={param === "category" ? "Product categories" : param}
-          className="absolute top-full z-50 mt-2 max-h-50 overflow-hidden rounded-xl bg-[#1c1c1c] pr-2"
+          className="absolute top-full z-50 mt-2 max-h-54 w-full overflow-hidden rounded-xl bg-[#1c1c1c] pr-2 pt-2"
         >
-          <div className="custom-scrollbar max-h-50 overflow-y-auto py-1">
+          <div className="custom-scrollbar max-h-50 overflow-y-auto">
             {options.map((option, index) => (
               <button
                 key={option.id}
@@ -122,9 +122,7 @@ export const CustomSelect = ({ options, onChange, param, chosen }: Props) => {
                     focusOption((index + 1) % options.length);
                   } else if (event.key === "ArrowUp") {
                     event.preventDefault();
-                    focusOption(
-                      (index - 1 + options.length) % options.length,
-                    );
+                    focusOption((index - 1 + options.length) % options.length);
                   } else if (event.key === "Home") {
                     event.preventDefault();
                     focusOption(0);

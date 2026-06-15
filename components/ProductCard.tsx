@@ -11,9 +11,7 @@ interface ProductCardProp {
 const ProductCard = ({ product }: ProductCardProp) => {
   const open = useModalStore((s) => s.open);
   return (
-    <div
-      className="min-h-35.25 w-full max-w-83.75 rounded-xl border border-white/20 p-4"
-    >
+    <div className="min-h-35.25 w-full rounded-xl border border-white/20 p-4">
       <div className="flex gap-2 w-fit ml-auto text-[12px] mb-10">
         <button
           className="text-orange flex gap-1.5 items-center"
@@ -32,11 +30,11 @@ const ProductCard = ({ product }: ProductCardProp) => {
       </div>
       <div className="flex justify-between gap-3 text-[12px]">
         <div>
-          <span className="text-white/40">Calories per 100g:</span>
+          <span className="text-white/40">Calories per 100g:</span>{" "}
           {product.caloriesPer100g}
         </div>
         <div className="min-w-0 break-words text-right capitalize">
-          <span className="text-white/40">Category:</span>
+          <span className="text-white/40">Category:</span>{" "}
           {product.category.replace(/-/g, " ")}
         </div>
       </div>

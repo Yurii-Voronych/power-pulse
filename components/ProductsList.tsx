@@ -6,9 +6,9 @@ interface productsListProps {
 }
 const ProductsList = ({ products }: productsListProps) => {
   return (
-    <ul className="mb-4 flex gap-5 max-md:flex-col max-md:items-center md:mb-6 md:flex-wrap 2xl:mb-8">
+    <ul className="mb-4 grid grid-cols-1 gap-5 md:mb-6 md:grid-cols-2 2xl:mb-8 2xl:grid-cols-3">
       {products.map((p) => (
-        <li key={p.id} className="w-full max-w-83.75">
+        <li key={p.id} className="min-w-0">
           <ProductCard product={p} />
         </li>
       ))}

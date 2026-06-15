@@ -47,19 +47,19 @@ export const ValueSelect = ({
   }, [open]);
 
   return (
-    <div className="relative text-[14px]" ref={ref}>
+    <div className="relative w-full min-w-0 text-[14px]" ref={ref}>
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className={`flex items-center justify-between form-input text-white capitalize ${className}`}
+        className={`form-input flex w-full min-w-0 items-center justify-between capitalize text-white ${className}`}
       >
         {selected?.name || placeholder}
         <ChevronDown size={16} />
       </button>
 
       {open && (
-        <div className="absolute top-full mt-2 bg-[#1c1c1c] rounded-xl max-h-50 overflow-hidden z-50 pr-2">
-          <div className="max-h-50 overflow-y-auto custom-scrollbar pt-1 pb-1.5">
+        <div className="absolute inset-x-0 top-full z-50 mt-2 max-h-50 overflow-hidden rounded-xl bg-[#1c1c1c] pr-2">
+          <div className="custom-scrollbar max-h-50 w-full overflow-y-auto pt-1 pb-1.5">
             {options.map((option) => (
               <button
                 key={option.id}
@@ -68,7 +68,7 @@ export const ValueSelect = ({
                   onChange(option.value);
                   setOpen(false);
                 }}
-                className="block w-full cursor-pointer capitalize pl-3.5 pt-2 pb-2 text-left"
+                className="block w-full cursor-pointer px-3.5 py-2 text-left capitalize"
               >
                 {option.name}
               </button>

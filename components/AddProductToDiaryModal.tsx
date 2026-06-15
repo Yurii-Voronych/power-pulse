@@ -52,12 +52,12 @@ const AddProductToDiaryModal = ({ product }: AddProductToDiaryModalProps) => {
     return { value: m.value, name: m.label, id: `${i}` };
   });
   return (
-    <div className="relative z-10 border border-white/50 rounded-xl p-6 w-[80%] bg-[#10100F] md:w-[50%] xl:w-[25%]">
-      <div className="flex justify-between">
-        <h2 className="mb-4 text-[14px] text-white font-semibold">
+    <div className="relative z-10 max-h-[calc(100vh-32px)] w-[calc(100%-32px)] max-w-lg overflow-y-auto rounded-xl border border-white/50 bg-[#10100F] p-5 md:p-8 2xl:max-w-xl 2xl:p-10">
+      <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-6">
+        <h2 className="min-w-0 break-words text-[16px] font-semibold text-white 2xl:text-[20px]">
           {product.title}
         </h2>
-        <p>
+        <p className="shrink-0 text-[14px] text-white/60 md:text-right 2xl:text-[16px]">
           Add product to date:{" "}
           <span className="text-orange-1">{formatDiaryDate(new Date())}</span>
         </p>
@@ -66,38 +66,42 @@ const AddProductToDiaryModal = ({ product }: AddProductToDiaryModalProps) => {
         options={options}
         value={mealType}
         onChange={setMealType}
-        className="w-full mb-4"
+        className="mb-4 w-full min-w-0 2xl:text-[18px]"
       />
       <input
         type="text"
+        aria-label="Product weight in grams"
         value={productWeight}
         inputMode="numeric"
         min={1}
         max={10000}
-        className="form-input w-full mb-4"
+        className="form-input mb-4 w-full min-w-0 2xl:text-[18px]"
         onChange={(e) => {
           setProductWeight(e.currentTarget.value.trim());
         }}
       />
       {isInvalidWeight ? (
-        <p className="mb-4 text-red-500"> Please, enter valid weight</p>
+        <p className="mb-4 text-red-500 2xl:text-[18px]">
+          Please, enter valid weight
+        </p>
       ) : (
-        <p className="mb-4">
+        <p className="mb-4 2xl:text-[18px]">
           Calories: {Math.ceil((nextWeight / 100) * product.caloriesPer100g)}
         </p>
       )}
 
-      <div className="flex gap-2 justify-center">
+      <div className="grid grid-cols-2 gap-2">
         <button
           type="button"
-          className="btn-primary disabled:opacity-40"
+          className="btn-primary min-w-0 w-full disabled:opacity-40"
           disabled={isInvalidWeight || isLoading}
           onClick={handleAddProduct}
         >
           Add
         </button>
         <button
-          className="btn-outline disabled:opacity-40"
+          type="button"
+          className="btn-outline min-w-0 w-full disabled:opacity-40"
           onClick={close}
           disabled={isLoading}
         >

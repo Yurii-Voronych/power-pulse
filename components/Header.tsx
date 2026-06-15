@@ -1,11 +1,12 @@
+"use client";
 import Link from "next/link";
 import Container from "./Container";
 import { LogoIcon } from "./icons/LogoIcon";
 import HeaderSettings from "./HeaderSettings";
-import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
+import useAuthStore from "@/lib/client/store/authStore";
 
-const Header = async () => {
-  const user = await getCurrentUser();
+const Header = () => {
+  const user = useAuthStore((s) => s.user);
   return (
     <header className="absolute top-0 left-0 w-full z-50">
       <Container className="flex items-center justify-between h-15.25 md:h-21">

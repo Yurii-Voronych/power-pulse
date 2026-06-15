@@ -45,7 +45,7 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
   }, 400);
 
   return (
-    <div className="mb-10 grid gap-4 md:grid-cols-2 md:max-w-185">
+    <div className="mb-10 grid grid-cols-1 gap-5 md:grid-cols-2 2xl:grid-cols-3">
       <div className="relative">
         <input
           value={search}
