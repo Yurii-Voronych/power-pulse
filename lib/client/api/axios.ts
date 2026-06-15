@@ -22,9 +22,12 @@ api.interceptors.response.use(
       typeof window !== "undefined" &&
       !isRedirectingToLogin
     ) {
-      isRedirectingToLogin = true;
       useAuthStore.getState().clearAuth();
-      window.location.replace("/auth/login");
+
+      if (!window.location.pathname.startsWith("/auth/")) {
+        isRedirectingToLogin = true;
+        window.location.replace("/auth/login");
+      }
     }
 
     return Promise.reject(error);
