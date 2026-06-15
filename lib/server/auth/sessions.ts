@@ -1,5 +1,4 @@
 import crypto from "crypto";
-import bcrypt from "bcryptjs";
 import Session from "@/models/Session";
 import { signAccessToken } from "./jwt";
 import User from "@/models/User";
@@ -10,10 +9,6 @@ export const generateRefreshToken = () => {
 
 export const hashToken = (token: string) => {
   return crypto.createHash("sha256").update(token).digest("hex");
-};
-
-export const verifyRefreshToken = async (token: string, hash: string) => {
-  return bcrypt.compare(token, hash);
 };
 
 export const createSession = async (
