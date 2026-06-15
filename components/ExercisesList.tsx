@@ -6,9 +6,9 @@ interface exercisesListProps {
 }
 const ExercisesList = ({ cards, userWeight }: exercisesListProps) => {
   return (
-    <ul className="grid grid-cols-1 justify-items-center gap-5 mb-4 md:grid-cols-2 xl:grid-cols-3 2xl:mb-8">
+    <ul className="mb-4 grid w-full grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 2xl:mb-8">
       {cards.map((c) => (
-        <li key={c.id} className="w-full max-w-83.75">
+        <li key={c.id} className="min-w-0 w-full">
           <ExerciseCard exercise={c} userWeight={userWeight} />
         </li>
       ))}

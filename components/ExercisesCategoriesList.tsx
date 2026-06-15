@@ -20,23 +20,26 @@ const ExercisesCategoriesList = ({ cards, filter }: exercisesListProps) => {
 
   return (
     <>
-      <ul className="flex gap-5 max-md:flex-col mb-4 md:flex-wrap 2xl:mb-8 max-md:items-center">
+      <ul className="mb-4 grid w-full grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 2xl:mb-8">
         {currentCards.map((c) => (
-          <li key={c.name}>
-            <Link href={`/exercises/${filter}/${encodeURIComponent(c.name)}`}>
-              <div className="relative w-83.75 h-51.5 overflow-hidden rounded-xl 2xl:w-58">
+          <li key={c.name} className="min-w-0">
+            <Link
+              href={`/exercises/${filter}/${encodeURIComponent(c.name)}`}
+              className="block"
+            >
+              <div className="relative h-51.5 w-full overflow-hidden rounded-xl">
                 <Image
                   src={c.imgURL}
                   alt={c.name}
                   fill
                   className="object-cover"
-                  sizes="335px 226px"
+                  sizes="(min-width: 1536px) 234px, (min-width: 1280px) 403px, (min-width: 768px) calc(50vw - 42px), calc(100vw - 40px)"
                 />
 
                 <div className="absolute inset-0 bg-[rgba(4,4,4,0.5)]" />
-                <div className="absolute top-[40%] left-30 2xl:left-20">
-                  <p className="text-white text-[20px] capitalize ">{c.name}</p>
-                  <p className="text-[12px] text-white/60 ">{c.filter}</p>
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center">
+                  <p className="text-[20px] capitalize text-white">{c.name}</p>
+                  <p className="text-[12px] text-white/60">{c.filter}</p>
                 </div>
               </div>
             </Link>

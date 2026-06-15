@@ -33,7 +33,7 @@ const ProductCard = ({ product }: ProductCardProp) => {
           <span className="text-white/40">Calories per 100g:</span>{" "}
           {product.caloriesPer100g}
         </div>
-        <div className="min-w-0 break-words text-right capitalize">
+        <div className="min-w-0 wrap-break-word text-right capitalize">
           <span className="text-white/40">Category:</span>{" "}
           {product.category.replace(/-/g, " ")}
         </div>

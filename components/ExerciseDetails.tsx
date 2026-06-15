@@ -48,7 +48,7 @@ const ExerciseDetails = ({ exercise, calories }: ExerciseDetailsProps) => {
   };
 
   return (
-    <div className="relative z-10 w-[calc(100%-40px)] max-w-83.75 rounded-xl border border-white/35 bg-[#10100f]">
+    <div className="relative z-10 w-[calc(100%_-_40px)] max-w-83.75 rounded-xl border border-white/35 bg-[#10100f] md:max-w-125 xl:max-w-150">
       <button
         type="button"
         className="ml-auto block mt-2 mr-2 text-orange"
@@ -63,7 +63,7 @@ const ExerciseDetails = ({ exercise, calories }: ExerciseDetailsProps) => {
           height={226}
           alt=""
           unoptimized
-          className="mb-6 h-56.5 w-67.5 object-contain"
+          className="mb-6 h-56.5 w-full object-contain md:h-75"
         />
         <p className="text-white/40 mb-6">
           Estimated Calories per hour :{" "}
@@ -131,7 +131,7 @@ const ExerciseDetails = ({ exercise, calories }: ExerciseDetailsProps) => {
 
         <button
           type="button"
-          className="btn-primary disabled:opacity-40"
+          className="btn-primary w-full disabled:opacity-40 md:w-auto"
           disabled={isInvalidTime || isLoading}
           onClick={handleAddExercise}
         >

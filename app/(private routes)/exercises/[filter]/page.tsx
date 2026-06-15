@@ -1,10 +1,12 @@
 import Container from "@/components/Container";
 import ExercisesCategoriesList from "@/components/ExercisesCategoriesList";
-
 import { ExercisesTabs } from "@/components/ExercisesTabs";
-
 import { getFilters } from "@/lib/server/data/filters/getFilters";
-
+import { Metadata } from "next";
+export const metadata: Metadata = {
+  title: "Exercises | Power Pulse",
+  description: "Training App",
+};
 const ExercisesPage = async ({
   params,
 }: {

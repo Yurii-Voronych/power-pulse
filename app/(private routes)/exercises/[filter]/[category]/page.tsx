@@ -5,9 +5,13 @@ import { NextIcon } from "@/components/icons/NextArrowIcon";
 import Pagination from "@/components/Pagination";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
 import { getExercisesByCategory } from "@/lib/server/data/exercises/getExercisesByCategory";
+import { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-
+export const metadata: Metadata = {
+  title: "Exercises | Power Pulse",
+  description: "Training App",
+};
 const ExercisesCategoryPage = async ({
   params,
   searchParams,

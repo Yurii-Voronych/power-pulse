@@ -2,10 +2,14 @@ import Container from "@/components/Container";
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
+import { Metadata } from "next";
 
 import Link from "next/link";
 import { redirect } from "next/navigation";
-
+export const metadata: Metadata = {
+  title: "Power Pulse",
+  description: "Training App",
+};
 export default async function Home() {
   const user = await getCurrentUser();
   if (user) {
