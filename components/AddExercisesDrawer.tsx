@@ -114,24 +114,33 @@ const AddExercisesDrawer = ({
 
   const selectedExercisesIds = selectedExercises.map((e) => e.exerciseId);
   useEffect(() => {
+    let ignore = false;
     const fetchExercises = async () => {
       try {
         setIsLoading(true);
-        const { exercises, page, totalPages } = await getExercises({
+        const result = await getExercises({
           page: currentPage,
           limit: 10,
           search: debouncedSearch,
         });
-        setCurrentPage(page);
-        setExercises(exercises);
-        setTotalPages(totalPages);
+        if (ignore) return;
+        setCurrentPage(result.page);
+        setExercises(result.exercises);
+        setTotalPages(result.totalPages);
       } catch {
-        toast.error("Something went wrong, please try again later");
+        if (!ignore) {
+          toast.error("Something went wrong, please try again later");
+        }
       } finally {
-        setIsLoading(false);
+        if (!ignore) {
+          setIsLoading(false);
+        }
       }
     };
     fetchExercises();
+    return () => {
+      ignore = true;
+    };
   }, [currentPage, debouncedSearch]);
 
   return (

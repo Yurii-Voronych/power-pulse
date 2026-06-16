@@ -60,7 +60,13 @@ export const getExercises = async ({
 }: GetExercisesParams) => {
   await connectDB();
   const skip = (page - 1) * limit;
-  const filterQuery = search ? { name: { $regex: search, $options: "i" } } : {};
+  const normalizedSearch = search?.trim();
+  const escapeRegex = (value: string) =>
+    value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  const filterQuery = normalizedSearch
+    ? { name: { $regex: escapeRegex(normalizedSearch), $options: "i" } }
+    : {};
 
   const [exercises, total] = await Promise.all([
     Exercise.find(filterQuery)

@@ -226,9 +226,12 @@ export async function PATCH(
       {
         $set: {
           "exercises.$.time": time,
-          "exercises.$.burnedCalories": caloriesPerHour,
+          "exercises.$.burnedCalories": Math.ceil(
+            (caloriesPerHour * time) / 60,
+          ),
         },
       },
+      { new: true },
     );
     if (!updatedDiary) {
       return jsonWithAuthCookie(
@@ -237,19 +240,26 @@ export async function PATCH(
         payload.accessToken,
       );
     }
-
+    const updatedExercise = updatedDiary.exercises.id(diaryExerciseId);
+    if (!updatedExercise) {
+      return jsonWithAuthCookie(
+        { message: "Diary exercise not found" },
+        { status: 404 },
+        payload.accessToken,
+      );
+    }
     return jsonWithAuthCookie(
       {
         message: "Exercise updated",
         exercise: {
-          id: exercise._id.toString(),
-          exerciseId: exercise.exerciseId.toString(),
-          bodyPart: exercise.bodyPart,
-          equipment: exercise.equipment,
-          name: exercise.name,
-          target: exercise.target,
-          burnedCalories: exercise.burnedCalories,
-          time: exercise.time,
+          id: updatedExercise._id.toString(),
+          exerciseId: updatedExercise.exerciseId.toString(),
+          bodyPart: updatedExercise.bodyPart,
+          equipment: updatedExercise.equipment,
+          name: updatedExercise.name,
+          target: updatedExercise.target,
+          burnedCalories: updatedExercise.burnedCalories,
+          time: updatedExercise.time,
         },
       },
       { status: 200 },

@@ -5,6 +5,7 @@ import { NextIcon } from "@/components/icons/NextArrowIcon";
 import Pagination from "@/components/Pagination";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
 import { getExercisesByCategory } from "@/lib/server/data/exercises/getExercisesByCategory";
+import { exerciseCategoryExists } from "@/lib/server/data/filters/getFilters";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -29,6 +30,13 @@ const ExercisesCategoryPage = async ({
   const { category, filter } = await params;
   const searchParam = await searchParams;
   const decoded = decodeURIComponent(category);
+  const categoryExists = await exerciseCategoryExists({
+    filter,
+    category: decoded,
+  });
+  if (!categoryExists) {
+    notFound();
+  }
   const categoryHref = `/exercises/${filter}/${encodeURIComponent(decoded)}`;
   const requestedPage = searchParam.page ? Number(searchParam.page) : 1;
 

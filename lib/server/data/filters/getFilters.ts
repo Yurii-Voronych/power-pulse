@@ -2,6 +2,7 @@ import Filter from "@/models/Filter";
 
 import { Card } from "@/lib/shared/types/types";
 import { connectDB } from "../../db/mongodb";
+import { isExerciseFilter } from "@/lib/shared/constants/constants";
 
 export const getFilters = async (
   filter: string,
@@ -18,4 +19,25 @@ export const getFilters = async (
       imgURL: card.imgURL,
     })),
   };
+};
+export const exerciseCategoryExists = async ({
+  filter,
+  category,
+}: {
+  filter: string;
+  category: string;
+}) => {
+  const isFilterValid = isExerciseFilter(filter);
+  if (!isFilterValid) {
+    return false;
+  }
+
+  await connectDB();
+
+  return Boolean(
+    await Filter.exists({
+      filter,
+      name: category,
+    }),
+  );
 };

@@ -20,7 +20,7 @@ const schema = z.object({
     .positive("positive")
     .max(50)
     .default(12),
-  search: z.string().trim().optional(),
+  search: z.string().trim().max(35).optional(),
 });
 export async function GET(req: NextRequest) {
   try {
