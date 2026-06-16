@@ -1,28 +1,45 @@
 import Exercise from "@/models/Exercise";
 import { connectDB } from "../../db/mongodb";
+import {
+  EXERCISE_FIELD_BY_FILTER,
+  isExerciseFilter,
+} from "@/lib/shared/constants/constants";
 
+type GetExercisesByCategoriesParams = {
+  page?: number;
+  limit?: number;
+  category: string;
+  filter: string;
+};
 type GetExercisesParams = {
   page?: number;
   limit?: number;
-  category?: string;
   search?: string;
 };
+
 export const getExercisesByCategory = async ({
   page = 1,
   limit = 12,
   category,
-}: GetExercisesParams) => {
+  filter,
+}: GetExercisesByCategoriesParams) => {
+  if (!isExerciseFilter(filter)) {
+    return null;
+  }
+  const field = EXERCISE_FIELD_BY_FILTER[filter];
+
   await connectDB();
+
   const skip = (page - 1) * limit;
   const filterQuery = {
-    $or: [
-      { bodyPart: category },
-      { equipment: category },
-      { target: category },
-    ],
+    [field]: category,
   };
   const [exercises, total] = await Promise.all([
-    Exercise.find(filterQuery).skip(skip).limit(limit).lean(),
+    Exercise.find(filterQuery)
+      .sort({ name: 1, _id: 1 })
+      .skip(skip)
+      .limit(limit)
+      .lean(),
     Exercise.countDocuments(filterQuery),
   ]);
 
@@ -46,7 +63,11 @@ export const getExercises = async ({
   const filterQuery = search ? { name: { $regex: search, $options: "i" } } : {};
 
   const [exercises, total] = await Promise.all([
-    Exercise.find(filterQuery).skip(skip).limit(limit).lean(),
+    Exercise.find(filterQuery)
+      .sort({ name: 1, _id: 1 })
+      .skip(skip)
+      .limit(limit)
+      .lean(),
     Exercise.countDocuments(filterQuery),
   ]);
 

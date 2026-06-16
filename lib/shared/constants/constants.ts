@@ -38,3 +38,15 @@ export const ACTIVITY_LEVELS = [
       "Extremely active (very strenuous exercises/sports and physical work)",
   },
 ] as const;
+
+export const EXERCISE_FIELD_BY_FILTER = {
+  "body-parts": "bodyPart",
+  muscles: "target",
+  equipment: "equipment",
+} as const;
+
+export type ExerciseFilter = keyof typeof EXERCISE_FIELD_BY_FILTER;
+
+export const isExerciseFilter = (filter: string): filter is ExerciseFilter => {
+  return filter in EXERCISE_FIELD_BY_FILTER;
+};

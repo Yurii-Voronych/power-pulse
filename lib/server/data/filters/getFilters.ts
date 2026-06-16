@@ -8,16 +8,14 @@ export const getFilters = async (
 ): Promise<{ cards: Card[] }> => {
   await connectDB();
 
-  const filters = await Filter.find().lean();
+  const filters = await Filter.find({ filter }).lean();
 
   return {
-    cards: filters
-      .filter((f) => f.filter === filter)
-      .map((card) => ({
-        id: card._id.toString(),
-        filter: card.filter,
-        name: card.name,
-        imgURL: card.imgURL,
-      })),
+    cards: filters.map((card) => ({
+      id: card._id.toString(),
+      filter: card.filter,
+      name: card.name,
+      imgURL: card.imgURL,
+    })),
   };
 };

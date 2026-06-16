@@ -2,7 +2,9 @@ import Container from "@/components/Container";
 import ExercisesCategoriesList from "@/components/ExercisesCategoriesList";
 import { ExercisesTabs } from "@/components/ExercisesTabs";
 import { getFilters } from "@/lib/server/data/filters/getFilters";
+import { isExerciseFilter } from "@/lib/shared/constants/constants";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 export const metadata: Metadata = {
   title: "Exercises | Power Pulse",
   description: "Training App",
@@ -13,6 +15,9 @@ const ExercisesPage = async ({
   params: Promise<{ filter: string }>;
 }) => {
   const { filter } = await params;
+  if (!isExerciseFilter(filter)) {
+    return notFound();
+  }
   const { cards } = await getFilters(filter);
   return (
     <Container>
