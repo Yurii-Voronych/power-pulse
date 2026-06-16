@@ -14,8 +14,10 @@ export const getFilters = async (
     cards: filters
       .filter((f) => f.filter === filter)
       .map((card) => ({
-        ...card,
-        _id: card._id.toString(),
+        id: card._id.toString(),
+        filter: card.filter,
+        name: card.name,
+        imgURL: card.imgURL,
       })),
   };
 };

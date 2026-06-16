@@ -1,13 +1,18 @@
 import { Schema, model, models } from "mongoose";
 
-const productsFilterSchema = new Schema(
+const exerciseFilterSchema = new Schema(
   {
+    filter: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     name: {
       type: String,
       required: true,
       trim: true,
     },
-    value: {
+    imgURL: {
       type: String,
       required: true,
       trim: true,
@@ -20,6 +25,6 @@ const productsFilterSchema = new Schema(
 );
 
 const Filter =
-  models.Filter || model("Filter", productsFilterSchema, "filters");
+  models.Filter || model("Filter", exerciseFilterSchema, "filters");
 
 export default Filter;

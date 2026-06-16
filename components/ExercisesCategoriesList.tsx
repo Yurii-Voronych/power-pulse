@@ -22,7 +22,7 @@ const ExercisesCategoriesList = ({ cards, filter }: exercisesListProps) => {
     <>
       <ul className="mb-4 grid w-full grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 2xl:mb-8">
         {currentCards.map((c) => (
-          <li key={c.name} className="min-w-0">
+          <li key={c.id} className="min-w-0">
             <Link
               href={`/exercises/${filter}/${encodeURIComponent(c.name)}`}
               className="block"
