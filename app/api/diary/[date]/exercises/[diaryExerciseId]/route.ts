@@ -71,11 +71,14 @@ export async function DELETE(
         payload.accessToken,
       );
     }
-    const diary = await Diary.findOne({
-      userId: payload.userId,
-      date,
-      exercises: { $elemMatch: { _id: diaryExerciseId } },
-    });
+    const diary = await Diary.findOneAndUpdate(
+      {
+        userId: payload.userId,
+        date,
+        exercises: { $elemMatch: { _id: diaryExerciseId } },
+      },
+      { $pull: { exercises: { _id: diaryExerciseId } } },
+    );
     if (!diary) {
       return jsonWithAuthCookie(
         { message: "Diary exercises not found" },
@@ -83,8 +86,6 @@ export async function DELETE(
         payload.accessToken,
       );
     }
-    diary.exercises.pull({ _id: diaryExerciseId });
-    await diary.save();
 
     return jsonWithAuthCookie(
       {
@@ -173,18 +174,19 @@ export async function PATCH(
     }
 
     const time = parsed.data.time;
+
     const diary = await Diary.findOne({
       userId: payload.userId,
       date,
       exercises: { $elemMatch: { _id: diaryExerciseId } },
     });
-    if (!diary) {
+    if (!diary)
       return jsonWithAuthCookie(
-        { message: "Diary exercises not found" },
+        { message: "Diary not found" },
         { status: 404 },
         payload.accessToken,
       );
-    }
+
     const exercise = diary.exercises.id(diaryExerciseId);
     if (!exercise) {
       return jsonWithAuthCookie(
@@ -215,10 +217,27 @@ export async function PATCH(
         payload.accessToken,
       );
     }
+    const updatedDiary = await Diary.findOneAndUpdate(
+      {
+        userId: payload.userId,
+        date,
+        exercises: { $elemMatch: { _id: diaryExerciseId } },
+      },
+      {
+        $set: {
+          "exercises.$.time": time,
+          "exercises.$.burnedCalories": caloriesPerHour,
+        },
+      },
+    );
+    if (!updatedDiary) {
+      return jsonWithAuthCookie(
+        { message: "Diary exercises not found" },
+        { status: 404 },
+        payload.accessToken,
+      );
+    }
 
-    exercise.time = time;
-    exercise.burnedCalories = Math.ceil((caloriesPerHour * time) / 60);
-    await diary.save();
     return jsonWithAuthCookie(
       {
         message: "Exercise updated",

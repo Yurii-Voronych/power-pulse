@@ -160,19 +160,23 @@ export async function POST(
       };
     });
 
-    const diary = await Diary.findOne({ userId: payload.userId, date });
-    let updatedDiary;
-
-    if (!diary) {
-      updatedDiary = await Diary.create({
+    const updatedDiary = await Diary.findOneAndUpdate(
+      {
         userId: payload.userId,
         date,
-        products: productsSnapshots,
-      });
-    } else {
-      diary.products.push(...productsSnapshots);
-      updatedDiary = await diary.save();
-    }
+      },
+      {
+        $push: {
+          products: { $each: productsSnapshots },
+        },
+      },
+      {
+        upsert: true,
+        new: true,
+        runValidators: true,
+        setDefaultsOnInsert: true,
+      },
+    );
 
     const addedProducts = updatedDiary.products
       .slice(-productsSnapshots.length)

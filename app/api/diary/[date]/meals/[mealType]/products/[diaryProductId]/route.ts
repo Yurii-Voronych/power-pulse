@@ -101,26 +101,24 @@ export async function PATCH(
       );
     }
     const weight = parsed.data.weight;
-    const diary = await Diary.findOne({
-      userId: payload.userId,
-      date,
-      products: {
-        $elemMatch: {
-          _id: diaryProductId,
-          mealType: meal.value,
+    const updatedDiary = await Diary.findOneAndUpdate(
+      {
+        userId: payload.userId,
+        date,
+        products: {
+          $elemMatch: {
+            _id: diaryProductId,
+            mealType: meal.value,
+          },
         },
       },
-    });
-    if (!diary) {
-      return jsonWithAuthCookie(
-        { message: "Diary product not found" },
-        { status: 404 },
-        payload.accessToken,
-      );
-    }
-    const product = diary.products.id(diaryProductId);
+      {
+        $set: { "products.$.weight": weight },
+      },
+      { new: true, runValidators: true },
+    );
 
-    if (!product || product.mealType !== meal.value) {
+    if (!updatedDiary) {
       return jsonWithAuthCookie(
         { message: "Diary product not found" },
         { status: 404 },
@@ -128,19 +126,26 @@ export async function PATCH(
       );
     }
 
-    product.weight = weight;
-    await diary.save();
+    const updatedProduct = updatedDiary.products.id(diaryProductId);
+
+    if (!updatedProduct || updatedProduct.mealType !== meal.value) {
+      return jsonWithAuthCookie(
+        { message: "Diary product not found" },
+        { status: 404 },
+        payload.accessToken,
+      );
+    }
     return jsonWithAuthCookie(
       {
         message: "Product updated",
         product: {
-          id: product._id.toString(),
-          productId: product.productId.toString(),
-          mealType: product.mealType,
-          title: product.title,
-          category: product.category,
-          caloriesPer100g: product.caloriesPer100g,
-          weight: product.weight,
+          id: updatedProduct._id.toString(),
+          productId: updatedProduct.productId.toString(),
+          mealType: updatedProduct.mealType,
+          title: updatedProduct.title,
+          category: updatedProduct.category,
+          caloriesPer100g: updatedProduct.caloriesPer100g,
+          weight: updatedProduct.weight,
         },
       },
       { status: 200 },
@@ -212,16 +217,26 @@ export async function DELETE(
         payload.accessToken,
       );
     }
-    const diary = await Diary.findOne({
-      userId: payload.userId,
-      date,
-      products: {
-        $elemMatch: {
-          _id: diaryProductId,
-          mealType: meal.value,
+    const diary = await Diary.findOneAndUpdate(
+      {
+        userId: payload.userId,
+        date,
+        products: {
+          $elemMatch: {
+            _id: diaryProductId,
+            mealType: meal.value,
+          },
         },
       },
-    });
+      {
+        $pull: {
+          products: {
+            _id: diaryProductId,
+            mealType: meal.value,
+          },
+        },
+      },
+    );
     if (!diary) {
       return jsonWithAuthCookie(
         { message: "Diary product not found" },
@@ -229,9 +244,6 @@ export async function DELETE(
         payload.accessToken,
       );
     }
-
-    diary.products.pull({ _id: diaryProductId });
-    await diary.save();
 
     return jsonWithAuthCookie(
       {
