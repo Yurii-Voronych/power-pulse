@@ -20,10 +20,6 @@ const ProductsFilters = ({ categoriesList }: ProductsFiltersProps) => {
 
   const [search, setSearch] = useState(searchFromUrl);
 
-  useEffect(() => {
-    setSearch(searchFromUrl);
-  }, [searchFromUrl]);
-
   const handleClear = () => {
     setSearch("");
     debouncedUpdate.cancel();
