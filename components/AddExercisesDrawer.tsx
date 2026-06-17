@@ -9,6 +9,8 @@ import DrawerExercisesList from "./DrawerExercisesList";
 import { addExercisesToDiary } from "@/lib/client/api/diaryApi";
 import { DiaryExercise } from "@/lib/shared/types/diary";
 import { SelectedExercisesBox } from "./SelectedExercisesBox";
+import clsx from "clsx";
+import { validateNumberInput } from "@/lib/shared/utils/validateNumberInput";
 
 interface AddExercisesDrawerProps {
   date: string;
@@ -58,7 +60,7 @@ const AddExercisesDrawer = ({
         exerciseId: exercise.id,
         name: exercise.name,
         burnedCalories: caloriesPerHour,
-        time: 10,
+        time: "10",
       },
     ]);
   };
@@ -76,20 +78,22 @@ const AddExercisesDrawer = ({
 
         return {
           ...exercise,
-          time: Number(time),
+          time,
         };
       }),
     );
   };
 
   const hasInvalidTime = selectedExercises.some((exercise) => {
-    return (
-      !Number.isInteger(exercise.time) ||
-      exercise.time <= 0 ||
-      exercise.time > 1440
-    );
+    return !validateNumberInput(exercise.time, {
+      label: "Time",
+      min: 1,
+      max: 1440,
+      integer: true,
+    }).isValid;
   });
   const canSave = selectedExercises.length > 0 && !hasInvalidTime && !isSaving;
+  const hasSelectedExercises = selectedExercises.length > 0;
 
   const handleSave = async () => {
     if (!canSave) return;
@@ -152,86 +156,146 @@ const AddExercisesDrawer = ({
         onClick={() => handleClose()}
       />
 
-      <aside className="absolute right-0 top-0 flex h-full w-full max-w-110 flex-col border-l border-white/15 bg-black pt-5 px-5 shadow-2xl">
-        <div className="mb-5 flex items-start justify-between gap-4">
-          <div>
-            <p className="text-[12px] text-white/40">{date}</p>
-            <h2 className="text-xl font-bold">Add exercises</h2>
-          </div>
+      <aside
+        className={clsx(
+          "absolute right-0 top-0 flex h-full w-full flex-col border-l border-white/15 bg-black px-4 pt-5 shadow-2xl md:px-5",
+          hasSelectedExercises
+            ? "md:max-w-[776px]"
+            : "md:max-w-110",
+        )}
+      >
+        <div
+          className={clsx(
+            "grid min-h-0 flex-1 gap-4",
+            hasSelectedExercises &&
+              "md:grid-cols-[minmax(280px,320px)_minmax(0,25rem)]",
+          )}
+        >
+          {hasSelectedExercises && (
+            <div className="hidden min-h-0 flex-col border-r border-white/10 pr-4 md:flex">
+              <SelectedExercisesBox
+                selectedExercises={selectedExercises}
+                onRemove={removeExercise}
+                onTimeChange={updateTime}
+                onSave={handleSave}
+                canSave={canSave}
+                isSaving={isSaving}
+                className="flex min-h-0 flex-1 flex-col"
+                listClassName="max-h-none min-h-0 flex-1"
+              />
 
-          <button
-            type="button"
-            onClick={() => handleClose()}
-            className="flex items-center gap-2 text-[14px] text-orange md:hidden"
-          >
-            Close
-            <NextIcon className="rotate-270" />
-          </button>
-        </div>
+              <div className="mt-auto flex gap-3 border-t border-white/10 pt-4 pb-4">
+                <button
+                  type="button"
+                  onClick={handleClose}
+                  className="h-11 flex-1 rounded-xl border border-white/20 text-[14px] text-white/80"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  disabled={!canSave}
+                  className="h-11 flex-1 rounded-xl bg-orange text-[14px] font-semibold text-white disabled:opacity-40"
+                  onClick={handleSave}
+                >
+                  {isSaving ? "Saving..." : "Save"}
+                </button>
+              </div>
+            </div>
+          )}
 
-        <input
-          type="text"
-          value={search}
-          onChange={onChangeHandler}
-          placeholder="Search exercises"
-          className="form-input mb-4"
-        />
+          <div className="flex min-h-0 flex-col">
+            <div className="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[12px] text-white/40">{date}</p>
+                <h2 className="text-xl font-bold">Add exercises</h2>
+              </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-          <div className="mb-4">
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-[14px] font-semibold">Available exercises</h3>
-              {isLoading && (
-                <span className="text-[12px] text-white/40">Loading...</span>
-              )}
+              <button
+                type="button"
+                onClick={() => handleClose()}
+                className="flex items-center gap-2 text-[14px] text-orange md:hidden"
+              >
+                Close
+                <NextIcon className="rotate-270" />
+              </button>
             </div>
 
-            {!isLoading && exercises.length === 0 ? (
-              <p className="rounded-xl border border-white/10 p-6 text-center text-[14px] text-white/40">
-                No exercises found
-              </p>
-            ) : (
-              <DrawerExercisesList
-                exercises={exercises}
-                userWeight={userWeight}
-                selectedExercisesIds={selectedExercisesIds}
-                onAddExercise={addExercise}
-              />
-            )}
-          </div>
-        </div>
-        <SelectedExercisesBox
-          selectedExercises={selectedExercises}
-          onRemove={removeExercise}
-          onTimeChange={updateTime}
-          onSave={handleSave}
-          canSave={canSave}
-          isSaving={isSaving}
-        />
-        <div className="border-t border-white/10">
-          <DrawerPagination
-            currentPage={currentPage}
-            onPageChange={setCurrentPage}
-            totalPages={totalPages}
-          />
+            <input
+              type="text"
+              value={search}
+              onChange={onChangeHandler}
+              placeholder="Search exercises"
+              className="form-input mb-4 w-full min-w-0"
+            />
 
-          <div className="flex gap-3 max-md:hidden">
-            <button
-              type="button"
-              onClick={handleClose}
-              className="h-11 flex-1 rounded-xl border border-white/20 text-[14px] text-white/80"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              disabled={!canSave}
-              className="h-11 flex-1 rounded-xl bg-orange text-[14px] font-semibold text-white disabled:opacity-40"
-              onClick={handleSave}
-            >
-              {isSaving ? "Saving..." : "Save"}
-            </button>
+            <div className="min-h-0 flex-1 overflow-y-auto pr-2 meals-scrollbar">
+              <div className="mb-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-[14px] font-semibold">
+                    Available exercises
+                  </h3>
+                  {isLoading && (
+                    <span className="text-[12px] text-white/40">
+                      Loading...
+                    </span>
+                  )}
+                </div>
+
+                {!isLoading && exercises.length === 0 ? (
+                  <p className="rounded-xl border border-white/10 p-6 text-center text-[14px] text-white/40">
+                    No exercises found
+                  </p>
+                ) : (
+                  <DrawerExercisesList
+                    exercises={exercises}
+                    userWeight={userWeight}
+                    selectedExercisesIds={selectedExercisesIds}
+                    onAddExercise={addExercise}
+                  />
+                )}
+              </div>
+            </div>
+
+            <SelectedExercisesBox
+              selectedExercises={selectedExercises}
+              onRemove={removeExercise}
+              onTimeChange={updateTime}
+              onSave={handleSave}
+              canSave={canSave}
+              isSaving={isSaving}
+              className="md:hidden"
+            />
+
+            <div className="border-t border-white/10">
+              <DrawerPagination
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+                totalPages={totalPages}
+              />
+
+              {!hasSelectedExercises && (
+                <div className="flex gap-3 pb-4 max-md:hidden">
+                  <button
+                    type="button"
+                    onClick={handleClose}
+                    className="h-11 flex-1 rounded-xl border border-white/20 text-[14px] text-white/80"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    disabled={!canSave}
+                    className="h-11 flex-1 rounded-xl bg-orange text-[14px] font-semibold text-white disabled:opacity-40"
+                    onClick={handleSave}
+                  >
+                    {isSaving ? "Saving..." : "Save"}
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
+
         </div>
       </aside>
     </div>

@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { SelectedExercise } from "@/lib/shared/types/types";
+import { validateNumberInput } from "@/lib/shared/utils/validateNumberInput";
 
 interface SelectedExercisesBoxProps {
   selectedExercises: SelectedExercise[];
@@ -8,6 +9,8 @@ interface SelectedExercisesBoxProps {
   onSave: () => void | Promise<void>;
   canSave: boolean;
   isSaving: boolean;
+  className?: string;
+  listClassName?: string;
 }
 
 export const SelectedExercisesBox = ({
@@ -17,19 +20,42 @@ export const SelectedExercisesBox = ({
   onSave,
   canSave,
   isSaving,
+  className,
+  listClassName,
 }: SelectedExercisesBoxProps) => {
   if (selectedExercises.length === 0) return null;
 
   const totalBurnedCalories = selectedExercises.reduce((total, exercise) => {
-    return total + (exercise.burnedCalories * exercise.time) / 60;
+    const timeValidation = validateNumberInput(exercise.time, {
+      label: "Time",
+      min: 1,
+      max: 1440,
+      integer: true,
+    });
+
+    if (!timeValidation.isValid || timeValidation.value === null) {
+      return total;
+    }
+
+    return total + (exercise.burnedCalories * timeValidation.value) / 60;
   }, 0);
 
-  const isTimeInvalid = (time: number) => {
-    return !Number.isInteger(time) || time <= 0 || time > 1440;
+  const validateTime = (time: string) => {
+    return validateNumberInput(time, {
+      label: "Time",
+      min: 1,
+      max: 1440,
+      integer: true,
+    });
   };
 
   return (
-    <div className="mb-3 rounded-xl border border-white/15 bg-white/3 p-1.5">
+    <div
+      className={clsx(
+        "mb-3 rounded-xl border border-white/15 bg-white/3 p-1.5",
+        className,
+      )}
+    >
       <div className="mb-2 flex items-center justify-between gap-3">
         <div>
           <h3 className="text-[14px] font-semibold">Selected exercises</h3>
@@ -50,9 +76,14 @@ export const SelectedExercisesBox = ({
         </button>
       </div>
 
-      <ul className="flex max-h-40 flex-col gap-2 overflow-y-auto pr-1">
+      <ul
+        className={clsx(
+          "flex max-h-40 flex-col gap-2 overflow-y-auto pr-1 meals-scrollbar",
+          listClassName,
+        )}
+      >
         {selectedExercises.map((exercise) => {
-          const invalidTime = isTimeInvalid(exercise.time);
+          const timeValidation = validateTime(exercise.time);
 
           return (
             <li
@@ -93,11 +124,15 @@ export const SelectedExercisesBox = ({
                   }}
                   className={clsx(
                     "h-9 w-24 rounded-lg border bg-transparent px-3 text-[14px] text-white outline-none focus:border-orange",
-                    invalidTime ? "border-red-500" : "border-white/15",
+                    !timeValidation.isValid
+                      ? "border-red-500"
+                      : "border-white/15",
                   )}
                 />
                 min
-                {invalidTime && <p className="text-red-500">Invalid</p>}
+                {timeValidation.error && (
+                  <p className="text-red-500">{timeValidation.error}</p>
+                )}
               </label>
             </li>
           );

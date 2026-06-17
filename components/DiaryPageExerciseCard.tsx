@@ -4,6 +4,7 @@ import TrashIcon from "./icons/Trash";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Check } from "lucide-react";
 import CloseIcon from "./icons/CloseIcon";
+import { validateNumberInput } from "@/lib/shared/utils/validateNumberInput";
 
 interface DiaryPageExerciseCardProps {
   exercise: DiaryExercise;
@@ -30,14 +31,15 @@ const DiaryPageExerciseCard = ({
 
     timeInputRef.current?.focus();
   }, [isEditing]);
-  const nextTime = Number(draftTime);
+  const timeValidation = validateNumberInput(draftTime, {
+    label: "Time",
+    min: 1,
+    max: 1440,
+    integer: true,
+  });
+  const nextTime = timeValidation.value ?? 0;
   const isUpdating = updatingExerciseId === exercise.id;
-  const isInvalidTime =
-    draftTime.trim() === "" ||
-    Number.isNaN(nextTime) ||
-    !Number.isInteger(nextTime) ||
-    nextTime <= 0 ||
-    nextTime > 1440;
+  const isInvalidTime = !timeValidation.isValid;
   return (
     <li className="rounded-xl border border-white/10 bg-orange-500/10 px-3 py-2">
       <p className="truncate text-[14px] font-medium text-orange-1">
@@ -62,8 +64,8 @@ const DiaryPageExerciseCard = ({
             <span className="text-white">{exercise.time}</span>
           )}{" "}
           min{" "}
-          {isInvalidTime && (
-            <span className="text-red-500 pl-2">Please, enter valid time</span>
+          {timeValidation.error && (
+            <span className="text-red-500 pl-2">{timeValidation.error}</span>
           )}
         </div>
 

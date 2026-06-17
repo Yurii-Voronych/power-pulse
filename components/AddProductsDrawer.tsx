@@ -11,6 +11,8 @@ import DrawerProductsList from "./DrawerProductsList";
 import { SelectedProductsBox } from "./SelectedProductsBox";
 import { addProductsToMeal } from "@/lib/client/api/diaryApi";
 import { DiaryProduct } from "@/lib/shared/types/diary";
+import clsx from "clsx";
+import { validateNumberInput } from "@/lib/shared/utils/validateNumberInput";
 interface AddProductsDrawerProps {
   date: string;
   mealType: string;
@@ -66,16 +68,14 @@ const AddProductsDrawer = ({
     );
   };
   const hasInvalidWeight = selectedProducts.some((product) => {
-    const weight = Number(product.weight);
-
-    return (
-      product.weight.trim() === "" ||
-      Number.isNaN(weight) ||
-      weight <= 0 ||
-      weight > 10000
-    );
+    return !validateNumberInput(product.weight, {
+      label: "Weight",
+      min: 1,
+      max: 10000,
+    }).isValid;
   });
   const canSave = selectedProducts.length > 0 && !hasInvalidWeight && !isSaving;
+  const hasSelectedProducts = selectedProducts.length > 0;
   const selectedProductIds = selectedProducts.map((p) => p.productId);
   const mealLabel = mealType.charAt(0).toUpperCase() + mealType.slice(1);
 
@@ -167,91 +167,147 @@ const AddProductsDrawer = ({
             onClick={handleClick}
           />
 
-          <aside className="absolute right-0 top-0 flex h-full w-full max-w-110 flex-col border-l border-white/15 bg-black pt-5 px-5 shadow-2xl">
-            <div className="mb-5 flex items-start justify-between gap-4">
-              <div>
-                <p className="text-[12px] text-white/40">{date}</p>
-                <h2 className="text-xl font-bold">Add products</h2>
-                <p className="text-[14px] text-orange">{mealLabel}</p>
-              </div>
+          <aside
+            className={clsx(
+              "absolute right-0 top-0 flex h-full w-full flex-col border-l border-white/15 bg-black px-4 pt-5 shadow-2xl md:px-5",
+              hasSelectedProducts
+                ? "md:max-w-[776px]"
+                : "md:max-w-110",
+            )}
+          >
+            <div
+              className={clsx(
+                "grid min-h-0 flex-1 gap-4",
+                hasSelectedProducts &&
+                  "md:grid-cols-[minmax(280px,320px)_minmax(0,25rem)]",
+              )}
+            >
+              {hasSelectedProducts && (
+                <div className="hidden min-h-0 flex-col border-r border-white/10 pr-4 md:flex">
+                  <SelectedProductsBox
+                    selectedProducts={selectedProducts}
+                    onRemove={removeProduct}
+                    onWeightChange={updateWeight}
+                    onSave={handleSave}
+                    canSave={canSave}
+                    isSaving={isSaving}
+                    className="flex min-h-0 flex-1 flex-col"
+                    listClassName="max-h-none min-h-0 flex-1"
+                  />
 
-              <button
-                type="button"
-                onClick={handleClick}
-                className="flex items-center gap-2 text-[14px] text-orange md:hidden"
-              >
-                Close
-                <NextIcon className="rotate-270" />
-              </button>
-            </div>
+                  <div className="mt-auto flex gap-3 border-t border-white/10 pt-4 pb-4">
+                    <button
+                      type="button"
+                      onClick={handleClick}
+                      className="h-11 flex-1 rounded-xl border border-white/20 text-[14px] text-white/80"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      disabled={!canSave}
+                      className="h-11 flex-1 rounded-xl bg-orange text-[14px] font-semibold text-white disabled:opacity-40"
+                      onClick={handleSave}
+                    >
+                      {isSaving ? "Saving..." : "Save"}
+                    </button>
+                  </div>
+                </div>
+              )}
 
-            <input
-              type="text"
-              value={search}
-              maxLength={35}
-              onChange={onChangeHandler}
-              placeholder="Search products"
-              className="form-input mb-4"
-            />
+              <div className="flex min-h-0 flex-col">
+                <div className="mb-5 flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-[12px] text-white/40">{date}</p>
+                    <h2 className="text-xl font-bold">Add products</h2>
+                    <p className="text-[14px] text-orange">{mealLabel}</p>
+                  </div>
 
-            <div className="min-h-0 flex-1 overflow-y-auto pr-1">
-              <div className="mb-4">
-                <div className="mb-3 flex items-center justify-between">
-                  <h3 className="text-[14px] font-semibold">
-                    Available products
-                  </h3>
-                  {isLoading && (
-                    <span className="text-[12px] text-white/40">
-                      Loading...
-                    </span>
-                  )}
+                  <button
+                    type="button"
+                    onClick={handleClick}
+                    className="flex items-center gap-2 text-[14px] text-orange md:hidden"
+                  >
+                    Close
+                    <NextIcon className="rotate-270" />
+                  </button>
                 </div>
 
-                {!isLoading && products.length === 0 ? (
-                  <p className="rounded-xl border border-white/10 p-6 text-center text-[14px] text-white/40">
-                    No products found
-                  </p>
-                ) : (
-                  <DrawerProductsList
-                    products={products}
-                    selectedProductIds={selectedProductIds}
-                    onAddProduct={addProduct}
-                  />
-                )}
-              </div>
-            </div>
-            <SelectedProductsBox
-              selectedProducts={selectedProducts}
-              onRemove={removeProduct}
-              onWeightChange={updateWeight}
-              onSave={handleSave}
-              canSave={canSave}
-              isSaving={isSaving}
-            />
-            <div className="border-t border-white/10">
-              <DrawerPagination
-                currentPage={currentPage}
-                onPageChange={setCurrentPage}
-                totalPages={totalPages}
-              />
+                <input
+                  type="text"
+                  value={search}
+                  maxLength={35}
+                  onChange={onChangeHandler}
+                  placeholder="Search products"
+                  className="form-input mb-4 w-full min-w-0"
+                />
 
-              <div className="flex gap-3 max-md:hidden">
-                <button
-                  type="button"
-                  onClick={handleClick}
-                  className="h-11 flex-1 rounded-xl border border-white/20 text-[14px] text-white/80"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  disabled={!canSave}
-                  className="h-11 flex-1 rounded-xl bg-orange text-[14px] font-semibold text-white disabled:opacity-40"
-                  onClick={handleSave}
-                >
-                  {isSaving ? "Saving..." : "Save"}
-                </button>
+                <div className="min-h-0 flex-1 overflow-y-auto pr-2 meals-scrollbar">
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-[14px] font-semibold">
+                        Available products
+                      </h3>
+                      {isLoading && (
+                        <span className="text-[12px] text-white/40">
+                          Loading...
+                        </span>
+                      )}
+                    </div>
+
+                    {!isLoading && products.length === 0 ? (
+                      <p className="rounded-xl border border-white/10 p-6 text-center text-[14px] text-white/40">
+                        No products found
+                      </p>
+                    ) : (
+                      <DrawerProductsList
+                        products={products}
+                        selectedProductIds={selectedProductIds}
+                        onAddProduct={addProduct}
+                      />
+                    )}
+                  </div>
+                </div>
+
+                <SelectedProductsBox
+                  selectedProducts={selectedProducts}
+                  onRemove={removeProduct}
+                  onWeightChange={updateWeight}
+                  onSave={handleSave}
+                  canSave={canSave}
+                  isSaving={isSaving}
+                  className="md:hidden"
+                />
+
+                <div className="border-t border-white/10">
+                  <DrawerPagination
+                    currentPage={currentPage}
+                    onPageChange={setCurrentPage}
+                    totalPages={totalPages}
+                  />
+
+                  {!hasSelectedProducts && (
+                    <div className="flex gap-3 pb-4 max-md:hidden">
+                      <button
+                        type="button"
+                        onClick={handleClick}
+                        className="h-11 flex-1 rounded-xl border border-white/20 text-[14px] text-white/80"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        disabled={!canSave}
+                        className="h-11 flex-1 rounded-xl bg-orange text-[14px] font-semibold text-white disabled:opacity-40"
+                        onClick={handleSave}
+                      >
+                        {isSaving ? "Saving..." : "Save"}
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
+
             </div>
           </aside>
         </div>

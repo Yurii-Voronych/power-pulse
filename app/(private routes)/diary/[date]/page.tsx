@@ -41,7 +41,7 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
   return (
     <Container>
       <div className="flex justify-between items-end mb-10 xl:mb-7">
-        <h1 className="mt-25 text-2xl font-bold xl:mt-16">Diary</h1>
+        <h1 className="mt-25 text-2xl font-bold xl:mt-20">Diary</h1>
         <DiaryDatePicker
           date={date}
           minDate={diaryDateRange.minDate}
@@ -58,11 +58,7 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
           />
         </div>
         <div className="xl:order-1">
-          <MealsGrid
-            date={date}
-            products={products}
-            shouldScroll={exercises.length > 0}
-          />
+          <MealsGrid date={date} products={products} />
           <ExercisesGrid
             initialExercises={exercises}
             date={date}

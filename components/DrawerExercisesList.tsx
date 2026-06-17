@@ -13,7 +13,7 @@ const DrawerExercisesList = ({
   onAddExercise,
 }: drawerExercisesListProps) => {
   return (
-    <ul className="flex flex-col gap-2">
+    <ul className="flex flex-col gap-2 ">
       {exercises.map((e) => {
         const countBurnedCalories = () => {
           if (userWeight !== undefined) return Math.ceil(userWeight * e.met);

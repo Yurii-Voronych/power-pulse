@@ -39,5 +39,5 @@ export type SelectedExercise = {
   exerciseId: string;
   name: string;
   burnedCalories: number;
-  time: number;
+  time: string;
 };

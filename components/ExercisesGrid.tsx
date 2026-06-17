@@ -81,11 +81,11 @@ const ExercisesGrid = ({
   };
   return (
     <div
-      className={`w-full border border-white/20 p-4 rounded-xl mb-10 ${
+      className={`w-full border border-white/20 p-3 rounded-xl mb-6 ${
         hasExercises ? "xl:min-h-50" : ""
       }`}
     >
-      <div className="mb-3 flex justify-between text-white/50 text-[14px]">
+      <div className="mb-3 flex justify-between text-white/50 text-[14px] ">
         <p>Exercises</p>
         <button
           type="button"
@@ -97,7 +97,7 @@ const ExercisesGrid = ({
         </button>
       </div>
       {hasExercises ? (
-        <ul className="flex flex-col gap-2">
+        <ul className="flex flex-col gap-2 max-h-65 overflow-y-auto meals-scrollbar pr-1.5">
           {exercises.map((exercise) => {
             const isEditing = exercise.id === editingExerciseId;
             return (
@@ -115,7 +115,7 @@ const ExercisesGrid = ({
           })}
         </ul>
       ) : (
-        <p className="py-8 text-center text-[14px] text-white/30">
+        <p className="pt-2 pb-6 text-center text-[14px] text-white/30">
           No exercises added yet
         </p>
       )}

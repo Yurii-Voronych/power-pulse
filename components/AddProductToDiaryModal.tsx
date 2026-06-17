@@ -6,6 +6,7 @@ import { addProductsToMeal } from "@/lib/client/api/diaryApi";
 import { MEAL_TYPES } from "@/lib/shared/constants/constants";
 import { ValueSelect } from "./ValueSelect";
 import { formatDiaryDate } from "@/lib/shared/utils/diaryDate";
+import { validateNumberInput } from "@/lib/shared/utils/validateNumberInput";
 
 interface AddProductToDiaryModalProps {
   product: Product;
@@ -14,12 +15,13 @@ const AddProductToDiaryModal = ({ product }: AddProductToDiaryModalProps) => {
   const [productWeight, setProductWeight] = useState("100");
   const [mealType, setMealType] = useState("breakfast");
   const [isLoading, setIsLoading] = useState(false);
-  const nextWeight = Number(productWeight);
-  const isInvalidWeight =
-    productWeight.trim() === "" ||
-    Number.isNaN(nextWeight) ||
-    nextWeight <= 0 ||
-    nextWeight > 10000;
+  const weightValidation = validateNumberInput(productWeight, {
+    label: "Weight",
+    min: 1,
+    max: 10000,
+  });
+  const nextWeight = weightValidation.value ?? 0;
+  const isInvalidWeight = !weightValidation.isValid;
   const close = useModalStore((s) => s.close);
 
   const handleAddProduct = async () => {
@@ -77,12 +79,12 @@ const AddProductToDiaryModal = ({ product }: AddProductToDiaryModalProps) => {
         max={10000}
         className="form-input mb-4 w-full min-w-0 2xl:text-[18px]"
         onChange={(e) => {
-          setProductWeight(e.currentTarget.value.trim());
+          setProductWeight(e.currentTarget.value);
         }}
       />
       {isInvalidWeight ? (
         <p className="mb-4 text-red-500 2xl:text-[18px]">
-          Please, enter valid weight
+          {weightValidation.error}
         </p>
       ) : (
         <p className="mb-4 2xl:text-[18px]">

@@ -4,7 +4,7 @@ export const MEAL_TYPES = [
   { value: "dinner", label: "Dinner" },
   { value: "snack", label: "Snack" },
 ];
-
+export const DIARY_DATE_FORMAT = "yyyy-MM-dd";
 export const MIN_HEIGHT = 70;
 export const MAX_HEIGHT = 220;
 export const MIN_WEIGHT = 35;

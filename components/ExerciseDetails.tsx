@@ -7,6 +7,7 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { addExercisesToDiary } from "@/lib/client/api/diaryApi";
 import { formatDiaryDate } from "@/lib/shared/utils/diaryDate";
+import { validateNumberInput } from "@/lib/shared/utils/validateNumberInput";
 
 interface ExerciseDetailsProps {
   exercise: Exercise;
@@ -16,15 +17,18 @@ const ExerciseDetails = ({ exercise, calories }: ExerciseDetailsProps) => {
   const close = useModalStore((s) => s.close);
   const [draftTime, setDraftTime] = useState("10");
   const [isLoading, setIsLoading] = useState(false);
-  const nextTime = Number(draftTime);
+  const timeValidation = validateNumberInput(draftTime, {
+    label: "Time",
+    min: 1,
+    max: 1440,
+    integer: true,
+  });
+  const nextTime = timeValidation.value ?? 0;
   const burnedCalories = Math.round((calories / 60) * nextTime);
-  const isInvalidTime =
-    draftTime.trim() === "" ||
-    Number.isNaN(nextTime) ||
-    !Number.isInteger(nextTime) ||
-    nextTime <= 0 ||
-    nextTime > 1440;
+  const isInvalidTime = !timeValidation.isValid;
   const handleAddExercise = async () => {
+    if (isInvalidTime) return;
+
     try {
       setIsLoading(true);
       await addExercisesToDiary({
@@ -34,7 +38,7 @@ const ExerciseDetails = ({ exercise, calories }: ExerciseDetailsProps) => {
             exerciseId: exercise.id,
             name: exercise.name,
             burnedCalories: calories,
-            time: nextTime,
+            time: String(nextTime),
           },
         ],
       });
@@ -121,7 +125,7 @@ const ExerciseDetails = ({ exercise, calories }: ExerciseDetailsProps) => {
           min
         </label>
         {isInvalidTime ? (
-          <p className="text-red-500 mb-3">Please enter valid time</p>
+          <p className="text-red-500 mb-3">{timeValidation.error}</p>
         ) : (
           <p className="mb-3">
             Estimated burned calories{" "}

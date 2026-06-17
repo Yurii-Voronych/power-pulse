@@ -1,6 +1,6 @@
 import { addDays, format, isAfter, isBefore, isValid, parse } from "date-fns";
+import { DIARY_DATE_FORMAT } from "../constants/constants";
 
-const DIARY_DATE_FORMAT = "yyyy-MM-dd";
 const MAX_FUTURE_DAYS = 7;
 
 export type DiaryDateValidationResult =

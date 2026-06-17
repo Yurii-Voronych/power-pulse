@@ -4,6 +4,7 @@ import EditIcon from "./icons/EditIcon";
 import { useEffect, useRef, useState } from "react";
 import CloseIcon from "./icons/CloseIcon";
 import { Check } from "lucide-react";
+import { validateNumberInput } from "@/lib/shared/utils/validateNumberInput";
 
 interface productsGridProps {
   products: DiaryProduct[];
@@ -35,12 +36,13 @@ const ProductsGrid = ({
           (product.weight / 100) * product.caloriesPer100g;
         const roundedConsumedCalories = Math.ceil(consumedCalories);
         const isEditing = editingProductId === product.id;
-        const nextWeight = Number(draftWeight);
-        const isInvalidWeight =
-          draftWeight.trim() === "" ||
-          Number.isNaN(nextWeight) ||
-          nextWeight <= 0 ||
-          nextWeight > 10000;
+        const weightValidation = validateNumberInput(draftWeight, {
+          label: "Weight",
+          min: 1,
+          max: 10000,
+        });
+        const nextWeight = weightValidation.value ?? 0;
+        const isInvalidWeight = !weightValidation.isValid;
         return (
           <li
             key={product.id}
@@ -79,6 +81,9 @@ const ProductsGrid = ({
                 )}{" "}
                 g
               </p>
+              {isEditing && weightValidation.error && (
+                <p className="pl-2 text-red-500">{weightValidation.error}</p>
+              )}
               {isEditing ? (
                 <div>
                   <button

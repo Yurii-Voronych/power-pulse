@@ -63,7 +63,7 @@ export const addExercisesToDiary = async ({
   const items = {
     items: exercises.map((exercise) => ({
       exerciseId: exercise.exerciseId,
-      time: exercise.time,
+      time: Number(exercise.time),
     })),
   };
   const { data } = await api.post(`/diary/${date}/exercises`, items);

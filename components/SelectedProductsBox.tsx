@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { SelectedProduct } from "@/lib/shared/types/types";
+import { validateNumberInput } from "@/lib/shared/utils/validateNumberInput";
 
 interface SelectedProductsBoxProps {
   selectedProducts: SelectedProduct[];
@@ -8,6 +9,8 @@ interface SelectedProductsBoxProps {
   onSave: () => void | Promise<void>;
   canSave: boolean;
   isSaving: boolean;
+  className?: string;
+  listClassName?: string;
 }
 
 export const SelectedProductsBox = ({
@@ -17,27 +20,40 @@ export const SelectedProductsBox = ({
   onSave,
   canSave,
   isSaving,
+  className,
+  listClassName,
 }: SelectedProductsBoxProps) => {
   if (selectedProducts.length === 0) return null;
 
   const totalCalories = selectedProducts.reduce((total, product) => {
-    const weight = Number(product.weight);
+    const weightValidation = validateNumberInput(product.weight, {
+      label: "Weight",
+      min: 1,
+      max: 10000,
+    });
 
-    if (product.weight.trim() === "" || Number.isNaN(weight) || weight <= 0) {
+    if (!weightValidation.isValid || weightValidation.value === null) {
       return total;
     }
 
-    return total + (product.caloriesPer100g * weight) / 100;
+    return total + (product.caloriesPer100g * weightValidation.value) / 100;
   }, 0);
 
-  const isWeightInvalid = (weight: string) => {
-    const value = Number(weight);
-
-    return weight.trim() === "" || Number.isNaN(value) || value <= 0;
+  const validateWeight = (weight: string) => {
+    return validateNumberInput(weight, {
+      label: "Weight",
+      min: 1,
+      max: 10000,
+    });
   };
 
   return (
-    <div className="mb-3 rounded-xl border border-white/15 bg-white/3 p-1.5">
+    <div
+      className={clsx(
+        "mb-3 rounded-xl border border-white/15 bg-white/3 p-1.5",
+        className,
+      )}
+    >
       <div className="mb-2 flex items-center justify-between gap-3">
         <div className="flex w-full justify-between">
           <div>
@@ -59,9 +75,14 @@ export const SelectedProductsBox = ({
         </div>
       </div>
 
-      <ul className="flex max-h-40 flex-col gap-2 overflow-y-auto pr-1">
+      <ul
+        className={clsx(
+          "flex max-h-40 flex-col gap-2 overflow-y-auto pr-1 meals-scrollbar",
+          listClassName,
+        )}
+      >
         {selectedProducts.map((product) => {
-          const invalidWeight = isWeightInvalid(product.weight);
+          const weightValidation = validateWeight(product.weight);
 
           return (
             <li
@@ -102,12 +123,14 @@ export const SelectedProductsBox = ({
                   }}
                   className={clsx(
                     "h-9 w-24 rounded-lg border bg-transparent px-3 text-[14px] text-white outline-none focus:border-orange",
-                    invalidWeight ? "border-red-500" : "border-white/15",
+                    !weightValidation.isValid
+                      ? "border-red-500"
+                      : "border-white/15",
                   )}
                 />
                 g
-                {invalidWeight && (
-                  <p className="text-red-500">Invalid weight</p>
+                {weightValidation.error && (
+                  <p className="text-red-500">{weightValidation.error}</p>
                 )}
               </label>
             </li>
