@@ -55,31 +55,31 @@ export default async function AuthPage({ params }: AuthPageProps) {
      bg-position-[bottom_right]
   "
     >
-      <Container className="relative ">
+      <Container className="relative z-10">
         {authMode === "login" ? <LoginForm /> : <RegistrationForm />}
-        <Video
-          className={`
-    absolute short-viewport:hidden
+      </Container>
+      <Video
+        className={`
+    pointer-events-none absolute z-0 short-viewport:hidden
     ${
       authMode === "login"
-        ? "-bottom-25 left-35 md:-bottom-25 md:left-60 2xl:bottom-20 2xl:left-150"
-        : "-bottom-20 left-35 md:bottom-0 md:left-100 2xl:bottom-50 2xl:left-150"
+        ? "left-[28vw] bottom-[22vh] md:left-[34vw] md:bottom-[17vh] 2xl:left-[min(48vw,691px)] 2xl:bottom-[30vh]"
+        : "left-[28vw] bottom-[15vh] md:left-[48vw] md:bottom-[36vh] 2xl:left-[min(48vw,691px)] 2xl:bottom-[38vh]"
     }`}
-          aria-hidden="true"
-        />
+        aria-hidden="true"
+      />
 
-        <Calories
-          className={`
-    absolute short-viewport:hidden
+      <Calories
+        className={`
+    pointer-events-none absolute z-0 short-viewport:hidden
     ${
       authMode === "login"
-        ? "-bottom-50 left-60 md:-bottom-55 md:left-95 2xl:-bottom-50 2xl:left-270"
-        : "-bottom-45 left-58 md:-bottom-40 md:left-135 2xl:-bottom-50 2xl:left-270"
+        ? "left-[46vw] bottom-6 md:left-[56vw] md:bottom-3 2xl:left-[min(72vw,1037px)] 2xl:bottom-10"
+        : "left-[46vw] bottom-6 md:left-[68vw] md:bottom-8 2xl:left-[min(72vw,1037px)] 2xl:bottom-10"
     } 
   `}
-          aria-hidden="true"
-        />
-      </Container>
+        aria-hidden="true"
+      />
     </section>
   );
 }

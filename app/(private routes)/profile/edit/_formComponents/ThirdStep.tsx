@@ -24,7 +24,7 @@ const ThirdStep = ({ setStep, isSubmitting }: ThirdStepProps) => {
           {isSubmitting ? "Loading..." : "Go"}
         </button>
         <button
-          className="disabled:opacity-40 btn-outline"
+          className="btn-outline w-36.25"
           disabled={isSubmitting}
           type="button"
           onClick={() => {

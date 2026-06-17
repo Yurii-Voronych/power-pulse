@@ -56,7 +56,7 @@ const LoginForm = () => {
       >
         {({ errors, touched, isSubmitting }) => (
           <Form className="md:w-82.5" noValidate>
-            <div className="relative">
+            <div className="relative mb-4.5">
               <Field
                 id="email"
                 name="email"
@@ -64,41 +64,36 @@ const LoginForm = () => {
                 autoComplete="email"
                 aria-invalid={Boolean(touched.email && errors.email)}
                 aria-describedby={
-                  touched.email && errors.email ? "login-email-error" : undefined
+                  touched.email && errors.email ? "email-error" : undefined
                 }
-                className={`peer form-input mb-4.5 max-md:w-full ${
-                  touched.email && errors.email ? "border-[#d80027]" : ""
+                className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
+                  Boolean(touched.email && errors.email)
+                    ? "border-[#d80027] focus:border-[#d80027]"
+                    : "border-white/30 focus:border-orange"
                 }`}
-                placeholder="Email"
+                placeholder=" "
               />
               <label
                 htmlFor="email"
-                className="
-                  absolute -top-5 left-0
-                  text-[14px] text-white/70
-                  opacity-100 transition-opacity
-                  peer-placeholder-shown:pointer-events-none
-                  peer-placeholder-shown:opacity-0
-                  "
+                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/60 transition-all duration-200
+              peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs
+              peer-not-placeholder-shown:top-2 peer-not-placeholder-shown:translate-y-0 peer-not-placeholder-shown:text-xs"
               >
                 Email
               </label>
               <ErrorMessage name="email">
                 {(msg) => (
                   <span
-                    id="login-email-error"
-                    className="text-[12px] text-[#d80027] leading-normal absolute right-0 top-12 flex gap-1 md:top-13.5"
+                    id="email-error"
+                    className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-12 mt-1 flex gap-1"
                   >
-                    <span aria-hidden="true">
-                      <ErrorIcon />
-                    </span>
-                    {msg}
+                    <ErrorIcon /> {msg}
                   </span>
                 )}
               </ErrorMessage>
             </div>
 
-            <div className="relative">
+            <div className="relative mb-4.5">
               <Field
                 id="password"
                 name="password"
@@ -107,36 +102,31 @@ const LoginForm = () => {
                 aria-invalid={Boolean(touched.password && errors.password)}
                 aria-describedby={
                   touched.password && errors.password
-                    ? "login-password-error"
+                    ? "password-error"
                     : undefined
                 }
-                className={`peer form-input mb-4.5 max-md:w-full ${
-                  touched.password && errors.password ? "border-[#d80027]" : ""
+                className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
+                  Boolean(touched.password && errors.password)
+                    ? "border-[#d80027] focus:border-[#d80027]"
+                    : "border-white/30 focus:border-orange"
                 }`}
-                placeholder="Password"
+                placeholder=" "
               />
               <label
                 htmlFor="password"
-                className="
-                  absolute -top-5 left-0
-                  text-[14px] text-white/70
-                  opacity-100 transition-opacity
-                  peer-placeholder-shown:pointer-events-none
-                  peer-placeholder-shown:opacity-0
-                  "
+                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/60 transition-all duration-200
+              peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs
+              peer-not-placeholder-shown:top-2 peer-not-placeholder-shown:translate-y-0 peer-not-placeholder-shown:text-xs"
               >
                 Password
               </label>
               <ErrorMessage name="password">
                 {(msg) => (
                   <span
-                    id="login-password-error"
-                    className="text-[12px] text-[#d80027] leading-normal absolute right-0 top-12 flex gap-1 justify-center md:top-13.5"
+                    id="password-error"
+                    className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-12 mt-1 flex gap-1"
                   >
-                    <span aria-hidden="true">
-                      <ErrorIcon />
-                    </span>
-                    {msg}
+                    <ErrorIcon /> {msg}
                   </span>
                 )}
               </ErrorMessage>

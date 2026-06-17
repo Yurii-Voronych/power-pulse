@@ -15,7 +15,7 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
   }));
 
   return (
-    <div className="border border-white/20 rounded-xl p-3 mb-10 xl:p-3 ">
+    <div className="border border-white/20 rounded-xl p-3 mb-8 xl:p-3 ">
       <p className="text-[14px] text-white/50 mb-3">Meals</p>
       <ul className="meals-scrollbar flex flex-col gap-2 xl:gap-3">
         {meals.map((meal) => {

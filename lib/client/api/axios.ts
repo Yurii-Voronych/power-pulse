@@ -6,6 +6,14 @@ const api = axios.create({
   withCredentials: true,
 });
 
+const protectedRoutes = ["/diary", "/profile", "/exercises", "/products"];
+
+const isProtectedPath = (pathname: string) => {
+  return protectedRoutes.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`),
+  );
+};
+
 let isRedirectingToLogin = false;
 
 api.interceptors.response.use(
@@ -24,7 +32,7 @@ api.interceptors.response.use(
     ) {
       useAuthStore.getState().clearAuth();
 
-      if (!window.location.pathname.startsWith("/auth/")) {
+      if (isProtectedPath(window.location.pathname)) {
         isRedirectingToLogin = true;
         window.location.replace("/auth/login");
       }

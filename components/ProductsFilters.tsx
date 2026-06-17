@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import CloseIcon from "./icons/CloseIcon";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { CustomSelect } from "./CustomSelect";
 import { useDebouncedCallback } from "use-debounce";
 interface ProductsFiltersProps {
