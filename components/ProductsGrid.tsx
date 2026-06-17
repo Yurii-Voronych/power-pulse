@@ -30,7 +30,7 @@ const ProductsGrid = ({
     weightInputRef.current?.focus();
   }, [editingProductId]);
   return (
-    <ul className="text-[14px] flex flex-col gap-2 max-h-100 overflow-y-auto mb-2">
+    <ul className="text-[14px] flex flex-col gap-2 max-h-100 overflow-y-auto mb-2 pr-2 meals-scrollbar">
       {products.map((product) => {
         const consumedCalories =
           (product.weight / 100) * product.caloriesPer100g;

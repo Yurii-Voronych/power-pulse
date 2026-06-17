@@ -1,26 +1,25 @@
 "use client";
 import { DiaryExercise } from "@/lib/shared/types/diary";
 import { NextIcon } from "./icons/NextArrowIcon";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import AddExercisesDrawer from "./AddExercisesDrawer";
 import DiaryPageExerciseCard from "./DiaryPageExerciseCard";
 import { removeExercise, updateExercise } from "@/lib/client/api/diaryApi";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 
 interface ExercisesGridProps {
-  initialExercises: DiaryExercise[];
+  exercises: DiaryExercise[];
+  onExercisesChange: Dispatch<SetStateAction<DiaryExercise[]>>;
   date: string;
   userWeight: number | undefined;
 }
 
 const ExercisesGrid = ({
-  initialExercises,
+  exercises,
+  onExercisesChange,
   date,
   userWeight,
 }: ExercisesGridProps) => {
-  const router = useRouter();
-  const [exercises, setExercises] = useState(initialExercises);
   const hasExercises = exercises.length > 0;
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [deletingExerciseId, setDeletingExerciseId] = useState<null | string>(
@@ -33,8 +32,7 @@ const ExercisesGrid = ({
     null,
   );
   const handleExercisesAdded = (addedExercises: DiaryExercise[]) => {
-    setExercises((prev) => [...prev, ...addedExercises]);
-    router.refresh();
+    onExercisesChange((prev) => [...prev, ...addedExercises]);
   };
 
   const handleExercisesDeleted = async (deletedExercise: DiaryExercise) => {
@@ -44,8 +42,9 @@ const ExercisesGrid = ({
         date,
         exerciseId: deletedExercise.id,
       });
-      setExercises((prev) => prev.filter((e) => deletedExerciseId !== e.id));
-      router.refresh();
+      onExercisesChange((prev) =>
+        prev.filter((e) => deletedExerciseId !== e.id),
+      );
       toast.success("Exercise deleted!");
     } catch {
       toast.error("Something went wrong");
@@ -66,12 +65,11 @@ const ExercisesGrid = ({
         time,
       });
 
-      setExercises((prev) =>
+      onExercisesChange((prev) =>
         prev.map((item) => (item.id === exercise.id ? exercise : item)),
       );
 
       setEditingExerciseId(null);
-      router.refresh();
       toast.success("Exercise updated!");
     } catch {
       toast.error("Something went wrong");
@@ -80,11 +78,7 @@ const ExercisesGrid = ({
     }
   };
   return (
-    <div
-      className={`w-full border border-white/20 p-3 rounded-xl mb-6 ${
-        hasExercises ? "xl:min-h-50" : ""
-      }`}
-    >
+    <div className="w-full border border-white/20 p-3 rounded-xl mb-6">
       <div className="mb-3 flex justify-between text-white/50 text-[14px] ">
         <p>Exercises</p>
         <button

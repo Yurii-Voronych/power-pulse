@@ -17,12 +17,16 @@ interface AddProductsDrawerProps {
   date: string;
   mealType: string;
   onProductsAdded: (addProducts: DiaryProduct[]) => void;
+  triggerLabel?: string;
+  triggerClassName?: string;
 }
 
 const AddProductsDrawer = ({
   date,
   mealType,
   onProductsAdded,
+  triggerLabel = "Add products",
+  triggerClassName = "btn-primary mb-2",
 }: AddProductsDrawerProps) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
@@ -154,8 +158,8 @@ const AddProductsDrawer = ({
 
   return (
     <>
-      <button type="button" onClick={handleClick} className="btn-primary mb-2">
-        Add products
+      <button type="button" onClick={handleClick} className={triggerClassName}>
+        {triggerLabel}
       </button>
 
       {isDrawerOpen && (
@@ -170,9 +174,7 @@ const AddProductsDrawer = ({
           <aside
             className={clsx(
               "absolute right-0 top-0 flex h-full w-full flex-col border-l border-white/15 bg-black px-4 pt-5 shadow-2xl md:px-5",
-              hasSelectedProducts
-                ? "md:max-w-[776px]"
-                : "md:max-w-110",
+              hasSelectedProducts ? "md:max-w-194" : "md:max-w-110",
             )}
           >
             <div
@@ -216,7 +218,7 @@ const AddProductsDrawer = ({
               )}
 
               <div className="flex min-h-0 flex-col">
-                <div className="mb-5 flex items-start justify-between gap-4">
+                <div className="mb-5 flex items-start justify-between gap-4 ">
                   <div>
                     <p className="text-[12px] text-white/40">{date}</p>
                     <h2 className="text-xl font-bold">Add products</h2>
@@ -242,7 +244,7 @@ const AddProductsDrawer = ({
                   className="form-input mb-4 w-full min-w-0"
                 />
 
-                <div className="min-h-0 flex-1 overflow-y-auto pr-2 meals-scrollbar">
+                <div className="min-h-0 flex-1 overflow-y-auto pr-2 ">
                   <div className="mb-4">
                     <div className="flex items-center justify-between">
                       <h3 className="text-[14px] font-semibold">
@@ -256,7 +258,7 @@ const AddProductsDrawer = ({
                     </div>
 
                     {!isLoading && products.length === 0 ? (
-                      <p className="rounded-xl border border-white/10 p-6 text-center text-[14px] text-white/40">
+                      <p className="rounded-xl border border-white/10 p-6 text-center text-[14px] text-white/40 ">
                         No products found
                       </p>
                     ) : (
@@ -307,7 +309,6 @@ const AddProductsDrawer = ({
                   )}
                 </div>
               </div>
-
             </div>
           </aside>
         </div>

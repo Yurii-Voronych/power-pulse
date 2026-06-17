@@ -160,7 +160,7 @@ const AddExercisesDrawer = ({
         className={clsx(
           "absolute right-0 top-0 flex h-full w-full flex-col border-l border-white/15 bg-black px-4 pt-5 shadow-2xl md:px-5",
           hasSelectedExercises
-            ? "md:max-w-[776px]"
+            ? "md:max-w-194"
             : "md:max-w-110",
         )}
       >

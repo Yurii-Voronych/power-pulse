@@ -48,9 +48,7 @@ const MealPage = async ({
     date,
     userId: user.id,
   });
-  const initialProducts =
-    diary?.products.filter((p) => p.mealType === meal.value) ?? [];
-
+  const initialProducts = diary?.products ?? [];
   return (
     <Container>
       <Link
@@ -68,6 +66,7 @@ const MealPage = async ({
         initialProducts={initialProducts}
         date={date}
         mealType={meal.value}
+        dailyCaloriesConsumption={user.dailyNorm?.calories}
       />
     </Container>
   );

@@ -1,8 +1,6 @@
 import Container from "@/components/Container";
-import DiaryCaloriesInfoGrid from "@/components/DiaryCaloriesInfoGrid";
-import ExercisesGrid from "@/components/ExercisesGrid";
+import DiaryPageContent from "@/components/DiaryPageContent";
 import DiaryDatePicker from "@/components/icons/DiaryDatePicker";
-import MealsGrid from "@/components/MealsGrid";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
 import { getDiaryData } from "@/lib/server/data/diary/getDiary";
 import {
@@ -48,24 +46,14 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
           maxDate={diaryDateRange.maxDate}
         />
       </div>
-      <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_442px] xl:items-start xl:gap-7">
-        <div className="xl:order-2">
-          <DiaryCaloriesInfoGrid
-            intake={normOfCalories}
-            sportMinutes={sportMinutes}
-            products={products}
-            exercises={exercises}
-          />
-        </div>
-        <div className="xl:order-1">
-          <MealsGrid date={date} products={products} />
-          <ExercisesGrid
-            initialExercises={exercises}
-            date={date}
-            userWeight={userWeight}
-          />
-        </div>
-      </div>
+      <DiaryPageContent
+        date={date}
+        intake={normOfCalories}
+        sportMinutes={sportMinutes}
+        products={products}
+        initialExercises={exercises}
+        userWeight={userWeight}
+      />
     </Container>
   );
 };
