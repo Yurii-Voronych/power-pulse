@@ -54,9 +54,9 @@ const AddProductToDiaryModal = ({ product }: AddProductToDiaryModalProps) => {
     return { value: m.value, name: m.label, id: `${i}` };
   });
   return (
-    <div className="relative z-10 max-h-[calc(100vh-32px)] w-[calc(100%-32px)] max-w-lg overflow-y-auto rounded-xl border border-white/50 bg-[#10100F] p-5 md:p-8 2xl:max-w-xl 2xl:p-10">
+    <div className="relative z-10 max-h-[calc(100dvh-32px)] w-[calc(100%-32px)] max-w-lg overflow-y-auto rounded-xl border border-white/50 bg-[#10100F] p-5 md:p-8 2xl:max-w-xl 2xl:p-10">
       <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-start md:justify-between md:gap-6">
-        <h2 className="min-w-0 break-words text-[16px] font-semibold text-white 2xl:text-[20px]">
+        <h2 className="min-w-0 wrap-break-word text-[16px] font-semibold text-white 2xl:text-[20px]">
           {product.title}
         </h2>
         <p className="shrink-0 text-[14px] text-white/60 md:text-right 2xl:text-[16px]">

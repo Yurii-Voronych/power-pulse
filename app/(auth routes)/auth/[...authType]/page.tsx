@@ -45,7 +45,7 @@ export default async function AuthPage({ params }: AuthPageProps) {
       className="
       relative
     max-w-360 mx-auto
-    min-h-screen
+    min-h-dvh
     pt-31.75 md:pt-47.25 2xl:pt-47.25
    bg-[linear-gradient(135deg,rgba(4,4,4,1)_21%,rgba(4,4,4,0)_100%),url('/womanPonytail_mobile.jpg')]
     md:bg-[url('/womanPonytail_tablet.jpg')]
