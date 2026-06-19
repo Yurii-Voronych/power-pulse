@@ -129,9 +129,9 @@ const AddProductsManager = ({
       </div>
 
       <div className="grid content-start gap-3 md:grid-cols-3 lg:sticky lg:top-28 lg:grid-cols-1">
-        <CaloriesIntake value={dailyCaloriesNorm} />
-        <CaloriesConsumed value={dailyConsumption} />
-        <CaloriesRest value={dailyCaloriesNorm - dailyConsumption} />
+        <CaloriesIntake value={Math.ceil(dailyCaloriesNorm)} />
+        <CaloriesConsumed value={Math.ceil(dailyConsumption)} />
+        <CaloriesRest value={Math.ceil(dailyCaloriesNorm - dailyConsumption)} />
       </div>
     </div>
   );

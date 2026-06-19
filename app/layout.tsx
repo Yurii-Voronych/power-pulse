@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
-
+import { Analytics } from "@vercel/analytics/next";
 import Header from "@/components/Header";
 import AuthProvider from "@/providers/AuthProvider";
 import { Toaster } from "react-hot-toast";
@@ -30,6 +30,7 @@ export default function RootLayout({
         <AuthProvider>
           <Header />
           {children}
+          <Analytics />
           <ModalRoot />
           <Toaster position="top-right" />
         </AuthProvider>
