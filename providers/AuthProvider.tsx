@@ -1,33 +1,28 @@
 "use client";
 
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
-import { getCurrentUser } from "@/lib/client/api/userApi";
 import useAuthStore from "@/lib/client/store/authStore";
+import { User } from "@/lib/shared/types/user";
 
 interface AuthProviderProps {
   children: React.ReactNode;
+  initialUser?: User | null;
 }
 
-const AuthProvider = ({ children }: AuthProviderProps) => {
-  const pathname = usePathname();
+const AuthProvider = ({ children, initialUser }: AuthProviderProps) => {
   const setUser = useAuthStore((state) => state.setUser);
   const clearAuth = useAuthStore((state) => state.clearAuth);
 
   useEffect(() => {
-    if (pathname.startsWith("/auth/")) return;
+    if (initialUser) {
+      setUser(initialUser);
+      return;
+    }
 
-    const initializeAuth = async () => {
-      try {
-        const user = await getCurrentUser();
-        setUser(user);
-      } catch {
-        clearAuth();
-      }
-    };
-
-    initializeAuth();
-  }, [pathname, setUser, clearAuth]);
+    if (initialUser === null) {
+      clearAuth();
+    }
+  }, [initialUser, setUser, clearAuth]);
 
   return children;
 };

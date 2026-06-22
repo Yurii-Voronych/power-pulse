@@ -1,7 +1,7 @@
 "use client";
 
 import "react-day-picker/dist/style.css";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { CalendarIcon } from "./CalendarIcon";
 import { NextIcon } from "./NextArrowIcon";
 import { DayPicker } from "react-day-picker";
@@ -24,6 +24,7 @@ interface DiaryDatePickerProps {
 
 const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const parsePickerDate = (date: string) =>
@@ -56,22 +57,28 @@ const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
     }
 
     const formatted = formatDate(selected);
-    router.push(`/diary/${formatted}`);
+    startTransition(() => {
+      router.push(`/diary/${formatted}`);
+    });
     setOpen(false);
   };
 
   const handlePrev = () => {
-    if (!canGoPrev) return;
+    if (!canGoPrev || isPending) return;
 
     const prev = formatDate(addDays(parsedDate, -1));
-    router.push(`/diary/${prev}`);
+    startTransition(() => {
+      router.push(`/diary/${prev}`);
+    });
   };
 
   const handleNext = () => {
-    if (!canGoNext) return;
+    if (!canGoNext || isPending) return;
 
     const next = formatDate(addDays(parsedDate, 1));
-    router.push(`/diary/${next}`);
+    startTransition(() => {
+      router.push(`/diary/${next}`);
+    });
   };
 
   useEffect(() => {
@@ -95,8 +102,19 @@ const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
         {format(parsedDate, "dd/MM/yyyy")}
       </p>
 
-      <button type="button" onClick={() => setOpen((prev) => !prev)}>
-        <CalendarIcon className="text-orange" />
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className="flex size-4.5 items-center justify-center"
+      >
+        {isPending ? (
+          <span
+            className="block size-4.5 animate-spin rounded-full border-2 border-orange border-t-transparent"
+            aria-label="Loading diary date"
+          />
+        ) : (
+          <CalendarIcon className="text-orange" />
+        )}
       </button>
 
       {open && (
@@ -173,19 +191,19 @@ const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
       <button
         type="button"
         onClick={handlePrev}
-        disabled={!canGoPrev}
-        className={!canGoPrev ? "opacity-30" : undefined}
+        disabled={!canGoPrev || isPending}
+        className={!canGoPrev || isPending ? "opacity-30" : undefined}
       >
-        <NextIcon className="rotate-180" />
+        <NextIcon className={`rotate-180 ${isPending ? "animate-pulse" : ""}`} />
       </button>
 
       <button
         type="button"
         onClick={handleNext}
-        disabled={!canGoNext}
-        className={!canGoNext ? "opacity-30" : undefined}
+        disabled={!canGoNext || isPending}
+        className={!canGoNext || isPending ? "opacity-30" : undefined}
       >
-        <NextIcon />
+        <NextIcon className={isPending ? "animate-pulse" : undefined} />
       </button>
     </div>
   );
