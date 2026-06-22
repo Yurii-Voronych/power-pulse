@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import BubleIcon from "../icons/BubleIcon";
 
 interface CaloriesRestProps {
@@ -7,7 +8,11 @@ interface CaloriesRestProps {
 const CaloriesRest = ({ classname, value = 0 }: CaloriesRestProps) => {
   return (
     <div
-      className={`${classname} flex h-24 w-full flex-col justify-between rounded-xl border border-white/20 bg-transparent p-3.5 md:h-27`}
+      className={clsx(
+        classname,
+        "flex h-24 w-full flex-col justify-between rounded-xl border p-3.5 md:h-27",
+        value < 0 ? "border-red-500" : "border-white/20",
+      )}
     >
       <div className="text-[12px] text-white/80 flex items-center gap-2 ">
         <BubleIcon className="w-5 h-5" />

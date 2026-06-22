@@ -99,6 +99,13 @@ export async function POST(
 
     const exercisesIds = items.map((exercise) => exercise.exerciseId);
     const uniqueExercisesIds = [...new Set(exercisesIds)];
+    if (exercisesIds.length !== uniqueExercisesIds.length) {
+      return jsonWithAuthCookie(
+        { message: "Duplicate exercises are not allowed" },
+        { status: 400 },
+        payload.accessToken,
+      );
+    }
     const exercises = await Exercise.find({
       _id: {
         $in: uniqueExercisesIds,

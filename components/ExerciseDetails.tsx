@@ -37,7 +37,7 @@ const ExerciseDetails = ({ exercise, calories }: ExerciseDetailsProps) => {
           {
             exerciseId: exercise.id,
             name: exercise.name,
-            burnedCalories: calories,
+            caloriesPerHour: calories,
             time: String(nextTime),
           },
         ],

@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { SelectedProduct } from "@/lib/shared/types/types";
 import { validateNumberInput } from "@/lib/shared/utils/validateNumberInput";
+import { calculateSelectedProductsCalories } from "@/lib/shared/calculations/diaryCalculations";
 
 interface SelectedProductsBoxProps {
   selectedProducts: SelectedProduct[];
@@ -25,19 +26,7 @@ export const SelectedProductsBox = ({
 }: SelectedProductsBoxProps) => {
   if (selectedProducts.length === 0) return null;
 
-  const totalCalories = selectedProducts.reduce((total, product) => {
-    const weightValidation = validateNumberInput(product.weight, {
-      label: "Weight",
-      min: 1,
-      max: 10000,
-    });
-
-    if (!weightValidation.isValid || weightValidation.value === null) {
-      return total;
-    }
-
-    return total + (product.caloriesPer100g * weightValidation.value) / 100;
-  }, 0);
+  const totalCalories = calculateSelectedProductsCalories(selectedProducts);
 
   const validateWeight = (weight: string) => {
     return validateNumberInput(weight, {

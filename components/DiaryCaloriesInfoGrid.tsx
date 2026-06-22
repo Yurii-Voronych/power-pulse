@@ -6,6 +6,11 @@ import CaloriesBurned from "./ui/CaloriesBurned";
 import CaloriesRest from "./ui/RestOfCalories";
 import SportsRest from "./ui/RestOfSports";
 import { WarningIcon } from "./icons/WarningIcon";
+import {
+  calculateExercisesCalories,
+  calculateExercisesMinutes,
+  calculateProductsCalories,
+} from "@/lib/shared/calculations/diaryCalculations";
 
 interface DiaryCaloriesInfoGridProps {
   intake: number;
@@ -19,18 +24,11 @@ const DiaryCaloriesInfoGrid = ({
   exercises,
   products,
 }: DiaryCaloriesInfoGridProps) => {
-  const consumedCalories = products.reduce((total, product) => {
-    return total + (product.caloriesPer100g * product.weight) / 100;
-  }, 0);
+  const consumedCalories = calculateProductsCalories(products);
   const roundedConsumedCalories = Math.ceil(consumedCalories);
 
-  const burnedCalories = exercises.reduce((total, exercise) => {
-    return total + exercise.burnedCalories;
-  }, 0);
-
-  const spentSportMinutes = exercises.reduce((total, exercise) => {
-    return total + exercise.time;
-  }, 0);
+  const burnedCalories = calculateExercisesCalories(exercises);
+  const spentSportMinutes = calculateExercisesMinutes(exercises);
 
   const remainingCalories = intake - roundedConsumedCalories;
   const remainingSportMinutes = sportMinutes - spentSportMinutes;

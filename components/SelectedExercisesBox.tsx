@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { SelectedExercise } from "@/lib/shared/types/types";
 import { validateNumberInput } from "@/lib/shared/utils/validateNumberInput";
+import { calculateSelectedExercisesCalories } from "@/lib/shared/calculations/diaryCalculations";
 
 interface SelectedExercisesBoxProps {
   selectedExercises: SelectedExercise[];
@@ -25,20 +26,8 @@ export const SelectedExercisesBox = ({
 }: SelectedExercisesBoxProps) => {
   if (selectedExercises.length === 0) return null;
 
-  const totalBurnedCalories = selectedExercises.reduce((total, exercise) => {
-    const timeValidation = validateNumberInput(exercise.time, {
-      label: "Time",
-      min: 1,
-      max: 1440,
-      integer: true,
-    });
-
-    if (!timeValidation.isValid || timeValidation.value === null) {
-      return total;
-    }
-
-    return total + (exercise.burnedCalories * timeValidation.value) / 60;
-  }, 0);
+  const totalBurnedCalories =
+    calculateSelectedExercisesCalories(selectedExercises);
 
   const validateTime = (time: string) => {
     return validateNumberInput(time, {
@@ -96,7 +85,7 @@ export const SelectedExercisesBox = ({
                     {exercise.name}
                   </p>
                   <p className="text-[12px] text-white/40">
-                    {exercise.burnedCalories} kcal / hour
+                    {exercise.caloriesPerHour} kcal / hour
                   </p>
                 </div>
 

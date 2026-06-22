@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import CaloriesIntake from "./ui/CaloriesIntake";
 import CaloriesConsumed from "./ui/CaloriesConsumed";
 import CaloriesRest from "./ui/RestOfCalories";
+import { useRouter } from "next/navigation";
+import { calculateProductsCalories } from "@/lib/shared/calculations/diaryCalculations";
 
 interface AddProductManagerProps {
   initialProducts: DiaryProduct[];
@@ -31,18 +33,14 @@ const AddProductsManager = ({
     null,
   );
   const [isUpdating, setIsUpdating] = useState(false);
+  const router = useRouter();
 
   const mealProducts = products.filter((product) => {
     return product.mealType === mealType;
   });
 
-  const totalMealConsumption = mealProducts.reduce((total, product) => {
-    return total + product.caloriesPer100g * (product.weight / 100);
-  }, 0);
-
-  const dailyConsumption = products.reduce((total, product) => {
-    return total + product.caloriesPer100g * (product.weight / 100);
-  }, 0);
+  const totalMealConsumption = calculateProductsCalories(mealProducts);
+  const dailyConsumption = calculateProductsCalories(products);
 
   const dailyCaloriesNorm = dailyCaloriesConsumption ?? 0;
   const roundedTotalMealConsumption = Math.ceil(totalMealConsumption);
@@ -50,6 +48,7 @@ const AddProductsManager = ({
 
   const handleProductsAdded = (addedProducts: DiaryProduct[]) => {
     setProducts((prev) => [...prev, ...addedProducts]);
+    router.refresh();
   };
 
   const handleProductRemoved = async (productId: string) => {
@@ -63,6 +62,7 @@ const AddProductsManager = ({
       });
 
       setProducts((prev) => prev.filter((p) => p.id !== deletedProductId));
+      router.refresh();
     } catch {
       toast.error("Failed to remove product");
     } finally {
@@ -84,8 +84,11 @@ const AddProductsManager = ({
       setProducts((prev) =>
         prev.map((p) => (p.id === product.id ? product : p)),
       );
+      router.refresh();
+      return true;
     } catch {
       toast.error("Failed to update product weight");
+      return false;
     } finally {
       setIsUpdating(false);
     }

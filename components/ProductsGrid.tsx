@@ -10,7 +10,7 @@ interface productsGridProps {
   products: DiaryProduct[];
   onRemoveProduct: (productId: string) => void;
   deletingProductId: string | null;
-  onWeightUpd: (productId: string, weight: number) => Promise<void>;
+  onWeightUpd: (productId: string, weight: number) => Promise<boolean>;
   isUpdating: boolean;
 }
 
@@ -91,9 +91,14 @@ const ProductsGrid = ({
                     className="text-[14px] text-white p-1 disabled:opacity-40"
                     disabled={isInvalidWeight || isUpdating}
                     onClick={async () => {
-                      await onWeightUpd(product.id, nextWeight);
-                      setEditingProductId(null);
-                      setDraftWeight("");
+                      const wasUpdated = await onWeightUpd(
+                        product.id,
+                        nextWeight,
+                      );
+                      if (wasUpdated) {
+                        setEditingProductId(null);
+                        setDraftWeight("");
+                      }
                     }}
                   >
                     <Check className="text-orange w-5 h-5" />

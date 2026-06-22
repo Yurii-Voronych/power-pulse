@@ -38,14 +38,13 @@ const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
     return isValid(parsed) ? parsed : new Date();
   })();
   const selectedMonth = startOfMonth(parsedDate);
-  const [monthState, setMonthState] = useState({
-    date,
-    month: selectedMonth,
-  });
 
-  if (monthState.date !== date) {
-    setMonthState({ date, month: selectedMonth });
-  }
+  const [manualMonth, setManualMonth] = useState<{
+    date: string;
+    month: Date;
+  } | null>(null);
+
+  const month = manualMonth?.date === date ? manualMonth.month : selectedMonth;
 
   const canGoPrev = isAfter(parsedDate, minParsedDate);
   const canGoNext = isBefore(parsedDate, maxParsedDate);
@@ -105,9 +104,9 @@ const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
           <DayPicker
             mode="single"
             selected={parsedDate}
-            month={monthState.month}
+            month={month}
             onMonthChange={(nextMonth) => {
-              setMonthState({ date, month: nextMonth });
+              setManualMonth({ date, month: nextMonth });
             }}
             startMonth={startOfMonth(minParsedDate)}
             endMonth={startOfMonth(maxParsedDate)}

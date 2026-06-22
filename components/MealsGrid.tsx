@@ -2,6 +2,7 @@ import { DiaryProduct } from "@/lib/shared/types/diary";
 import { MEAL_TYPES } from "@/lib/shared/constants/constants";
 import Link from "next/link";
 import { NextIcon } from "./icons/NextArrowIcon";
+import { calculateProductsCalories } from "@/lib/shared/calculations/diaryCalculations";
 
 interface ProductsGridProps {
   products: DiaryProduct[];
@@ -19,9 +20,7 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
       <p className="text-[14px] text-white/50 mb-3">Meals</p>
       <ul className="meals-scrollbar flex flex-col gap-2 xl:gap-3">
         {meals.map((meal) => {
-          const calories = meal.products.reduce((total, product) => {
-            return total + product.caloriesPer100g * (product.weight / 100);
-          }, 0);
+          const calories = calculateProductsCalories(meal.products);
           const roundedCalories = Math.ceil(calories);
 
           const hasProducts = meal.products.length > 0;

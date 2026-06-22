@@ -38,6 +38,6 @@ export type SelectedProduct = {
 export type SelectedExercise = {
   exerciseId: string;
   name: string;
-  burnedCalories: number;
+  caloriesPerHour: number;
   time: string;
 };
