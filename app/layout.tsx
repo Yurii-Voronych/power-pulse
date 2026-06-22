@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import AuthProvider from "@/providers/AuthProvider";
 import { Toaster } from "react-hot-toast";
 import { ModalRoot } from "@/components/ui/modal/ModalRoot";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const roboto = Roboto({
   subsets: ["latin", "cyrillic"],
@@ -31,6 +32,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Analytics />
+          <SpeedInsights />
           <ModalRoot />
           <Toaster position="top-right" />
         </AuthProvider>
