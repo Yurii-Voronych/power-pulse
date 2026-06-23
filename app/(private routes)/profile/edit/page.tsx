@@ -1,4 +1,5 @@
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
+import { formatDiaryDate } from "@/lib/shared/utils/diaryDate";
 import { redirect } from "next/navigation";
 import EditProfileForm from "./EditProfileForm";
 import { Metadata } from "next";
@@ -10,7 +11,7 @@ const EditProfilePage = async () => {
   const user = await getCurrentUser();
 
   if (user?.isProfileCompleted) {
-    redirect("/diary");
+    redirect(`/diary/${formatDiaryDate(new Date())}`);
   }
 
   return <EditProfileForm />;

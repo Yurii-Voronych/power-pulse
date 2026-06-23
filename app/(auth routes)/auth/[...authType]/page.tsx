@@ -4,6 +4,7 @@ import RegistrationForm from "@/components/RegistrationForm";
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
+import { formatDiaryDate } from "@/lib/shared/utils/diaryDate";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 
@@ -31,7 +32,7 @@ export async function generateMetadata({
 export default async function AuthPage({ params }: AuthPageProps) {
   const user = await getCurrentUser();
   if (user) {
-    redirect("/diary");
+    redirect(`/diary/${formatDiaryDate(new Date())}`);
   }
   const { authType } = await params;
   const validTypes = ["login", "register"];

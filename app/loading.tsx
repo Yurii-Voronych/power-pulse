@@ -1,6 +1,6 @@
 const Loading = () => {
   return (
-    <div className="flex min-h-dvh items-center justify-center bg-[#040404] text-white">
+    <div className="flex min-h-dvh items-center justify-center bg-black text-white">
       <div className="flex flex-col items-center gap-6">
         <div className="relative flex h-24 w-48 items-center justify-center">
           <div className="absolute h-16 w-16 animate-ping rounded-full bg-orange-500/20" />

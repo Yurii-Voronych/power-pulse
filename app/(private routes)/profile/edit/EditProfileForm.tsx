@@ -19,6 +19,7 @@ import useAuthStore from "@/lib/client/store/authStore";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import type { ProfileDetailsFormValues } from "@/lib/shared/types/profile";
+import { formatDiaryDate } from "@/lib/shared/utils/diaryDate";
 
 export type ProfileSetupStep = 1 | 2 | 3;
 export type EditProfileFormValues = ProfileDetailsFormValues;
@@ -79,7 +80,7 @@ const EditProfileForm = () => {
       const user = await updateProfile(parsed.data);
       setUser(user);
       actions.resetForm();
-      router.replace("/diary");
+      router.replace(`/diary/${formatDiaryDate(new Date())}`);
     } catch {
       toast.error("Something went wrong, please try again later");
     }

@@ -2,6 +2,7 @@ import Container from "@/components/Container";
 import Calories from "@/components/ui/Calories";
 import Video from "@/components/ui/Video";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
+import { formatDiaryDate } from "@/lib/shared/utils/diaryDate";
 import { Metadata } from "next";
 
 import Link from "next/link";
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 export default async function Home() {
   const user = await getCurrentUser();
   if (user) {
-    redirect("/diary");
+    redirect(`/diary/${formatDiaryDate(new Date())}`);
   }
   return (
     <section

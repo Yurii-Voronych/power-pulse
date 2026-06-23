@@ -4,14 +4,16 @@ import Container from "./Container";
 import { LogoIcon } from "./icons/LogoIcon";
 import HeaderSettings from "./HeaderSettings";
 import useAuthStore from "@/lib/client/store/authStore";
+import { formatDiaryDate } from "@/lib/shared/utils/diaryDate";
 
 const Header = () => {
   const user = useAuthStore((s) => s.user);
+  const todayDiaryHref = `/diary/${formatDiaryDate(new Date())}`;
   return (
     <header className="absolute top-0 left-0 w-full z-50">
       <Container className="flex items-center justify-between h-15.25 md:h-21">
         <Link
-          href={user ? "/diary" : "/"}
+          href={user ? todayDiaryHref : "/"}
           aria-label={user ? "Diary" : "Power Pulse startPage"}
         >
           <LogoIcon

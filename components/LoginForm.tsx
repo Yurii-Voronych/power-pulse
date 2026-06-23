@@ -9,6 +9,7 @@ import { loginUser } from "@/lib/client/api/authApi";
 import useAuthStore from "@/lib/client/store/authStore";
 import { loginSchema } from "@/lib/shared/validators/auth/loginSchema";
 import toast from "react-hot-toast";
+import { formatDiaryDate } from "@/lib/shared/utils/diaryDate";
 
 interface LoginValues {
   email: string;
@@ -31,7 +32,7 @@ const LoginForm = () => {
       if (!user.isProfileCompleted) {
         router.replace("/profile/edit");
       } else {
-        router.replace("/diary");
+        router.replace(`/diary/${formatDiaryDate(new Date())}`);
       }
     } catch (error) {
       if ((error as AxiosError).status === 401) {

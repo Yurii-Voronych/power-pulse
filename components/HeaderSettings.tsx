@@ -7,11 +7,13 @@ import { MenuIcon } from "./icons/MenuIcon";
 import LogOutBtn from "./LogOutBtn";
 import { useModalStore } from "./ui/modal/modal.store";
 import MobileMenu from "./MobileMenu";
+import { formatDiaryDate } from "@/lib/shared/utils/diaryDate";
 
 const HeaderSettings = () => {
   const pathname = usePathname();
   const isActive = (path: string) => pathname.startsWith(path);
   const open = useModalStore((s) => s.open);
+  const todayDiaryHref = `/diary/${formatDiaryDate(new Date())}`;
   return (
     <div className="flex justify-center items-center gap-8">
       <nav className="hidden 2xl:block">
@@ -24,7 +26,7 @@ const HeaderSettings = () => {
       : "border-[rgba(239,237,232,0.2)]"
   }`}
           >
-            <Link href={"/diary"}>Diary</Link>
+            <Link href={todayDiaryHref}>Diary</Link>
           </li>
           <li
             className={`flex justify-center items-center border rounded-xl w-22.75 h-11
@@ -44,7 +46,7 @@ const HeaderSettings = () => {
       : "border-[rgba(239,237,232,0.2)]"
   }`}
           >
-            <Link href={"/exercises"}>Exercises</Link>
+            <Link href="/exercises/body-parts">Exercises</Link>
           </li>
         </ul>
       </nav>

@@ -4,9 +4,11 @@ import Link from "next/link";
 import LogOutBtn from "./LogOutBtn";
 import { useModalStore } from "./ui/modal/modal.store";
 import CloseIcon from "./icons/CloseIcon";
+import { formatDiaryDate } from "@/lib/shared/utils/diaryDate";
 
 const MobileMenu = () => {
   const { close } = useModalStore();
+  const todayDiaryHref = `/diary/${formatDiaryDate(new Date())}`;
 
   return (
     <div className="relative z-10">
@@ -20,7 +22,7 @@ const MobileMenu = () => {
       <nav>
         <ul className="flex flex-col gap-4">
           <li onClick={() => close()}>
-            <Link href="/diary" className="btn-outline">
+            <Link href={todayDiaryHref} className="btn-outline">
               Diary
             </Link>
           </li>
@@ -30,7 +32,7 @@ const MobileMenu = () => {
             </Link>
           </li>
           <li onClick={() => close()}>
-            <Link href="/exercises" className="btn-outline">
+            <Link href="/exercises/body-parts" className="btn-outline">
               Exercises
             </Link>
           </li>
