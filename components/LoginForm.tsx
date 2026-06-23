@@ -10,6 +10,7 @@ import useAuthStore from "@/lib/client/store/authStore";
 import { loginSchema } from "@/lib/shared/validators/auth/loginSchema";
 import toast from "react-hot-toast";
 import { formatDiaryDate } from "@/lib/shared/utils/diaryDate";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 
 interface LoginValues {
   email: string;
@@ -53,9 +54,7 @@ const LoginForm = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        validationSchema={loginSchema}
-        validateOnChange={false}
-        validateOnBlur={true}
+        validationSchema={toFormikValidationSchema(loginSchema)}
       >
         {({ errors, isSubmitting, values, submitCount, touched }) => {
           const showEmailError =

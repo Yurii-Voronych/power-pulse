@@ -2,15 +2,18 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/server/db/mongodb";
 import User from "@/models/User";
-import { generateRefreshToken, createSession } from "@/lib/server/auth/sessions";
+import {
+  generateRefreshToken,
+  createSession,
+} from "@/lib/server/auth/sessions";
 import { signAccessToken } from "@/lib/server/auth/jwt";
-import { registerSchemaServer } from "@/lib/shared/validators/auth/registerSchema.server";
 import { mapUserToDTO } from "@/lib/shared/mappers/mapUserToDTO";
+import { registerSchema } from "@/lib/shared/validators/auth/registerSchema";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const parsed = registerSchemaServer.safeParse(body);
+    const parsed = registerSchema.safeParse(body);
 
     if (!parsed.success) {
       return NextResponse.json({ errors: parsed.error }, { status: 400 });

@@ -8,6 +8,7 @@ import { registerUser } from "@/lib/client/api/authApi";
 import useAuthStore from "@/lib/client/store/authStore";
 import { registerSchema } from "@/lib/shared/validators/auth/registerSchema";
 import toast from "react-hot-toast";
+import { toFormikValidationSchema } from "zod-formik-adapter";
 
 interface RegistrationValues {
   name: string;
@@ -49,9 +50,7 @@ const RegistrationForm = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        validateOnChange={false}
-        validateOnBlur={true}
-        validationSchema={registerSchema}
+        validationSchema={toFormikValidationSchema(registerSchema)}
       >
         {({ errors, isSubmitting, values, submitCount, touched }) => {
           const showNameError =
