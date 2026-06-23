@@ -34,7 +34,7 @@
       text-[16px]
        leading-[1.1]
       font-medium
-      transition
+      transition-colors
       duration-200
       disabled:opacity-40;
   }
@@ -54,7 +54,7 @@
       text-[16px]
       font-medium
       leading-[1.1]
-      transition
+      transition-colors
       disabled:opacity-40
       duration-200;
   }
@@ -99,7 +99,8 @@
       text-sm
       leading-[1.28571]
       text-[#EFEDE8]/60
-      focus:border-orange;
+      focus:border-orange
+      hover:bg-white/7;
   }
   @media (min-width: 768px) {
     .form-input {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, Form, Formik, type FormikHelpers, ErrorMessage } from "formik";
+import { Field, Form, Formik, type FormikHelpers } from "formik";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { AxiosError } from "axios";
@@ -54,94 +54,97 @@ const LoginForm = () => {
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={loginSchema}
+        validateOnChange={false}
+        validateOnBlur={true}
       >
-        {({ errors, touched, isSubmitting }) => (
-          <Form className="md:w-82.5" noValidate>
-            <div className="relative mb-4.5">
-              <Field
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                aria-invalid={Boolean(touched.email && errors.email)}
-                aria-describedby={
-                  touched.email && errors.email ? "email-error" : undefined
-                }
-                className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
-                  Boolean(touched.email && errors.email)
-                    ? "border-[#d80027] focus:border-[#d80027]"
-                    : "border-white/30 focus:border-orange"
-                }`}
-                placeholder=" "
-              />
-              <label
-                htmlFor="email"
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/60 transition-all duration-200
+        {({ errors, isSubmitting, values, submitCount, touched }) => {
+          const showEmailError =
+            Boolean(errors.email && touched.email) &&
+            (values.email !== initialValues.email || submitCount > 0);
+          const showPasswordError =
+            Boolean(errors.password && touched.password) &&
+            (values.password !== initialValues.password || submitCount > 0);
+
+          return (
+            <Form className="md:w-82.5" noValidate>
+              <div className="relative mb-4.5">
+                <Field
+                  id="email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  aria-invalid={showEmailError}
+                  aria-describedby={showEmailError ? "email-error" : undefined}
+                  className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors hover:bg-white/7 ${
+                    showEmailError
+                      ? "border-[#d80027] focus:border-[#d80027]"
+                      : "border-white/30 focus:border-orange"
+                  }`}
+                  placeholder=" "
+                />
+                <label
+                  htmlFor="email"
+                  className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/60 transition-all duration-200
               peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs
               peer-not-placeholder-shown:top-2 peer-not-placeholder-shown:translate-y-0 peer-not-placeholder-shown:text-xs"
-              >
-                Email
-              </label>
-              <ErrorMessage name="email">
-                {(msg) => (
+                >
+                  Email
+                </label>
+                {showEmailError && (
                   <span
                     id="email-error"
                     className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-12 mt-1 flex gap-1"
                   >
-                    <ErrorIcon /> {msg}
+                    <ErrorIcon /> {errors.email}
                   </span>
                 )}
-              </ErrorMessage>
-            </div>
+              </div>
 
-            <div className="relative mb-4.5">
-              <Field
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                aria-invalid={Boolean(touched.password && errors.password)}
-                aria-describedby={
-                  touched.password && errors.password
-                    ? "password-error"
-                    : undefined
-                }
-                className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
-                  Boolean(touched.password && errors.password)
-                    ? "border-[#d80027] focus:border-[#d80027]"
-                    : "border-white/30 focus:border-orange"
-                }`}
-                placeholder=" "
-              />
-              <label
-                htmlFor="password"
-                className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/60 transition-all duration-200
+              <div className="relative mb-4.5">
+                <Field
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  aria-invalid={showPasswordError}
+                  aria-describedby={
+                    showPasswordError ? "password-error" : undefined
+                  }
+                  className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors hover:bg-white/7 ${
+                    showPasswordError
+                      ? "border-[#d80027] focus:border-[#d80027]"
+                      : "border-white/30 focus:border-orange"
+                  }`}
+                  placeholder=" "
+                />
+                <label
+                  htmlFor="password"
+                  className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-white/60 transition-all duration-200
               peer-focus:top-2 peer-focus:translate-y-0 peer-focus:text-xs
               peer-not-placeholder-shown:top-2 peer-not-placeholder-shown:translate-y-0 peer-not-placeholder-shown:text-xs"
-              >
-                Password
-              </label>
-              <ErrorMessage name="password">
-                {(msg) => (
+                >
+                  Password
+                </label>
+                {showPasswordError && (
                   <span
                     id="password-error"
                     className="text-[12px] text-[#d80027] leading-normal absolute left-0 top-12 mt-1 flex gap-1"
                   >
-                    <ErrorIcon /> {msg}
+                    <ErrorIcon /> {errors.password}
                   </span>
                 )}
-              </ErrorMessage>
-            </div>
+              </div>
 
-            <button
-              type="submit"
-              className="btn-primary mb-3 disabled:opacity-40 w-full"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Loading..." : "Sign-In"}
-            </button>
-          </Form>
-        )}
+              <button
+                type="submit"
+                className="btn-primary mb-3 disabled:opacity-40 w-full"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Loading..." : "Sign-In"}
+              </button>
+            </Form>
+          );
+        }}
       </Formik>
       <p className="inline-block mr-1 text-[12px] text-white/60 leading-normal ">
         Don’t have an account?
