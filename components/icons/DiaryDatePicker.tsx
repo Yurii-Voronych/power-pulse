@@ -98,27 +98,8 @@ const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
   }, [open]);
   return (
     <div ref={containerRef} className="flex items-center gap-3 relative">
-      <p className="text-lg font-semibold">
-        {format(parsedDate, "dd/MM/yyyy")}
-      </p>
-
-      <button
-        type="button"
-        onClick={() => setOpen((prev) => !prev)}
-        className="flex size-4.5 items-center justify-center"
-      >
-        {isPending ? (
-          <span
-            className="block size-4.5 animate-spin rounded-full border-2 border-orange border-t-transparent"
-            aria-label="Loading diary date"
-          />
-        ) : (
-          <CalendarIcon className="text-orange" />
-        )}
-      </button>
-
       {open && (
-        <div className="absolute top-full right-0 mt-2 z-50 w-53.75 min-h-59 bg-orange-1 rounded-[30px] p-3 text-white">
+        <div className="absolute top-full right-0 mt-2 z-50 w-53.75 min-h-59 bg-black rounded-[30px] p-3 text-white">
           <DayPicker
             mode="single"
             selected={parsedDate}
@@ -142,7 +123,7 @@ const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
             }}
             modifiersClassNames={{
               available:
-                "[&>button:not(:disabled)]:bg-green-400/44 [&>button:not(:disabled)]:text-white [&>button:not(:disabled)]:hover:bg-white/20",
+                "[&>button:not(:disabled)]: [&>button:not(:disabled)]:text-white [&>button:not(:disabled)]:hover:bg-white/20",
             }}
             styles={{
               root: {
@@ -180,8 +161,8 @@ const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
               day_button:
                 "mx-auto flex size-6 items-center justify-center rounded-full text-[14px] font-normal leading-none hover:bg-black/15 disabled:cursor-default",
               selected:
-                "font-normal text-white [&>button]:!bg-black [&>button]:text-white",
-              today: "[&>button]:ring-2 [&>button]:ring-red-500 text-red-500",
+                "font-normal text-white [&>button]:ring-2 [&>button]:ring-blue-400/80",
+              today: "[&>button]:!bg-blue-400/80",
               outside: "text-white/30",
               disabled: "text-white/20",
             }}
@@ -194,16 +175,36 @@ const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
         disabled={!canGoPrev || isPending}
         className={!canGoPrev || isPending ? "opacity-30" : undefined}
       >
-        <NextIcon className={`rotate-180 ${isPending ? "animate-pulse" : ""}`} />
+        <NextIcon
+          className={`rotate-180 hover:text-orange ${isPending ? "animate-pulse" : ""}`}
+        />
       </button>
-
+      <p className="text-2xl text-white/70 font-bold">
+        {format(parsedDate, "dd/MM/yyyy")}
+      </p>
       <button
         type="button"
         onClick={handleNext}
         disabled={!canGoNext || isPending}
         className={!canGoNext || isPending ? "opacity-30" : undefined}
       >
-        <NextIcon className={isPending ? "animate-pulse" : undefined} />
+        <NextIcon
+          className={`hover:text-orange ${isPending ? "animate-pulse" : undefined} `}
+        />
+      </button>
+      <button
+        type="button"
+        onClick={() => setOpen((prev) => !prev)}
+        className="flex size-5 items-center justify-center"
+      >
+        {isPending ? (
+          <span
+            className="block size-5 animate-spin rounded-full border-2 border-orange border-t-transparent"
+            aria-label="Loading diary date"
+          />
+        ) : (
+          <CalendarIcon className="text-white hover:text-orange" />
+        )}
       </button>
     </div>
   );

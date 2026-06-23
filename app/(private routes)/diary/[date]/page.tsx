@@ -38,7 +38,7 @@ const DiaryPage = async ({ params }: { params: Promise<{ date: string }> }) => {
   const exercises = diary?.exercises ?? [];
   return (
     <Container>
-      <div className="flex justify-between items-end mb-10 xl:mb-7">
+      <div className="flex max-2xl:justify-between items-end mb-10 2xl:mb-7 2xl:gap-4">
         <h1 className="mt-25 text-2xl font-bold xl:mt-20">Diary</h1>
         <DiaryDatePicker
           date={date}
