@@ -69,49 +69,53 @@ const DiaryPageExerciseCard = ({
           )}
         </div>
 
-        <div className="text-orange flex gap-3">
+        <div className="flex gap-1 text-orange">
           {isEditing ? (
             <>
               <button
                 type="button"
-                className="text-[14px] text-white p-1 disabled:opacity-40"
+                className="flex h-8 w-8 items-center justify-center rounded-full text-orange transition-all duration-200 hover:scale-105 hover:bg-orange/10 hover:text-orange-1 active:scale-95 disabled:opacity-40"
                 disabled={isInvalidTime || isUpdating}
                 onClick={async () => {
                   await onExerciseTimeUpdated(exercise.id, nextTime);
                 }}
+                aria-label={`Save ${exercise.name}`}
               >
-                <Check className="text-orange w-5 h-5" />
+                <Check className="h-5 w-5" />
               </button>
               <button
                 type="button"
-                className="text-[14px] text-white p-1 disabled:opacity-40"
+                className="flex h-8 w-8 items-center justify-center rounded-full text-orange transition-all duration-200 hover:scale-105 hover:bg-red-500/10 hover:text-red-400 active:scale-95 disabled:opacity-40"
                 disabled={isUpdating}
                 onClick={() => {
                   setDraftTime(String(exercise.time));
                   setEditingExerciseId(null);
                 }}
+                aria-label={`Cancel editing ${exercise.name}`}
               >
-                <CloseIcon className="text-orange w-5 h-5" />
+                <CloseIcon className="h-5 w-5" />
               </button>
             </>
           ) : (
             <>
               <button
                 type="button"
-                className="p-1 disabled:opacity-40"
-                disabled={deletingExerciseId !== null}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-orange transition-all duration-200 hover:scale-105 hover:bg-orange/10 hover:text-orange-1 active:scale-95 disabled:opacity-40"
+                disabled={deletingExerciseId === exercise.id}
                 onClick={() => {
                   setDraftTime(String(exercise.time));
                   setEditingExerciseId(exercise.id);
                 }}
+                aria-label={`Edit ${exercise.name}`}
               >
                 <EditIcon />
               </button>
               <button
                 type="button"
-                className="p-1 disabled:opacity-40"
+                className="flex h-8 w-8 items-center justify-center rounded-full text-orange transition-all duration-200 hover:scale-105 hover:bg-red-500/10 hover:text-red-400 active:scale-95 disabled:opacity-40"
                 onClick={() => onExerciseDeleted(exercise)}
                 disabled={deletingExerciseId === exercise.id}
+                aria-label={`Delete ${exercise.name}`}
               >
                 <TrashIcon />
               </button>

@@ -54,11 +54,12 @@ const ProductsGrid = ({
               </p>
               <button
                 type="button"
-                className="p-1 disabled:opacity-40"
+                className="flex h-8 w-8 items-center justify-center rounded-full text-orange transition-all duration-200 hover:scale-105 hover:bg-red-500/10 hover:text-red-400 active:scale-95 disabled:opacity-40"
                 disabled={deletingProductId === product.id}
                 onClick={() => onRemoveProduct(product.id)}
+                aria-label={`Delete ${product.title}`}
               >
-                <TrashIcon className="text-orange " />
+                <TrashIcon />
               </button>
             </div>
             <div className="flex justify-between items-center">
@@ -85,10 +86,10 @@ const ProductsGrid = ({
                 <p className="pl-2 text-red-500">{weightValidation.error}</p>
               )}
               {isEditing ? (
-                <div>
+                <div className="flex gap-1">
                   <button
                     type="button"
-                    className="text-[14px] text-white p-1 disabled:opacity-40"
+                    className="flex h-8 w-8 items-center justify-center rounded-full text-orange transition-all duration-200 hover:scale-105 hover:bg-orange/10 hover:text-orange-1 active:scale-95 disabled:opacity-40"
                     disabled={isInvalidWeight || isUpdating}
                     onClick={async () => {
                       const wasUpdated = await onWeightUpd(
@@ -101,31 +102,32 @@ const ProductsGrid = ({
                       }
                     }}
                   >
-                    <Check className="text-orange w-5 h-5" />
+                    <Check className="h-5 w-5" />
                   </button>
                   <button
                     type="button"
-                    className="text-[14px] text-white p-1 disabled:opacity-40"
+                    className="flex h-8 w-8 items-center justify-center rounded-full text-orange transition-all duration-200 hover:scale-105 hover:bg-red-500/10 hover:text-red-400 active:scale-95 disabled:opacity-40"
                     disabled={isUpdating}
                     onClick={() => {
                       setEditingProductId(null);
                       setDraftWeight("");
                     }}
                   >
-                    <CloseIcon className="text-orange w-5 h-5" />
+                    <CloseIcon className="h-5 w-5" />
                   </button>
                 </div>
               ) : (
                 <button
                   type="button"
-                  className="text-[14px] text-white p-1 disabled:opacity-40"
+                  className="flex h-8 w-8 items-center justify-center rounded-full text-orange transition-all duration-200 hover:scale-105 hover:bg-orange/10 hover:text-orange-1 active:scale-95 disabled:opacity-40"
                   disabled={editingProductId !== null && !isEditing}
                   onClick={() => {
                     setEditingProductId(product.id);
                     setDraftWeight(String(product.weight));
                   }}
+                  aria-label={`Edit ${product.title}`}
                 >
-                  <EditIcon className="text-orange" />
+                  <EditIcon />
                 </button>
               )}
             </div>

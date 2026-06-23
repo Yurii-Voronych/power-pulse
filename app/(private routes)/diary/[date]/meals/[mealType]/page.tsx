@@ -53,14 +53,16 @@ const MealPage = async ({
     <Container>
       <Link
         href={`/diary/${date}`}
-        className="text-[14px] text-orange mt-20 mb-2 flex gap-2"
+        className="group mt-20 mb-2 flex w-fit items-center gap-2 rounded-md text-[14px] text-orange transition-colors duration-200 hover:text-orange-1"
       >
-        <NextIcon className="rotate-180" />
+        <span className="transition-transform duration-200 group-hover:-translate-x-1">
+          <NextIcon className="rotate-180" />
+        </span>
         Back to diary
       </Link>
-      <div className=" flex justify-between mb-5">
+      <div className=" flex gap-4 mb-5">
         <h1 className="text-2xl font-bold">{meal.label}</h1>
-        <p className="text-[18px] font-semibold">{date}</p>
+        <p className="text-2xl text-white/70 font-bold">{date}</p>
       </div>
       <AddProductsManager
         initialProducts={initialProducts}

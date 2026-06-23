@@ -27,7 +27,7 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
 
           return (
             <li
-              className="text-[14px] border border-white/10 p-2 rounded-xl bg-orange-500/10 xl:pl-4 xl:pr-2"
+              className="group text-[14px] rounded-xl border border-white/10 bg-orange-500/10 p-2 transition-all duration-300 ease-out hover:-translate-y-1 hover:border-orange/70 hover:bg-orange/15 hover:shadow-[0_12px_30px_rgba(230,83,60,0.18)] xl:pl-4 xl:pr-2"
               key={meal.value}
             >
               <Link
@@ -35,13 +35,14 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
                 className="flex justify-between items-center gap-4"
               >
                 <div className="min-w-0">
-                  <h2 className="text-orange-1 font-medium">{meal.label}</h2>
-
-                  <span className="mr-2">{roundedCalories}</span>
-                  <span className="text-white mr-2">Kcal</span>
+                  <h2 className="text-orange-1 font-medium pb-2 transition-colors duration-300 group-hover:text-orange">
+                    {meal.label}
+                  </h2>
 
                   {hasProducts ? (
                     <>
+                      <span className="mr-2">{roundedCalories}</span>
+                      <span className="text-white mr-2">Kcal</span>
                       <span className="mr-2">{meal.products.length}</span>
                       <span className="text-white/70">products</span>
                     </>
@@ -53,12 +54,18 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
                 </div>
 
                 {hasProducts ? (
-                  <div className="shrink-0 text-orange flex gap-2">
-                    Edit <NextIcon />
+                  <div className="flex shrink-0 gap-2 text-orange transition-transform duration-300 group-hover:translate-x-1 mr-2">
+                    Edit
+                    <span className="transition-transform duration-300 group-hover:translate-x-1">
+                      <NextIcon />
+                    </span>
                   </div>
                 ) : (
-                  <div className="text-orange flex shrink-0 gap-2">
-                    Add <NextIcon />
+                  <div className="flex shrink-0 gap-2 text-orange transition-transform duration-300 group-hover:translate-x-1 mr-2">
+                    Add
+                    <span className="transition-transform duration-300 group-hover:translate-x-1">
+                      <NextIcon />
+                    </span>
                   </div>
                 )}
               </Link>

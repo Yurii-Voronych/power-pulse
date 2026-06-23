@@ -83,11 +83,13 @@ const ExercisesGrid = ({
         <p>Exercises</p>
         <button
           type="button"
-          className="flex text-[14px] text-orange gap-2"
+          className="group flex items-center gap-2 text-[14px] text-orange transition-all duration-200 hover:-translate-y-0.5 hover:text-orange-1 active:translate-y-0"
           onClick={() => setIsDrawerOpen(true)}
         >
           Add exercise
-          <NextIcon />
+          <span className="transition-transform duration-200 group-hover:translate-x-1">
+            <NextIcon />
+          </span>
         </button>
       </div>
       {hasExercises ? (

@@ -84,10 +84,10 @@ const HeaderSettings = () => {
               className="flex items-center gap-2 rounded-md px-2 py-1.5 text-white/70 transition-colors duration-200 hover:text-orange"
               onClick={() => setIsProfileMenuOpen(false)}
             >
+              Profile
               <span className="flex h-7 w-7 items-center justify-center rounded-full border border-orange">
                 <UserIcon className="h-4 w-4" />
               </span>
-              Profile
             </Link>
             <LogOutBtn
               className="items-center rounded-md px-2 py-1.5 text-white/70 transition-colors duration-200 hover:text-orange"

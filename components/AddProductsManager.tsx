@@ -113,7 +113,7 @@ const AddProductsManager = ({
               mealType={mealType}
               onProductsAdded={handleProductsAdded}
               triggerLabel="+ Add product"
-              triggerClassName="inline-flex h-10 items-center justify-center rounded-xl bg-orange px-4 text-[14px] font-semibold text-white transition hover:opacity-90"
+              triggerClassName="inline-flex h-10 items-center justify-center rounded-xl bg-orange px-4 text-[14px] font-semibold text-white shadow-[0_0_0_rgba(230,83,60,0)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_14px_rgba(230,83,60,0.35)] active:translate-y-0 active:shadow-[0_4px_12px_rgba(230,83,60,0.25)]"
             />
           </div>
 
@@ -132,7 +132,10 @@ const AddProductsManager = ({
       </div>
 
       <div className="grid content-start gap-3 md:grid-cols-3 lg:sticky lg:top-28 lg:grid-cols-1">
-        <CaloriesIntake value={Math.ceil(dailyCaloriesNorm)} />
+        <CaloriesIntake
+          value={Math.ceil(dailyCaloriesNorm)}
+          classname="border border-white/20 bg-transparent"
+        />
         <CaloriesConsumed value={Math.ceil(dailyConsumption)} />
         <CaloriesRest value={Math.ceil(dailyCaloriesNorm - dailyConsumption)} />
       </div>
