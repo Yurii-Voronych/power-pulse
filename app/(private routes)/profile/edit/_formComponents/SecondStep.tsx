@@ -7,10 +7,7 @@ import type {
   ProfileSetupStep,
 } from "../EditProfileForm";
 import { ErrorIcon } from "@/components/icons/ErrorIcon";
-import {
-  ACTIVITY_LEVELS,
-  SEX_OPTIONS,
-} from "@/lib/shared/constants/constants";
+import { ACTIVITY_LEVELS, SEX_OPTIONS } from "@/lib/shared/constants/constants";
 
 interface SecondStepProps {
   setStep: Dispatch<SetStateAction<ProfileSetupStep>>;
@@ -64,7 +61,7 @@ const SecondStep = ({
                   type="radio"
                   name="sex"
                   value={sex}
-                  className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1"
+                  className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange checked:border-orange hover:not-checked:bg-orange-1 hover:not-checked:border-orange-1 hover:not-checked:shadow-[0_0_0_3px_black_inset]"
                 />
 
                 <span className="capitalize">{sex}</span>
@@ -104,7 +101,7 @@ const SecondStep = ({
                 type="radio"
                 name="levelActivity"
                 value={String(a.value)}
-                className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange-1 checked:border-orange-1 shrink-0"
+                className="appearance-none w-5 h-5 rounded-full border-2 border-[#636366] bg-transparent checked:shadow-[0_0_0_3px_black_inset] checked:bg-orange checked:border-orange shrink-0 hover:not-checked:bg-orange-1 hover:not-checked:border-orange-1 hover:not-checked:shadow-[0_0_0_3px_black_inset]"
               />
               <span>{a.label}</span>
             </label>
@@ -124,7 +121,7 @@ const SecondStep = ({
       </fieldset>
       <div className="flex gap-4 w-fit">
         <button
-          className="flex items-center gap-2"
+          className="flex items-center gap-2  hover:text-orange transition-colors duration-200"
           type="button"
           onClick={() => {
             setStep(1);
@@ -134,7 +131,7 @@ const SecondStep = ({
           Back
         </button>
         <button
-          className="flex items-center gap-2"
+          className="flex items-center gap-2  hover:text-orange transition-colors duration-200"
           type="button"
           onClick={handleClick}
         >

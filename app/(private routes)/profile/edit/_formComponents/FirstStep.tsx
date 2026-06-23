@@ -72,7 +72,7 @@ const FirstStep = ({
             aria-describedby={
               touched.height && errors.height ? "height-error" : undefined
             }
-            className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
+            className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors hover:bg-white/7 ${
               Boolean(touched.height && errors.height)
                 ? "border-[#d80027] focus:border-[#d80027]"
                 : "border-white/30 focus:border-orange"
@@ -115,7 +115,7 @@ const FirstStep = ({
                 ? "current-weight-error"
                 : undefined
             }
-            className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
+            className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors hover:bg-white/7 ${
               Boolean(touched.currentWeight && errors.currentWeight)
                 ? "border-[#d80027] focus:border-[#d80027]"
                 : "border-white/30 focus:border-orange"
@@ -156,7 +156,7 @@ const FirstStep = ({
                 ? "desired-weight-error"
                 : undefined
             }
-            className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
+            className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors hover:bg-white/7 ${
               Boolean(touched.desiredWeight && errors.desiredWeight)
                 ? "border-[#d80027] focus:border-[#d80027]"
                 : "border-white/30 focus:border-orange"
@@ -201,7 +201,7 @@ const FirstStep = ({
         </div>
       </div>
       <button
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 hover:text-orange transition-colors duration-200"
         onClick={handleNext}
         type="button"
       >

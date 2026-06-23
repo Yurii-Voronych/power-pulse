@@ -101,7 +101,7 @@ export default function BirthdayInput({ name, error, touched }: Props) {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
         onBlur={field.onBlur}
-        className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors ${
+        className={`peer w-full rounded-xl border px-3.5 pb-1.5 pt-5 outline-none transition-colors hover:bg-white/7 ${
           Boolean(touched && error)
             ? "border-[#d80027] focus:border-[#d80027]"
             : "border-white/30 focus:border-orange"
