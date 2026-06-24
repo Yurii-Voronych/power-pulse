@@ -1,6 +1,6 @@
 import Container from "@/components/Container";
 import DiaryPageContent from "@/components/DiaryPageContent";
-import DiaryDatePicker from "@/components/icons/DiaryDatePicker";
+import DiaryDatePicker from "@/components/DiaryDatePicker";
 import { getCurrentUser } from "@/lib/server/auth/getCurrentUser";
 import { getDiaryData } from "@/lib/server/data/diary/getDiary";
 import {

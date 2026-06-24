@@ -2,8 +2,8 @@
 
 import "react-day-picker/dist/style.css";
 import { useEffect, useRef, useState, useTransition } from "react";
-import { CalendarIcon } from "./CalendarIcon";
-import { NextIcon } from "./NextArrowIcon";
+import { CalendarIcon } from "./icons/CalendarIcon";
+import { NextIcon } from "./icons/NextArrowIcon";
 import { DayPicker } from "react-day-picker";
 import {
   parse,
@@ -38,6 +38,8 @@ const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
     const parsed = parsePickerDate(date);
     return isValid(parsed) ? parsed : new Date();
   })();
+  const nextHref = `/diary/${formatDate(addDays(parsedDate, 1))}`;
+  const prevHref = `/diary/${formatDate(addDays(parsedDate, -1))}`;
   const selectedMonth = startOfMonth(parsedDate);
 
   const [manualMonth, setManualMonth] = useState<{
@@ -66,18 +68,16 @@ const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
   const handlePrev = () => {
     if (!canGoPrev || isPending) return;
 
-    const prev = formatDate(addDays(parsedDate, -1));
     startTransition(() => {
-      router.push(`/diary/${prev}`);
+      router.push(prevHref);
     });
   };
 
   const handleNext = () => {
     if (!canGoNext || isPending) return;
 
-    const next = formatDate(addDays(parsedDate, 1));
     startTransition(() => {
-      router.push(`/diary/${next}`);
+      router.push(nextHref);
     });
   };
 
@@ -96,6 +96,17 @@ const DiaryDatePicker = ({ date, minDate, maxDate }: DiaryDatePickerProps) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
+
+  useEffect(() => {
+    if (canGoNext) {
+      router.prefetch(nextHref);
+    }
+
+    if (canGoPrev) {
+      router.prefetch(prevHref);
+    }
+  }, [router, prevHref, nextHref, canGoPrev, canGoNext]);
+
   return (
     <div ref={containerRef} className="flex items-center gap-3 relative">
       {open && (

@@ -22,8 +22,8 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
         {meals.map((meal) => {
           const calories = calculateProductsCalories(meal.products);
           const roundedCalories = Math.ceil(calories);
-
           const hasProducts = meal.products.length > 0;
+          const prefetch = meal.value === "snack" ? false : undefined;
 
           return (
             <li
@@ -33,6 +33,7 @@ const MealsGrid = ({ products, date }: ProductsGridProps) => {
               <Link
                 href={`/diary/${date}/meals/${meal.value}`}
                 className="flex justify-between items-center gap-4"
+                prefetch={prefetch}
               >
                 <div className="min-w-0">
                   <h2 className="text-orange-1 font-medium pb-2 transition-colors duration-300 group-hover:text-orange">
