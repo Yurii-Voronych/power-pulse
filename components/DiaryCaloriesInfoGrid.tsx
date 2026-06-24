@@ -5,7 +5,6 @@ import { DiaryExercise, DiaryProduct } from "@/lib/shared/types/diary";
 import CaloriesBurned from "./ui/CaloriesBurned";
 import CaloriesRest from "./ui/RestOfCalories";
 import SportsRest from "./ui/RestOfSports";
-import { WarningIcon } from "./icons/WarningIcon";
 import {
   calculateExercisesCalories,
   calculateExercisesMinutes,

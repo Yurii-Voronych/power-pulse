@@ -19,10 +19,10 @@ const ExerciseCard = ({ exercise, userWeight }: ExerciseCardProp) => {
   };
   const { open } = useModalStore();
   return (
-    <div className="w-full h-35.25 border border-white/20 rounded-xl p-4">
+    <div className="h-35.25 w-full rounded-xl border border-white/20 p-4">
       <div className="flex justify-between gap-4">
         <div className="flex min-w-0 flex-1 gap-4 items-center">
-          <div className="w-6 h-6 rounded-full bg-orange-1 flex justify-center items-center shrink-0">
+          <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-1">
             <PersonIcon className="w-4 h-4" />
           </div>
           <span className="min-w-0 truncate" title={exercise.name}>
@@ -30,7 +30,7 @@ const ExerciseCard = ({ exercise, userWeight }: ExerciseCardProp) => {
           </span>
         </div>
         <button
-          className="shrink-0 text-orange flex gap-2 items-center"
+          className="group flex shrink-0 items-center gap-2 text-orange transition-all duration-200 hover:-translate-y-0.5 hover:text-orange-1 active:translate-y-0"
           onClick={() => {
             open(
               <ExerciseDetails
@@ -41,7 +41,10 @@ const ExerciseCard = ({ exercise, userWeight }: ExerciseCardProp) => {
             );
           }}
         >
-          Info <NextIcon />
+          Info{" "}
+          <span className="transition-transform duration-200 group-hover:translate-x-1">
+            <NextIcon />
+          </span>
         </button>
       </div>
 

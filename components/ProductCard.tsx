@@ -14,16 +14,19 @@ const ProductCard = ({ product }: ProductCardProp) => {
     <div className="min-h-35.25 w-full rounded-xl border border-white/20 p-4">
       <div className="flex gap-2 w-fit ml-auto text-[12px] mb-10">
         <button
-          className="text-orange flex gap-1.5 items-center"
+          className="group flex items-center gap-1.5 text-orange transition-all duration-200 hover:-translate-y-0.5 hover:text-orange-1 active:translate-y-0"
           onClick={() => {
             open(<AddProductToDiaryModal product={product} />);
           }}
         >
-          Add <NextIcon />
+          Add{" "}
+          <span className="transition-transform duration-200 group-hover:translate-x-1">
+            <NextIcon />
+          </span>
         </button>
       </div>
-      <div className="mb-2 flex w-full min-w-0 gap-4">
-        <div className="w-6 h-6 rounded-full bg-orange-1 flex justify-center items-center shrink-0">
+      <div className="mb-2">
+        <div className="mr-4 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-orange-1">
           <PersonIcon className="w-4 h-4" />
         </div>
         <span className="truncate">{product.title}</span>
