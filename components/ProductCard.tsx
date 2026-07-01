@@ -18,7 +18,7 @@ const ProductCard = ({ product }: ProductCardProp) => {
       onClick={handleAddProduct}
       className="group relative flex h-35.25 w-full flex-col overflow-hidden rounded-xl border border-white/20 p-4 text-left shadow-[0_0_0_rgba(230,83,60,0)] transition-all duration-200 hover:-translate-y-0.5 hover:border-orange/40 hover:bg-orange/5 hover:shadow-[0_10px_24px_rgba(230,83,60,0.14)] focus-visible:border-orange focus-visible:outline-none focus-visible:shadow-[0_10px_24px_rgba(230,83,60,0.14)] active:translate-y-0"
     >
-      <h3 className="line-clamp-2 min-w-0 break-words text-[20px] leading-tight text-white">
+      <h3 className="line-clamp-2 min-w-0 wrap-break-word text-[20px] leading-tight text-white">
         {product.title}
       </h3>
 
@@ -37,7 +37,7 @@ const ProductCard = ({ product }: ProductCardProp) => {
         </p>
       </div>
 
-      <span className="absolute right-4 bottom-[34px] rounded-xl bg-orange px-4 py-3 text-[14px] font-medium leading-none text-white shadow-[0_10px_22px_rgba(230,83,60,0.24)] transition-all duration-200 md:bottom-4 md:opacity-0 md:shadow-[0_0_0_rgba(230,83,60,0)] md:group-hover:opacity-100 md:group-hover:shadow-[0_10px_22px_rgba(230,83,60,0.36)] md:group-focus-visible:opacity-100 md:group-focus-visible:shadow-[0_10px_22px_rgba(230,83,60,0.36)]">
+      <span className="absolute right-4 bottom-8.5 rounded-xl bg-orange px-4 py-3 text-[14px] font-medium leading-none text-white shadow-[0_10px_22px_rgba(230,83,60,0.24)] transition-all duration-200 md:bottom-4 md:opacity-0 md:shadow-[0_0_0_rgba(230,83,60,0)] md:group-hover:opacity-100 md:group-hover:shadow-[0_10px_22px_rgba(230,83,60,0.36)] md:group-focus-visible:opacity-100 md:group-focus-visible:shadow-[0_10px_22px_rgba(230,83,60,0.36)]">
         + Add product
       </span>
     </button>
