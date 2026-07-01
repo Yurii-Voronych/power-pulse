@@ -132,7 +132,7 @@ export default function BirthdayInput({ name, error, touched }: Props) {
           aria-label="Choose birthday"
           className="absolute top-full max-md:right-0 mt-2 z-50 md:left-45.5 md:-top-2"
         >
-          <div className="w-53.75 h-59 bg-orange-1 rounded-[30px] p-3 text-white flex items-center justify-center">
+          <div className="w-53.75 min-h-59 bg-black rounded-[30px] p-3 text-white">
             <DayPicker
               mode="single"
               selected={parsedDate}
@@ -155,16 +155,15 @@ export default function BirthdayInput({ name, error, touched }: Props) {
                   "--rdp-nav_button-height": "24px",
                   "--rdp-nav-height": "38px",
                   "--rdp-outside-opacity": "0.32",
+                  "--rdp-disabled-opacity": "0.22",
                 } as React.CSSProperties,
               }}
               classNames={{
                 root: "relative w-full h-full text-white",
-
                 month: "w-full",
                 month_caption:
-                  "relative mb-3 flex h-[38px] items-center justify-center border-b border-white/20 pb-3",
-                caption_label:
-                  "text-[20px] font-medium leading-none text-white",
+                  "relative mb-3 flex h-[38px] items-center justify-center border-b border-white/20 pb-3 pointer-events-none",
+                caption_label: "text-[20px] font-medium leading-none text-white",
                 nav: "absolute left-0 right-0 top-0 z-10 flex h-[38px] items-start justify-between",
                 button_previous:
                   "flex size-6 items-center justify-center text-white/70 hover:text-white",
@@ -178,12 +177,12 @@ export default function BirthdayInput({ name, error, touched }: Props) {
                 week: "h-[27px]",
                 day: "size-[27px] p-0 text-center align-middle text-[14px] font-normal leading-none text-white",
                 day_button:
-                  "mx-auto flex size-6 items-center justify-center rounded-full text-[14px] font-normal leading-none hover:bg-black/15",
+                  "mx-auto flex size-6 items-center justify-center rounded-full text-[14px] font-normal leading-none hover:bg-black/15 disabled:cursor-default",
                 selected:
-                  "font-normal text-white [&>button]:bg-black [&>button]:text-white",
-                today: "[&>button]:ring-2 [&>button]:ring-red-500 text-red-500",
+                  "font-normal text-white [&>button]:ring-2 [&>button]:ring-blue-400/80",
+                today: "[&>button]:!bg-blue-400/80",
                 outside: "text-white/30",
-                disabled: "text-white/20 pointer-events-none",
+                disabled: "text-white/20",
               }}
             />
           </div>

@@ -113,7 +113,7 @@ const AddProductsManager = ({
               mealType={mealType}
               onProductsAdded={handleProductsAdded}
               triggerLabel="+ Add product"
-              triggerClassName="inline-flex h-10 items-center justify-center rounded-xl bg-orange px-4 text-[14px] font-semibold text-white shadow-[0_0_0_rgba(230,83,60,0)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_14px_rgba(230,83,60,0.35)] active:translate-y-0 active:shadow-[0_4px_12px_rgba(230,83,60,0.25)]"
+              triggerClassName="btn-primary h-10 min-h-0 px-4 py-0 text-[14px] md:min-h-0 md:px-4 md:py-0 md:text-[14px]"
             />
           </div>
 

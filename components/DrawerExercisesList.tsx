@@ -21,34 +21,42 @@ const DrawerExercisesList = ({
         };
         const isSelected = selectedExercisesIds.includes(e.id);
         return (
-          <li
-            key={e.id}
-            className="flex items-center justify-between gap-3 rounded-xl border border-white/15 bg-white/3 p-1.5 transition-all duration-200 hover:-translate-y-0.5 hover:border-orange/40 hover:bg-orange/5 hover:shadow-[0_8px_20px_rgba(230,83,60,0.12)]"
-          >
-            <div className="flex justify-between w-full">
-              <p className="truncate max-w-50 text-[14px] font-medium">
-                {e.name}
-              </p>
-              <p className="text-[12px] text-white/40">
-                {countBurnedCalories()} kcal/h
-              </p>
-            </div>
-
+          <li key={e.id}>
             {isSelected ? (
               <button
                 type="button"
-                className="shrink-0 rounded-xl border border-orange px-3 py-1.5 text-[12px] text-orange opacity-60"
+                className="group flex w-full min-w-0 items-center justify-between gap-2 rounded-xl border border-orange/40 bg-orange/5 p-1.5 text-left opacity-75"
                 disabled
               >
-                Added
+                <span className="flex min-w-0 flex-1 items-center justify-between gap-2">
+                  <span className="min-w-0 truncate text-[14px] font-medium">
+                    {e.name}
+                  </span>
+                  <span className="shrink-0 text-[12px] text-white/40">
+                    {countBurnedCalories()} kcal/h
+                  </span>
+                </span>
+                <span className="shrink-0 rounded-xl border border-orange px-2.5 py-1.5 text-[12px] text-orange sm:px-3">
+                  Added
+                </span>
               </button>
             ) : (
               <button
                 type="button"
-                className="shrink-0 rounded-xl border border-orange px-3 py-1.5 text-[12px] text-orange shadow-[0_0_0_rgba(230,83,60,0)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-orange hover:text-white hover:shadow-[0_8px_14px_rgba(230,83,60,0.35)] active:translate-y-0 active:shadow-[0_4px_12px_rgba(230,83,60,0.25)]"
+                className="group flex w-full min-w-0 items-center justify-between gap-2 rounded-xl border border-white/15 bg-white/3 p-1.5 text-left shadow-[0_0_0_rgba(230,83,60,0)] transition-all duration-200 hover:-translate-y-0.5 hover:border-orange/40 hover:bg-orange/5 hover:shadow-[0_8px_20px_rgba(230,83,60,0.12)] active:translate-y-0"
                 onClick={() => onAddExercise(e)}
               >
-                Add
+                <span className="flex min-w-0 flex-1 items-center justify-between gap-2">
+                  <span className="min-w-0 truncate text-[14px] font-medium">
+                    {e.name}
+                  </span>
+                  <span className="shrink-0 text-[12px] text-white/40">
+                    {countBurnedCalories()} kcal/h
+                  </span>
+                </span>
+                <span className="shrink-0 rounded-xl border border-orange px-2.5 py-1.5 text-[12px] text-orange shadow-[0_0_0_rgba(230,83,60,0)] transition-all duration-200 group-hover:bg-orange group-hover:text-white group-hover:shadow-[0_8px_14px_rgba(230,83,60,0.35)] sm:px-3">
+                  Add
+                </span>
               </button>
             )}
           </li>
